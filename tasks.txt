@@ -1,0 +1,7 @@
+---------------------------------------------
+MARDI LE 13/12/2022
+--------------------------------------------
+- Preparer la toast notification
+- Preparer la base de donnees
+- Migrer les tables vers la base de donnees
+- Commence faire la partie des utilisateurs
