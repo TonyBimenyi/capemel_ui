@@ -20,7 +20,7 @@
                         </div>
                         <p class="error">{{errorMessage}}</p>
                         <div class="login_btn">
-                            <button :disabled="disableSubmitButton">{{loading?"Chargement...":"Se connecter"}}</button>
+                            <button>{{loading?"Chargement...":"Se connecter"}}</button>
                             
                         </div>
                     </form>
@@ -49,19 +49,23 @@ export default {
             .then((response)=>{
                 this.loading = false;
                 if(response.data.success){
-                    this.$store.commit("login",JSON.stringify(response.data.data))
-                    
+                    this.$store.commit("login",JSON.stringify(response.data.data))               
+                    alert('good')
                 }
-                this.router.push('/users')
+                this.$toast.error(`Bienvenue`)
+ 
                
             })
             .catch((error)=>{
                 if (error.message == "Network Error"){
                     this.errorMessage = "Vous n'êtes pas connecté au serveur"
+                  
                 }else{
                     this.errorMessage = error.response.data.message;
                     this.loading = false;
-
+                    this.$toast.error(`Verifier vos identifiants!`,{
+                        position:"bottom-right"
+                    });
                 }
                 
             })

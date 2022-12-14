@@ -11,11 +11,13 @@
 <script>
 import navBar from './components/navbar.vue'
 import loginAccount from './components/Auth/login.vue'
+import ToastedNotification from './components/ToastedNotification.vue'
 
 export default {
 components:{
   loginAccount,
-  navBar
+  navBar,
+  ToastedNotification,
 },
 mounted(){
       this.$store.commit("initializeStore")

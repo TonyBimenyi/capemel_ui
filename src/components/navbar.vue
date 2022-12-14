@@ -86,7 +86,7 @@ export default {
     methods:{
       logout(){
         localStorage.removeItem('user')
-        this.router.push('/users')
+        this.$router.push('/users')
       }
     },
     computed:{
