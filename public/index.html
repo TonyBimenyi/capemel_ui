@@ -8,6 +8,7 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
   <body>
+    
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
@@ -15,3 +16,30 @@
     <!-- built files will be auto injected -->
   </body>
 </html>
+<style>
+  /* Googlefont Poppins CDN Link */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  
+  font-family: 'Poppins', sans-serif;
+}
+  :root{
+    --primary : #1782da;
+    --secondary : red;
+    --danger : rgb(240, 71, 71);
+    --active : #02457c;
+    --transparent : #c6e2f8;
+    --text : rgb(61, 61, 61);
+  }
+  body{
+    background: #ecf5fd;
+  }
+
+  body{
+    margin: 0px 10px;
+  }
+
+</style>
