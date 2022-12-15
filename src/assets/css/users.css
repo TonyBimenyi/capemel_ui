@@ -1,10 +1,11 @@
 .container{
     margin-top: 90px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 .top_part{
     display: flex;
     justify-content: space-between;
-    margin: 0 90px;
     flex-wrap: wrap;
 }
 .part_left{
@@ -13,7 +14,21 @@
     flex-wrap: wrap;
     width: 80%;
 }
-.btn1 button{
+.part_right{
+    width: 20%;
+    display: flex;
+    justify-content: flex-end;
+}
+.btn1 button:hover,.add_btn button:hover{
+    transition: all .3s;
+    box-shadow: 2px 4px 2px 1px rgba(0, 0, 0, 0.349); 
+}
+.add_btn button{
+    padding: 0px 20px !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+}
+.btn1 button,.add_btn button{
     padding:6px 40px;
     border-radius: 3px;
     background:var(--transparent);
@@ -21,10 +36,44 @@
     color: var(--text);
     font-weight: 500;
     font-size: 13.5px;
+    cursor: pointer;
+    box-shadow: 2px 4px 2px 1px rgba(0, 0, 0, 0.11); 
 }
 input{
     height: 35px;
     border: 1px solid var(--primary);
     border-radius: 3px;
     padding-left: 5px;
+    outline: none;
+}
+
+.table_content{
+    border-radius: 20px !important;
+}
+table{
+    margin: 20px auto;
+    width: 100%;
+    /* border-collapse: collapse; */
+    border-radius: 20px !important;
+}
+thead tr th{
+    padding: 05px 90px;
+    border-radius: 5px !important;
+    border: 1px solid var(--primary);
+    background-color: var(--transparent);
+    text-transform: uppercase;
+}
+tbody tr td{   
+    gap: 30px;
+    border-radius: 05px;
+    background: white;
+    padding: 6px ;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.021); 
+}
+.spacer td{
+    padding: 0 !important;
+    height: 5px;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
 }
