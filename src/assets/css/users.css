@@ -1,0 +1,30 @@
+.container{
+    margin-top: 90px;
+}
+.top_part{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 90px;
+    flex-wrap: wrap;
+}
+.part_left{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 80%;
+}
+.btn1 button{
+    padding:6px 40px;
+    border-radius: 3px;
+    background:var(--transparent);
+    border: 1px solid var(--primary);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 13.5px;
+}
+input{
+    height: 35px;
+    border: 1px solid var(--primary);
+    border-radius: 3px;
+    padding-left: 5px;
+}

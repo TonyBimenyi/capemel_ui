@@ -1,7 +1,7 @@
 <template>
   <div class="" v-if="$store.state.user">
     <nav-bar></nav-bar>
-    <router-view></router-view>
+   
   </div>
 
   <div class="" v-else>
