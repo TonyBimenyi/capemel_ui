@@ -26,48 +26,68 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Titre 1</th>
-                        <th>Titre 1</th>
-                        <th>Titre 1</th>
-                        <th>Titre 1</th>
+                        <th>#ID</th>
+                        <th>Nom et Prenom</th>
+                        <th>Email</th>
+                        <th>Telephone</th>
+                        <th>Role</th>
+                        <th>Enregiste au</th>
+                        <th colspan="3">Options</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="spacer">
                         <td colspan="100"></td>
                     </tr>
-                    <tr>
-                        <td>dsfdsf</td>
-                        <td>dsfdsf</td>
-                        <td>dsfdsf</td>
-                        <td>dsfdsf</td>
-                    </tr>
-                    <tr class="spacer">
-                        <td colspan="100"></td>
-                    </tr>
-                    <tr>
-                        <td>dsfdsf</td>
-                        <td>dsfdsf</td>
-                        <td>dsfdsf</td>
-                        <td>dsfdsf</td>
-                    </tr>
-                    <tr class="spacer">
-                        <td colspan="10"></td>
-                    </tr>
-                    <tr>
-                        <td>dsfdsf</td>
-                        <td>dsfdsf</td>
-                        <td>dsfdsf</td>
-                        <td>dsfdsf</td>
-                    </tr>
-                    <tr class="spacer">
-                        <td colspan="100"></td>
-                    </tr>
+                    <tr v-for="user in users" :key="user.id">
+                        <td>{{user.id}}</td>
+                        <td>{{user.name}}</td>
+                        <td>{{user.email}}</td>
+                        <td>{{user.telephone}}</td>
+                        <td>{{user.role}}</td>
+                        <td>{{datetime(user.created_at)}}</td>      
+                        <td><button id="mod_btn">Modifier</button></td>
+                        <td><button id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
+                    </tr>          
                 </tbody>
             </table>
         </div>
     </div>
 </template>
+<script>
+import axios from 'axios'
+export default {
+    data(){
+        return{         
+            allData:[],
+        }
+    },
+    methods:{
+        getUsers(){
+            axios
+            .get(this.url+'users')
+            .then((res)=>{
+                this.$store.state.users = res.data
+                this.allData = res.data
+            })
+            .catch((error)=>{
+                this.$toast.error(error)
+                console.log(error)
+            })
+        }
+    },
+    mounted(){
+        this.getUsers()
+    },
+    computed:{
+        users(){
+            const users = this.$store.state?.users
+            return users
+        }
+    }
+}
+</script>
 <style src='../assets/css/users.css' scoped>
 
 </style>
