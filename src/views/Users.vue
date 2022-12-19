@@ -18,7 +18,7 @@
             <div class="part_right">
                 
                 <div class="add_btn">
-                    <button>+</button>
+                    <button @click="dialog=true">+</button>
                 </div>
             </div>
         </div>
@@ -53,17 +53,29 @@
                 </tbody>
             </table>
         </div>
+        <user_modal  @close="close" v-if="dialog"></user_modal>
     </div>
 </template>
 <script>
 import axios from 'axios'
+import user_modal from '../components/modals/user_modal.vue'
 export default {
+    components:{
+        user_modal,
+    },
     data(){
         return{         
             allData:[],
+            dialog:false,
         }
     },
     methods:{
+        close(){
+            this.dialog = false
+        },
+        edit(item){
+            this.dialog =true;
+        },
         getUsers(){
             axios
             .get(this.url+'users')
