@@ -25,7 +25,7 @@
             <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
             <ul class="htmlCss-sub-menu sub-menu">
               <li><a href="#">Conferences</a></li>
-              <li><a href="#">Districts</a></li>
+              <router-link to="districts"><li><a href="#">Districts</a></li></router-link> 
               <li><a href="#">Paroisses</a></li>
               <!-- <li class="more">
                 <span><a href="#">More</a>
