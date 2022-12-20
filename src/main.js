@@ -12,7 +12,10 @@ app.mixin({
     computed: {
         url(){
           return this.$store.state.url
-        },     
+        },   
+        errorMessage(){
+          return error.response.data.message
+        } , 
         headers(){
           return {
             headers:{

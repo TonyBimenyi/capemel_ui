@@ -36,7 +36,7 @@
                         
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="er">
                     <tr class="spacer">
                         <td colspan="100"></td>
                     </tr>
@@ -52,8 +52,10 @@
                     </tr>          
                 </tbody>
             </table>
+           
         </div>
-        <user_modal  @close="close" v-if="dialog"></user_modal>
+       
+        <user_modal @getUsers="getUsers"  @close="close" v-if="dialog"></user_modal>
     </div>
 </template>
 <script>
@@ -84,8 +86,8 @@ export default {
                 this.allData = res.data
             })
             .catch((error)=>{
-                this.$toast.error(error)
-                console.log(error)
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
             })
         }
     },

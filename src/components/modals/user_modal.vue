@@ -70,6 +70,9 @@ export default {
         }
     },
     methods:{
+        getUsers(){
+            this.$emit('getUsers')
+        },
         close(){
             this.$emit('close')
         },
@@ -78,9 +81,9 @@ export default {
             axios.post(this.url+'register',this.form)
             .then((response)=>{
                 this.loading = false;
-                if(response.data.success){
-                    this.$store.commit("login",JSON.stringify(response.data.data))               
-                }
+                this.close();
+                // this.getUsers();
+                this.getUsers()
                 this.$toast.success(`Utilisateur enregistre`)  
             })
             .catch((error)=>{
@@ -90,7 +93,7 @@ export default {
                 }else{
                     this.errorMessage = error.response.data.message;
                     this.loading = false;
-                    this.$toast.error(errorMessage,{
+                    this.$toast.error(error.response.data.message,{
                         position:"bottom-right"
                     });
                 }

@@ -77,6 +77,11 @@
   </nav>
   <router-view></router-view>
   <!--<script src="script.js"></script>-->
+  <div class="footer">
+      <footer>
+         <p>CAPEMEL---Copyright 2022 tous les droits reserves</p>
+      </footer>
+  </div>
 </body>
     </div>
 </template>
