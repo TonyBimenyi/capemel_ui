@@ -3,7 +3,7 @@
 <transition name="fade" appear>
     <div class="form" >
         <div class="top">
-             <div class="title">Ajouter un utilisateur</div>
+             <div class="title">Ajouter un District</div>
              <div class="close"><button @click="close">X</button></div>
          </div>
       <!-- <div class="subtitle">Let's create your account!</div> -->
@@ -12,40 +12,19 @@
                 <div class="input-container ic1">
                     <input id="firstname" v-model="form.name" class="input" type="text" required placeholder=" " />
                     <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom et Prenom</label>
+                    <label for="firstname" class="placeholder">Nom</label>
                 </div>
                 <div class="input-container ic2">
-                    <input id="lastname" v-model="form.email" class="input" required type="email" placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="lastname" class="placeholder">Email</label>
-                </div>
-                <div class="input-container ic2">
-                    <input id="email" v-model="form.telephone" class="input" required type="number" min="0" placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="email"  class="placeholder">Telephone</label>
-                </div>
-            </div>
-            <div class="part1">
-                <div class="input-container ic1">
                     <select class="input" v-model="form.role" name="" id="">
-                        <option value="">--Selectionner le Role--</option>
+                        <option value="">--Selectionner la conference--</option>
                         <option value="Admin">Admin</option>
-                        <option value="Super Admin">Super Admin</option>
+                        <option value="Super Admin">Super Admin</option>   
                     </select>
                     <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Role</label>
-                </div>
-                <div class="input-container ic2">
-                    <input id="lastname" v-model="form.password" class="input" type="password" placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="lastname" required class="placeholder">Mot de passe</label>
-                </div>
-                <div class="input-container ic2">
-                    <input id="email" v-model="form.c_password" class="input" type="password" placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="email" required class="placeholder">Confirmer mot de passe</label>
+                    <label for="firstname" class="placeholder">Conference</label>
                 </div>
             </div>
+            
          </div>
       <button  class="submit" @click="saveUser()">{{loading?"Chargement...":"Ajouter"}}</button>
     </div>
@@ -65,6 +44,7 @@ export default {
                 password:'',
                 c_password:'',
             },
+            conferences:[],
             errorMessage:"",
             loading:false,
         }
@@ -73,6 +53,18 @@ export default {
         getUsers(){
             this.$emit('getUsers')
         },
+        getConferences(){
+            axios
+            .get(this.url+'users')
+            .then((res)=>{
+                this.conferences = res.data
+                this.allData = res.data
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        }, 
         close(){
             this.$emit('close')
         },
@@ -99,8 +91,11 @@ export default {
                 }
                 
             })
-        }
+        },
     },
+    mounted(){
+        this.getConferences()
+    }
 }
 </script>
 <style src='../../../assets/css/modal.css' scoped>
