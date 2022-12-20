@@ -10,23 +10,41 @@
       <div class="inputs">
         <div class="part1">
                 <div class="input-container ic1">
-                    <input id="firstname" v-model="form.name" class="input" type="text" required placeholder=" " />
+                    <input id="firstname" v-model="form.nom_district" class="input" type="text" required placeholder=" " />
                     <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom</label>
+                    <label for="firstname" class="placeholder">Nom District</label>
                 </div>
+                <div class="input-container ic1">
+                    <input id="firstname" v-model="form.nom_sur_district" class="input" type="text" required placeholder=" " />
+                    <div class="cut"></div>
+                    <label for="firstname" class="placeholder">Nom et Prenom Surintandant</label>
+                </div>
+                <div class="input-container ic1">
+                    <input id="firstname" v-model="form.email_sur_district" class="input" type="email" required placeholder=" " />
+                    <div class="cut"></div>
+                    <label for="firstname" class="placeholder">Email Surintandant</label>
+                </div>
+                
+        </div>
+        <div class="part1">
                 <div class="input-container ic2">
-                    <select class="input" v-model="form.role" name="" id="">
+                    <select class="input" v-model="form.id_conference" name="" id="">
                         <option value="">--Selectionner la conference--</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Super Admin">Super Admin</option>   
+                        <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
                     </select>
                     <div class="cut"></div>
                     <label for="firstname" class="placeholder">Conference</label>
                 </div>
-            </div>
+               
+                <div class="input-container ic1">
+                    <input id="firstname" v-model="form.phone_sur_district" class="input" type="number" required placeholder=" " />
+                    <div class="cut"></div>
+                    <label for="firstname" class="placeholder">Telephone Surintandant</label>
+                </div>
+        </div>
             
          </div>
-      <button  class="submit" @click="saveUser()">{{loading?"Chargement...":"Ajouter"}}</button>
+      <button  class="submit" @click="saveDistrict()">{{loading?"Chargement...":"Ajouter"}}</button>
     </div>
 </transition>
     </div>
@@ -37,12 +55,11 @@ export default {
     data(){
         return{
             form:{
-                name:'',
-                email:'',
-                telephone:'',
-                role:'',
-                password:'',
-                c_password:'',
+                nom_district:'',
+                id_conference:'',
+                nom_sur_conference:'',
+                email_sur_district:'',
+                nom_sur_district:'',
             },
             conferences:[],
             errorMessage:"",
@@ -55,7 +72,7 @@ export default {
         },
         getConferences(){
             axios
-            .get(this.url+'users')
+            .get(this.url+'conferences')
             .then((res)=>{
                 this.conferences = res.data
                 this.allData = res.data
@@ -68,15 +85,15 @@ export default {
         close(){
             this.$emit('close')
         },
-        saveUser(){
+        saveDistrict(){
             this.loading = true;
-            axios.post(this.url+'register',this.form)
+            axios.post(this.url+'store_district',this.form)
             .then((response)=>{
                 this.loading = false;
                 this.close();
                 // this.getUsers();
                 this.getUsers()
-                this.$toast.success(`Utilisateur enregistre`)  
+                this.$toast.success(`District enregistre`)  
             })
             .catch((error)=>{
                 if (error.message == "Network Error"){

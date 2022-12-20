@@ -26,6 +26,7 @@ body {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 20px;
   }
   .container{
     /* height: 100px; */
