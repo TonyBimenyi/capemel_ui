@@ -102,6 +102,6 @@ export default {
     }
 }
 </script>
-<style src='../assets/css/table.css' scoped>
+<style src='../assets/css/t.css' scoped>
 
 </style>
