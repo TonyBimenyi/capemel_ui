@@ -22,8 +22,27 @@
                 </div>
             </div>
         </div>
+        <form_modal @getUsers="getUsers"  @close="close" v-if="dialog"></form_modal>
     </div>
 </template>
+<script>
+import form_modal from '../components/district/modals/form_modal.vue'
+export default {
+    components:{
+        form_modal
+    },
+    data(){
+        return{
+            dialog:false,
+        }
+    },
+    methods:{
+        close(){
+            this.dialog = false
+        },
+    }
+}
+</script>
 <style src="../assets/css/table.css" scoped>
 
 </style>
