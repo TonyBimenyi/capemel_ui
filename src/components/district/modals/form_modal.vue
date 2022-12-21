@@ -90,7 +90,27 @@ export default {
         },
         saveDistrict(){
             if(this.edit_district){
-
+                this.loading = true;
+                axios.put(this.url+'update_district/'+this.$store.state.district.id,this.form)
+                .then((response)=>{
+                this.loading = false;
+                this.close();
+                this.getDistricts();
+                this.$toast.success(`District Modifier`)  
+                })
+                .catch((error)=>{
+                    if (error.message == "Network Error"){
+                        this.errorMessage = "Vous n'êtes pas connecté au serveur"
+                    
+                    }else{
+                        this.errorMessage = error.response.data.message;
+                        this.loading = false;
+                        this.$toast.error(error.response.data.message,{
+                            position:"bottom-right"
+                        });
+                    }
+                    
+                })
             }
             else{
             this.loading = true;
