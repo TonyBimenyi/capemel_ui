@@ -12,7 +12,7 @@
                 <div class="input-container ic1">
                     <input id="firstname" v-model="form.nom_district" class="input" type="text" required placeholder=" " />
                     <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom District</label>
+                    <label for="firstname" class="placeholder">Nom District*</label>
                 </div>
                 <div class="input-container ic1">
                     <input id="firstname" v-model="form.nom_sur_district" class="input" type="text" required placeholder=" " />
@@ -44,7 +44,7 @@
         </div>
             
          </div>
-      <button  class="submit" @click="saveDistrict()">{{loading?"Chargement...":"Ajouter"}}</button>
+      <button  class="submit" @click="saveDistrict()">{{loading?"Chargement...":btn}}</button>
     </div>
 </transition>
     </div>
@@ -52,6 +52,7 @@
 <script>
 import axios from 'axios'
 export default {
+    props:['edit_district'],
     data(){
         return{
             form:{
@@ -61,14 +62,15 @@ export default {
                 email_sur_district:'',
                 nom_sur_district:'',
             },
+            btn:'Enregister',
             conferences:[],
             errorMessage:"",
             loading:false,
         }
     },
     methods:{
-        getUsers(){
-            this.$emit('getUsers')
+        getDistricts(){
+            this.$emit('getDistricts')
         },
         getConferences(){
             axios
@@ -76,6 +78,7 @@ export default {
             .then((res)=>{
                 this.conferences = res.data
                 this.allData = res.data
+              
             })
             .catch((error)=>{
                 this.$toast.error(error.response.data.message)
@@ -86,13 +89,17 @@ export default {
             this.$emit('close')
         },
         saveDistrict(){
+            if(this.edit_district){
+
+            }
+            else{
             this.loading = true;
             axios.post(this.url+'store_district',this.form)
             .then((response)=>{
                 this.loading = false;
                 this.close();
                 // this.getUsers();
-                this.getUsers()
+                this.getDistricts();
                 this.$toast.success(`District enregistre`)  
             })
             .catch((error)=>{
@@ -108,10 +115,20 @@ export default {
                 }
                 
             })
+         }
         },
     },
     mounted(){
         this.getConferences()
+        this.getDistricts()
+        if(this.edit_district){
+            this.form.nom_district = this.$store.state.district.nom_district;
+            this.form.nom_sur_district = this.$store.state.district.nom_sur_district;
+            this.form.email_sur_district = this.$store.state.district.email_sur_district;
+            this.form.phone_sur_district = this.$store.state.district.phone_sur_district;
+            this.form.id_conference = this.$store.state.district.id_conference;
+            this.btn = 'Modifier'
+        }
     }
 }
 </script>

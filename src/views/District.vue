@@ -18,14 +18,48 @@
             <div class="part_right">
                 
                 <div class="add_btn">
-                    <button @click="dialog=true">+</button>
+                    <button @click="dialog=true,modifier=false">+</button>
                 </div>
             </div>
         </div>
-        <form_modal @getUsers="getUsers"  @close="close" v-if="dialog"></form_modal>
+        <div class="table_content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#ID</th>
+                        <th>Nom du District</th>
+                        <th>Conference</th>
+                        <th>Surintandant</th>
+                        <th>Telephone</th>
+                        <th>Email</th>
+                        <th>Enregiste au</th>
+                        <th colspan="3">Options</th>
+                        
+                    </tr>
+                </thead>
+                <tbody class="er">
+                    <tr class="spacer">
+                        <td colspan="100"></td>
+                    </tr>
+                    <tr v-for="dis in districts" :key="dis.id">
+                        <td>{{dis.id}}</td>
+                        <td>{{dis.nom_district}}</td>
+                        <td>{{dis.id_conference}}</td>
+                        <td>{{dis.nom_sur_district}}</td>                        
+                        <td>{{dis.phone_sur_district}}</td>
+                        <td>{{dis.email_sur_district}}</td>
+                        <td>{{datetime(dis.created_at)}}</td>
+                        <td><button @click="edit_district(dis)" id="mod_btn">Modifier</button></td>
+                        <td><button id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
+                    </tr>          
+                </tbody>
+            </table>         
+        </div>
+        <form_modal @update="getDistricts" :edit_district="modifier" @getDistricts="getDistricts"  @close="close" v-if="dialog"></form_modal>
     </div>
 </template>
 <script>
+import axios from 'axios'
 import form_modal from '../components/district/modals/form_modal.vue'
 export default {
     components:{
@@ -33,13 +67,42 @@ export default {
     },
     data(){
         return{
+            modifier:false,
             dialog:false,
+            allData:[],
         }
     },
     methods:{
+        edit_district(item){
+            this.dialog = true
+            this.modifier = true
+            this.$store.state.district = item
+        },
         close(){
             this.dialog = false
         },
+        getDistricts(){
+            axios
+            .get(this.url+'districts')
+            .then((res)=>{
+                this.$store.state.districts = res.data
+                this.allData = res.data
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
+      
+    },
+    mounted(){
+        this.getDistricts()
+     },
+    computed:{
+        districts(){
+            const districts = this.$store.state?.districts
+            return districts
+        }
     }
 }
 </script>
