@@ -53,8 +53,10 @@
                         <td><button id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
                     </tr>          
                 </tbody>
+                
             </table>         
         </div>
+     
         <form_modal @update="getDistricts" :edit_district="modifier" @getDistricts="getDistricts"  @close="close" v-if="dialog"></form_modal>
     </div>
 </template>
@@ -73,6 +75,7 @@ export default {
         }
     },
     methods:{
+      
         edit_district(item){
             this.dialog = true
             this.modifier = true
@@ -87,6 +90,7 @@ export default {
             .then((res)=>{
                 this.$store.state.districts = res.data
                 this.allData = res.data
+                this.links = res.data
             })
             .catch((error)=>{
                 this.$toast.error(error.response.data.message)
@@ -107,5 +111,5 @@ export default {
 }
 </script>
 <style src="../assets/css/table.css" scoped>
-
+    
 </style>

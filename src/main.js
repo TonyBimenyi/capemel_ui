@@ -3,11 +3,13 @@ import Toaster from "@meforma/vue-toaster";
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import pagination from 'laravel-vue-pagination';
 // import AnimatedVue from 'animated-vue'
 
 
 
 const app = createApp(App).use(Toaster).use(store).use(router)
+app.component('pagination', pagination)
 app.mixin({
     computed: {
         url(){
