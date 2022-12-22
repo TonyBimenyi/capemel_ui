@@ -58,7 +58,7 @@
         </div>
      
         <form_modal @update="getDistricts" :edit_district="modifier" @getDistricts="getDistricts"  @close="close" v-if="dialog"></form_modal>
-        <delete_modal @close="close" v-if="dialog_delete"></delete_modal>
+        <delete_modal @getDistricts="getDistricts" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
 </template>
 <script>

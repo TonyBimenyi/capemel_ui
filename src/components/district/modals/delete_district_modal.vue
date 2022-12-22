@@ -11,7 +11,7 @@
             <p style="margin-top:20px">Voulez-vous vraiment supprimer le district de <strong>{{ $store.state.district.nom_district }}</strong>{{  }}?</p>
          </div>
          <div class="valider">
-            <p >Oui, Supprimer</p>
+           <button @click="deleteDistrict()">Oui, Supprimer</button>
          </div>
       <button  class="delete_btn" @click="close()">Annuler</button>
     </div>
@@ -38,6 +38,28 @@ export default {
         }
     },
     methods:{
+        deleteDistrict(){
+            axios.post(this.url+'delete_district/'+this.$store.state.district.id,this.form)
+                .then((response)=>{
+                // this.loading = false;
+                this.close();
+                this.getDistricts();
+                this.$toast.success(`District Supprimer`)  
+                })
+                .catch((error)=>{
+                    if (error.message == "Network Error"){
+                        this.errorMessage = "Vous n'êtes pas connecté au serveur"
+                    
+                    }else{
+                        this.errorMessage = error.response.data.message;
+                        this.loading = false;
+                        this.$toast.error(error.response.data.message,{
+                            position:"bottom-right"
+                        });
+                    }
+                    
+                })
+        },
         getDistricts(){
             this.$emit('getDistricts')
         },
