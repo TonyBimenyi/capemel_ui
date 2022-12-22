@@ -50,7 +50,7 @@
                         <td>{{dis.email_sur_district}}</td>
                         <td>{{datetime(dis.created_at)}}</td>
                         <td><button @click="edit_district(dis)" id="mod_btn">Modifier</button></td>
-                        <td><button id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
+                        <td><button @click="delete_district(dis)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
                     </tr>          
                 </tbody>
                 
@@ -58,13 +58,16 @@
         </div>
      
         <form_modal @update="getDistricts" :edit_district="modifier" @getDistricts="getDistricts"  @close="close" v-if="dialog"></form_modal>
+        <delete_modal @close="close" v-if="dialog_delete"></delete_modal>
     </div>
 </template>
 <script>
 import axios from 'axios'
 import form_modal from '../components/district/modals/form_modal.vue'
+import delete_modal from '../components/district/modals/delete_district_modal.vue'
 export default {
     components:{
+        delete_modal,
         form_modal
     },
     data(){
@@ -72,10 +75,14 @@ export default {
             modifier:false,
             dialog:false,
             allData:[],
+            dialog_delete:false,
         }
     },
     methods:{
-      
+        delete_district(item){
+            this.dialog_delete=true,
+            this.$store.state.district = item
+        },
         edit_district(item){
             this.dialog = true
             this.modifier = true
@@ -83,6 +90,7 @@ export default {
         },
         close(){
             this.dialog = false
+            this.dialog_delete  = false
         },
         getDistricts(){
             axios
