@@ -70,6 +70,7 @@ export default {
             this.$emit('close')
         },
         saveParoisse(){
+           
             if(this.edit_paroisse){
                 this.loading = true;
                 axios.put(this.url+'update_paroisse/'+this.$store.state.paroisse.id,this.form)
@@ -94,6 +95,7 @@ export default {
                 })
             }
             else{
+         
             this.loading = true;
             axios.post(this.url+'store_paroisse',this.form)
             .then((response)=>{

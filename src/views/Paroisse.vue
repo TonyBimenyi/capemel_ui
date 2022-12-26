@@ -6,15 +6,15 @@
                     <button>Imprimer</button>
                 </div>
                 <div class="btn1">
-                    <select @change="searchInDb" v-model="conference_select" name="" id="">
-                        <option value="">--CONFERENCE--</option>
+                    <select @change="sortDistrict" v-model="conference_select" name="" id="">
+                        <option :value="0">--CONFERENCE--</option>
                         <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
                     </select>
                 </div>
                 <div class="btn1">
-                    <select @change="searchInDb" v-model="conference_select" name="" id="">
-                        <option value="">--DISTRICT--</option>
-                        <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
+                    <select   name="" id="">
+                        <option :value="0">--DISTRICT--</option>
+                        <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option>
                     </select>
                 </div>
                 <!-- <div class="btn1">
@@ -82,10 +82,30 @@ export default {
             dialog_delete:false,
             conferences:[],
             conference_select:'',
-            inputSearch:''
+            inputSearch:'',
+            districts:[],
         }
     },
     methods:{
+        sortDistrict(){
+            axios
+            .get(this.url+'districts?conference_select=' +this.conference_select)
+            .then((res)=>{
+                this.$store.state.districts = res.data
+                if(this.conference_select!=0){
+                    this.allData = res.data
+                    this.districts = res.data
+                 }
+                 else{
+                    this.districts=false
+                 }
+                console.log(this.conference_select)
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
         searchInDb(){
             axios
             .get(this.url+'districts?conference_select=' +this.conference_select)
@@ -101,7 +121,7 @@ export default {
             })
         },
         inputSearchMethods(){
-            this.$store.state.districts = this.allData.filter(e => JSON.stringify(e).toLowerCase().includes(this.inputSearch.toLowerCase()))          
+            this.$store.state.paroisses = this.allData.filter(e => JSON.stringify(e).toLowerCase().includes(this.inputSearch.toLowerCase()))          
         },
         getConferences(){
             axios
