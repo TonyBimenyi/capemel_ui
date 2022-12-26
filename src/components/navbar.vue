@@ -26,7 +26,7 @@
             <ul class="htmlCss-sub-menu sub-menu">
               <li><a href="#">Conferences</a></li>
               <router-link to="districts"><li><a href="#">Districts</a></li></router-link> 
-              <li><a href="#">Paroisses</a></li>
+              <router-link to="paroisses"><li><a href="#">Paroisses</a></li></router-link> 
               <!-- <li class="more">
                 <span><a href="#">More</a>
                 <i class='bx bxs-chevron-right arrow more-arrow'></i>
