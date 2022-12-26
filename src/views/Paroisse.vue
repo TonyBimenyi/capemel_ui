@@ -51,9 +51,9 @@
                     <tr v-for="par in paroisses" :key="par.id">
                         <td>{{par.id}}</td>
                         <td>{{par.nom_paroisse}}</td>
-                        <td>{{par.id_district}}</td>             
+                        <td>{{par.district[0]?.nom_district}}</td>             
                         <td>{{datetime(par.created_at)}}</td>
-                        <td><button @click="edit_district(par)" id="mod_btn">Modifier</button></td>
+                        <td><button @click="edit_paroisse(par)" id="mod_btn">Modifier</button></td>
                         <td><button @click="delete_district(par)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
                     </tr>          
                 </tbody>
@@ -61,7 +61,7 @@
             </table>         
         </div>
      
-        <form_modal @update="getDistricts" :edit_district="modifier" @getDistricts="getDistricts"  @close="close" v-if="dialog"></form_modal>
+        <form_modal @update="getParoisses" :edit_paroisse="modifier" @getParoisses="getParoisses"  @close="close" v-if="dialog"></form_modal>
         <delete_modal @getDistricts="getDistricts" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
 </template>
@@ -120,10 +120,10 @@ export default {
             this.dialog_delete=true,
             this.$store.state.district = item
         },
-        edit_district(item){
+        edit_paroisse(item){
             this.dialog = true
             this.modifier = true
-            this.$store.state.district = item
+            this.$store.state.paroisse = item
         },
         close(){
             this.dialog = false

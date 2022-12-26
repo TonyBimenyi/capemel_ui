@@ -3,7 +3,7 @@
 <transition name="fade" appear>
     <div class="form" >
         <div class="top">
-             <div class="title">Ajouter une Paroisse</div>
+             <div class="title"><h5>{{ modal_title }}</h5></div>
              <div class="close"><button @click="close">X</button></div>
          </div>
       <!-- <div class="subtitle">Let's create your account!</div> -->
@@ -35,7 +35,7 @@
 <script>
 import axios from 'axios'
 export default {
-    props:['edit_district'],
+    props:['edit_paroisse'],
     data(){
         return{
             form:{
@@ -46,11 +46,12 @@ export default {
             districts:[],
             errorMessage:"",
             loading:false,
+            modal_title:'Ajouter une Paroisse',
         }
     },
     methods:{
-        getDistricts(){
-            this.$emit('getDistricts')
+        getParoisses(){
+            this.$emit('getParoisses')
         },
         getDistricts(){
             axios
@@ -69,13 +70,13 @@ export default {
             this.$emit('close')
         },
         saveParoisse(){
-            if(this.edit_district){
+            if(this.edit_paroisse){
                 this.loading = true;
                 axios.put(this.url+'update_district/'+this.$store.state.district.id,this.form)
                 .then((response)=>{
                 this.loading = false;
                 this.close();
-                this.getDistricts();
+                this.getParoisses();
                 this.$toast.success(`District Modifier`)  
                 })
                 .catch((error)=>{
@@ -99,7 +100,7 @@ export default {
                 this.loading = false;
                 this.close();
                 // this.getUsers();
-                this.getDistricts();
+                this.getParoisses();
                 this.$toast.success(`Paroisse enregistre`)  
             })
             .catch((error)=>{
@@ -120,14 +121,12 @@ export default {
     },
     mounted(){
         this.getDistricts()
-        this.getDistricts()
-        if(this.edit_district){
-            this.form.nom_district = this.$store.state.district.nom_district;
-            this.form.nom_sur_district = this.$store.state.district.nom_sur_district;
-            this.form.email_sur_district = this.$store.state.district.email_sur_district;
-            this.form.phone_sur_district = this.$store.state.district.phone_sur_district;
-            this.form.id_conference = this.$store.state.district.id_conference;
+        this.getParoisses()
+        if(this.edit_paroisse){
+            this.form.nom_paroisse = this.$store.state.paroisse.nom_paroisse;
+            this.form.id_district = this.$store.state.paroisse.id_district;
             this.btn = 'Modifier'
+            this.modal_title = 'Modifier '+this.$store.state.paroisse.nom_paroisse; 
         }
     }
 }

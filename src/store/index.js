@@ -8,6 +8,7 @@ export default createStore({
     district:{},
     districts:[],
     paroisses:[],
+    paroisse:{},
   },
   getters: {
     user : state =>{
