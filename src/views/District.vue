@@ -6,7 +6,7 @@
                     <button>Imprimer</button>
                 </div>
                 <div class="btn1">
-                    <select name="" id="">
+                    <select @change="searchInDb" v-model="conference_select" name="" id="">
                         <option value="">--CONFERENCE--</option>
                         <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
                     </select>
@@ -47,7 +47,7 @@
                     <tr v-for="dis in districts" :key="dis.id">
                         <td>{{dis.id}}</td>
                         <td>{{dis.nom_district}}</td>
-                        <td>{{dis.id_conference}}</td>
+                        <td>{{dis.conference[0]?.nom_conference}}</td>
                         <td>{{dis.nom_sur_district}}</td>                        
                         <td>{{dis.phone_sur_district}}</td>
                         <td>{{dis.email_sur_district}}</td>
@@ -79,9 +79,25 @@ export default {
             dialog:false,
             allData:[],
             dialog_delete:false,
+            conferences:[],
+            conference_select:''
         }
     },
     methods:{
+        searchInDb(){
+            axios
+            .get(this.url+'districts?conference_select=' +this.conference_select)
+            .then((res)=>{
+                this.$store.state.districts = res.data
+                this.allData = res.data
+                this.links = res.data
+                console.log(this.conference_select)
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
         getConferences(){
             axios
             .get(this.url+'conferences')
