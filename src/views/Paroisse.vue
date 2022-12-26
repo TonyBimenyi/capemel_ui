@@ -54,7 +54,7 @@
                         <td>{{par.district[0]?.nom_district}}</td>             
                         <td>{{datetime(par.created_at)}}</td>
                         <td><button @click="edit_paroisse(par)" id="mod_btn">Modifier</button></td>
-                        <td><button @click="delete_district(par)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
+                        <td><button @click="delete_paroisse(par)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
                     </tr>          
                 </tbody>
                 
@@ -62,13 +62,13 @@
         </div>
      
         <form_modal @update="getParoisses" :edit_paroisse="modifier" @getParoisses="getParoisses"  @close="close" v-if="dialog"></form_modal>
-        <delete_modal @getDistricts="getDistricts" @close="close" v-if="dialog_delete"></delete_modal>
+        <delete_modal @getParoisses="getParoisses" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
 </template>
 <script>
 import axios from 'axios'
 import form_modal from '../components/paroisse/modals/add_paroisse.vue'
-import delete_modal from '../components/district/modals/delete_district_modal.vue'
+import delete_modal from '../components/paroisse/modals/delete_paroisse.vue'
 export default {
     components:{
         delete_modal,
@@ -138,9 +138,9 @@ export default {
                 console.log(error.response.data.message)
             })
         }, 
-        delete_district(item){
+        delete_paroisse(item){
             this.dialog_delete=true,
-            this.$store.state.district = item
+            this.$store.state.paroisse = item
         },
         edit_paroisse(item){
             this.dialog = true
