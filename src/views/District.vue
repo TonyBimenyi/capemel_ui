@@ -6,11 +6,14 @@
                     <button>Imprimer</button>
                 </div>
                 <div class="btn1">
-                    <button>Exporter</button>
+                    <select name="" id="">
+                        <option value="">--CONFERENCE--</option>
+                        <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
+                    </select>
                 </div>
-                <div class="btn1">
+                <!-- <div class="btn1">
                     <button>Importer</button>
-                </div>
+                </div> -->
                 <div class="search">
                    <input type="text" placeholder="Rechercher...">
                 </div>
@@ -79,6 +82,19 @@ export default {
         }
     },
     methods:{
+        getConferences(){
+            axios
+            .get(this.url+'conferences')
+            .then((res)=>{
+                this.conferences = res.data
+                this.allData = res.data
+              
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        }, 
         delete_district(item){
             this.dialog_delete=true,
             this.$store.state.district = item
@@ -109,6 +125,7 @@ export default {
     },
     mounted(){
         this.getDistricts()
+        this.getConferences()
      },
     computed:{
         districts(){
