@@ -72,12 +72,12 @@ export default {
         saveParoisse(){
             if(this.edit_paroisse){
                 this.loading = true;
-                axios.put(this.url+'update_district/'+this.$store.state.district.id,this.form)
+                axios.put(this.url+'update_paroisse/'+this.$store.state.paroisse.id,this.form)
                 .then((response)=>{
                 this.loading = false;
                 this.close();
                 this.getParoisses();
-                this.$toast.success(`District Modifier`)  
+                this.$toast.success(`Paroisse Modifier`)  
                 })
                 .catch((error)=>{
                     if (error.message == "Network Error"){
