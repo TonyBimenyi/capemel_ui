@@ -5,8 +5,9 @@ export default createStore({
     url:'http://127.0.0.1:8000/api/',
     user:null,
     users:[],
-    district:[],
-    districts:{}
+    district:{},
+    districts:[],
+    paroisses:[],
   },
   getters: {
     user : state =>{

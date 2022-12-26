@@ -10,41 +10,24 @@
       <div class="inputs">
         <div class="part1">
                 <div class="input-container ic1">
-                    <input id="firstname" v-model="form.nom_district" class="input" type="text" required placeholder=" " />
+                    <input id="firstname" v-model="form.nom_paroisse" class="input" type="text" required placeholder=" " />
                     <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom District*</label>
+                    <label for="firstname" class="placeholder">Nom Paroisse*</label>
                 </div>
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.nom_sur_district" class="input" type="text" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom et Prenom Surintandant</label>
-                </div>
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.email_sur_district" class="input" type="email" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Email Surintandant</label>
-                </div>
-                
-        </div>
-        <div class="part1">
                 <div class="input-container ic2">
-                    <select class="input" v-model="form.id_conference" name="" id="">
-                        <option value="">--Selectionner la conference--</option>
-                        <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
+                    <select class="input" v-model="form.id_district" name="" id="">
+                        <option value="">--Selectionner le District--</option>
+                        <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option>
                     </select>
                     <div class="cut"></div>
                     <label for="firstname" class="placeholder">Conference</label>
                 </div>
-               
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.phone_sur_district" class="input" type="number" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Telephone Surintandant</label>
-                </div>
+                
         </div>
+       
             
          </div>
-      <button  class="submit" @click="saveDistrict()">{{loading?"Chargement...":btn}}</button>
+      <button  class="submit" @click="saveParoisse()">{{loading?"Chargement...":btn}}</button>
     </div>
 </transition>
     </div>
@@ -56,14 +39,11 @@ export default {
     data(){
         return{
             form:{
-                nom_district:'',
-                id_conference:'',
-                nom_sur_conference:'',
-                email_sur_district:'',
-                nom_sur_district:'',
+                nom_paroisse:'',
+                id_district:'',
             },
             btn:'Enregister',
-            conferences:[],
+            districts:[],
             errorMessage:"",
             loading:false,
         }
@@ -72,11 +52,11 @@ export default {
         getDistricts(){
             this.$emit('getDistricts')
         },
-        getConferences(){
+        getDistricts(){
             axios
-            .get(this.url+'conferences')
+            .get(this.url+'districts')
             .then((res)=>{
-                this.conferences = res.data
+                this.districts = res.data
                 this.allData = res.data
               
             })
@@ -88,7 +68,7 @@ export default {
         close(){
             this.$emit('close')
         },
-        saveDistrict(){
+        saveParoisse(){
             if(this.edit_district){
                 this.loading = true;
                 axios.put(this.url+'update_district/'+this.$store.state.district.id,this.form)
@@ -114,13 +94,13 @@ export default {
             }
             else{
             this.loading = true;
-            axios.post(this.url+'store_district',this.form)
+            axios.post(this.url+'store_paroisse',this.form)
             .then((response)=>{
                 this.loading = false;
                 this.close();
                 // this.getUsers();
                 this.getDistricts();
-                this.$toast.success(`District enregistre`)  
+                this.$toast.success(`Paroisse enregistre`)  
             })
             .catch((error)=>{
                 if (error.message == "Network Error"){
@@ -139,7 +119,7 @@ export default {
         },
     },
     mounted(){
-        this.getConferences()
+        this.getDistricts()
         this.getDistricts()
         if(this.edit_district){
             this.form.nom_district = this.$store.state.district.nom_district;

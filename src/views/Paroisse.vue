@@ -36,11 +36,9 @@
                 <thead>
                     <tr>
                         <th>#ID</th>
-                        <th>Nom du District</th>
-                        <th>Conference</th>
-                        <th>Surintandant</th>
-                        <th>Telephone</th>
-                        <th>Email</th>
+                        <th>Nom de la Paroisse</th>
+                        <!-- <th>Conference</th> -->
+                        <th>District</th>
                         <th>Enregiste au</th>
                         <th colspan="3">Options</th>
                         
@@ -50,16 +48,13 @@
                     <tr class="spacer">
                         <td colspan="100"></td>
                     </tr>
-                    <tr v-for="dis in districts" :key="dis.id">
-                        <td>{{dis.id}}</td>
-                        <td>{{dis.nom_district}}</td>
-                        <td>{{dis.conference[0]?.nom_conference}}</td>
-                        <td>{{dis.nom_sur_district}}</td>                        
-                        <td>{{dis.phone_sur_district}}</td>
-                        <td>{{dis.email_sur_district}}</td>
-                        <td>{{datetime(dis.created_at)}}</td>
-                        <td><button @click="edit_district(dis)" id="mod_btn">Modifier</button></td>
-                        <td><button @click="delete_district(dis)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
+                    <tr v-for="par in paroisses" :key="par.id">
+                        <td>{{par.id}}</td>
+                        <td>{{par.nom_paroisse}}</td>
+                        <td>{{par.id_district}}</td>             
+                        <td>{{datetime(par.created_at)}}</td>
+                        <td><button @click="edit_district(par)" id="mod_btn">Modifier</button></td>
+                        <td><button @click="delete_district(par)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
                     </tr>          
                 </tbody>
                 
@@ -134,11 +129,11 @@ export default {
             this.dialog = false
             this.dialog_delete  = false
         },
-        getDistricts(){
+        getParoisses(){
             axios
-            .get(this.url+'districts')
+            .get(this.url+'paroisses')
             .then((res)=>{
-                this.$store.state.districts = res.data
+                this.$store.state.paroisses = res.data
                 this.allData = res.data
                 this.links = res.data
             })
@@ -150,13 +145,13 @@ export default {
       
     },
     mounted(){
-        this.getDistricts()
+        this.getParoisses()
         this.getConferences()
      },
     computed:{
-        districts(){
-            const districts = this.$store.state?.districts
-            return districts
+        paroisses(){
+            const paroisses = this.$store.state?.paroisses
+            return paroisses
         }
     }
 }
