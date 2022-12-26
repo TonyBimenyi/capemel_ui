@@ -15,7 +15,7 @@
                     <button>Importer</button>
                 </div> -->
                 <div class="search">
-                   <input type="text" placeholder="Rechercher...">
+                   <input v-model="inputSearch" @keydown="inputSearchMethods" type="text" placeholder="Rechercher...">
                 </div>
             </div>
             <div class="part_right">
@@ -80,7 +80,8 @@ export default {
             allData:[],
             dialog_delete:false,
             conferences:[],
-            conference_select:''
+            conference_select:'',
+            inputSearch:''
         }
     },
     methods:{
@@ -97,6 +98,9 @@ export default {
                 this.$toast.error(error.response.data.message)
                 console.log(error.response.data.message)
             })
+        },
+        inputSearchMethods(){
+            this.$store.state.districts = this.allData.filter(e => JSON.stringify(e).toLowerCase().includes(this.inputSearch.toLowerCase()))          
         },
         getConferences(){
             axios
