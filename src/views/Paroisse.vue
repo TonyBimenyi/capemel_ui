@@ -6,13 +6,13 @@
                     <button>Imprimer</button>
                 </div>
                 <div class="btn1">
-                    <select @change="sortDistrict" v-model="conference_select" name="" id="">
-                        <option :value="0">--CONFERENCE--</option>
+                    <select @change="sortDistrict"   v-model="conference_select" name="" id="">
+                        <option :value="0">{{ conf_text }}</option>
                         <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
                     </select>
                 </div>
                 <div class="btn1">
-                    <select   name="" id="">
+                    <select @change="searchInDb" v-model="district_select"  name="" id="">
                         <option :value="0">--DISTRICT--</option>
                         <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option>
                     </select>
@@ -82,8 +82,10 @@ export default {
             dialog_delete:false,
             conferences:[],
             conference_select:'',
+            district_select:'',
             inputSearch:'',
             districts:[],
+            conf_text:'--CONFERENCE--'
         }
     },
     methods:{
@@ -108,12 +110,12 @@ export default {
         },
         searchInDb(){
             axios
-            .get(this.url+'districts?conference_select=' +this.conference_select)
+            .get(this.url+'paroisses?district_select=' +this.district_select)
             .then((res)=>{
-                this.$store.state.districts = res.data
+                this.$store.state.paroisses = res.data
                 this.allData = res.data
                 this.links = res.data
-                console.log(this.conference_select)
+                console.log(this.district_select)
             })
             .catch((error)=>{
                 this.$toast.error(error.response.data.message)

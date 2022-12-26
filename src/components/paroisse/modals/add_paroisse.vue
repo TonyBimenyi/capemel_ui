@@ -47,6 +47,7 @@ export default {
             errorMessage:"",
             loading:false,
             modal_title:'Ajouter une Paroisse',
+            
         }
     },
     methods:{
