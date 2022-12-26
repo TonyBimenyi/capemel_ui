@@ -11,6 +11,12 @@
                         <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
                     </select>
                 </div>
+                <div class="btn1">
+                    <select @change="searchInDb" v-model="conference_select" name="" id="">
+                        <option value="">--DISTRICT--</option>
+                        <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
+                    </select>
+                </div>
                 <!-- <div class="btn1">
                     <button>Importer</button>
                 </div> -->
