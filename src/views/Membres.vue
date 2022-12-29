@@ -70,7 +70,7 @@
                         <td>Actif</td>
                         <td><button  id="mod_btn">Modifier</button></td>
                         <td><button  id="mod_btn">Cotisations</button></td>
-                        <td><button  id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
+                        <td><button @click="viewInfo()"  id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
                     </tr>          
                     <tr >
                         <td>CAPEMEL-2022/01</td>
@@ -104,13 +104,31 @@
                 
             </table>         
         </div>
-     
+     <info_membre @close="close" v-if="info"></info_membre>
    
     </div>
 </template>
 <script>
-
+import axios from 'axios'
+import info_membre from '../components/membres/modals/info_membre.vue'
 export default {
+    components:{
+        info_membre
+    },
+    data(){
+        return{
+            info:false,
+        }
+    },
+    methods:{
+        viewInfo(item){
+            this.info = true;
+        },
+        close(){
+            this.info = false;
+        }
+        
+    }
    
 }
 </script>
