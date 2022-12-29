@@ -195,6 +195,7 @@ tbody tr td{
 .body_info .part .info_membre p
 {
   text-align: left;
+  font-size: 13px;
 }
 .body_info .part .info_membre span{
   font-weight: 700;
