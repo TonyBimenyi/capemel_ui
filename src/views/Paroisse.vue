@@ -7,13 +7,13 @@
                 </div>
                 <div class="btn1">
                     <select @change="sortDistrict"   v-model="conference_select" name="" id="">
-                        <option :value="0">{{ conf_text }}</option>
+                        <option selected value="">{{ conf_text }}</option>
                         <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
                     </select>
                 </div>
                 <div class="btn1">
                     <select @change="searchInDb" v-model="district_select"  name="" id="">
-                        <option :value="0">--DISTRICT--</option>
+                        <option selected value="">--DISTRICT--</option>
                         <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option>
                     </select>
                 </div>
