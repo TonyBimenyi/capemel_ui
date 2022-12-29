@@ -43,7 +43,7 @@
             <a href="#">MEMBRES</a>
             <i class='bx bxs-chevron-down js-arrow arrow '></i>
             <ul class="js-sub-menu sub-menu">
-              <li><a href="#">Tous les Membres</a></li>
+              <router-link to="membres"><li><a href="#">Tous les membres</a></li></router-link> 
               <li><a href="#">Abandones</a></li>
               <li><a href="#">Pensionnes</a></li>
             </ul>

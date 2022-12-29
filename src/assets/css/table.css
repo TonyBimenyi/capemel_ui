@@ -59,6 +59,20 @@ select {
     width: 250px;
   }
 
+  .select_ {
+    background-color: var(--transparent);
+    border-radius: 4px;
+    border: 1px solid var(--primary);
+    box-sizing: border-box;
+    color: var(--text);
+    font-size: 12px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 150px !important;
+  }
+
+
 .table_content{
     /* overflow-x: scroll; */
     margin-top: 20px;
