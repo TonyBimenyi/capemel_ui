@@ -50,7 +50,6 @@
                         <p><span>Prenom: </span> Tony Blaise</p>
                         <p><span>Nom du Pere: </span> Bimenyimana</p>
                         <p><span>Nom de la Mere: </span> Mbonigaruye</p>
-                        <p><span>Nom de la Mere: </span> Mbonigaruye</p>
                         <p><span>Date de Naissance: </span> Le 23/12/2022</p>
                         <p><span>Lieu de naissance: </span> Kabere,Mabayi, CIBITOKE</p>
                         <p><span>Telephone: </span> +257 76 161 970</p>
