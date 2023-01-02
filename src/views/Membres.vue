@@ -104,12 +104,27 @@
                 
             </table>         
         </div>
-     <info_membre @close="close" v-if="info"></info_membre>
-   
+     <add_membre @close="close" v-if="dialog"></add_membre>
+        
     </div>
 </template>
 <script>
-
+import add_membre from '../components/membres/modals/add_membre.vue'
+export default{
+    components:{
+        add_membre
+    },
+    data(){
+        return{
+            dialog:false,
+        }
+    },
+    methods:{
+        close(){
+            this.dialog=false
+        }
+    }
+}
 </script>
 <style src="../assets/css/table.css" scoped>
   
