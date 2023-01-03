@@ -138,7 +138,21 @@ tbody tr td{
     font-size: 14px;
     box-shadow: var(--btn_shadow);
 }
-#delete_btn:hover{
+#info_btn{
+    background: rgb(34, 194, 34);
+    border:none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    color: white;
+    font-size: 14px;
+    box-shadow: var(--btn_shadow);
+}
+#actif{
+    font-weight: 500;
+    border-radius: 10px;
+    background-color: rgb(157, 241, 157);
+}
+#delete_btn,#info_btn:hover{
     transition: all .3s;
     cursor: pointer;
     box-shadow: var(--btn_shadow_hover);;
@@ -147,4 +161,6 @@ tbody tr td{
 /* ---------------------------------------------- */
 
 
-
+a{
+    color: white;
+}

@@ -48,7 +48,7 @@
                         <th>Paroisse</th>
                         <th>Age</th>
                         <th>Categorie</th>
-                        <th>Debut Cotisation</th>
+                        <th>Debut Ministere</th>
                         <th>Status</th>
                         <th colspan="3">Options</th>
                         
@@ -58,48 +58,25 @@
                     <tr class="spacer">
                         <td colspan="100"></td>
                     </tr>
-                    <tr >
-                        <td>CAPEMEL-2022/01</td>
-                        <td>Bimenyimana</td>
-                        <td>Tony Blaise</td>
-                        <td>Ntahangwa Est</td>
-                        <td>Mutanga-Nord</td>
-                        <td>32</td>
-                        <td>Candidat</td>
-                        <td>21/12/2022</td>
-                        <td>Actif</td>
+                    <tr v-for="membre in membres" :key="membre.id">
+                        <td>{{ membre.matricule_membre }}</td>
+                        <td>{{membre.nom_membre}}</td>
+                        <td>{{membre.prenom_membre}}</td>
+                        <td>District x</td>
+                        <td>{{ membre.id_paroisse }}</td>
+                        <td>{{ calculateAge }} Ans</td>
+                        <td>{{membre.id_categorie}}</td>
+                        <td>{{datetime(membre.debut_ministere_membre)}}</td>
+                        <td>
+                            <div v-if="membre.statut=='actif'" id="actif">
+                                {{membre.statut}}
+                            </div>
+                        </td>
                         <td><button  id="mod_btn">Modifier</button></td>
                         <td><button  id="mod_btn">Cotisations</button></td>
-                        <td><button id="delete_btn"> <router-link to="info_membre"><i class='bx bxs-trash'></i></router-link> </button></td>                  
+                        <td><router-link to="info_membre"><button id="info_btn"> <i class='bx bx-dots-horizontal-rounded'></i></button></router-link></td>                  
                     </tr>          
-                    <tr >
-                        <td>CAPEMEL-2022/01</td>
-                        <td>Bimenyimana</td>
-                        <td>Tony Blaise</td>
-                        <td>Ntahangwa Est</td>
-                        <td>Mutanga-Nord</td>
-                        <td>32</td>
-                        <td>Candidat</td>
-                        <td>21/12/2022</td>
-                        <td>Actif</td>
-                        <td><button  id="mod_btn">Modifier</button></td>
-                        <td><button  id="mod_btn">Cotisations</button></td>
-                        <td><button  id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
-                    </tr>          
-                    <tr >
-                        <td>CAPEMEL-2022/01</td>
-                        <td>Bimenyimana</td>
-                        <td>Tony Blaise</td>
-                        <td>Ntahangwa Est</td>
-                        <td>Mutanga-Nord</td>
-                        <td>32</td>
-                        <td>Candidat</td>
-                        <td>21/12/2022</td>
-                        <td>Actif</td>
-                        <td><button  id="mod_btn">Modifier</button></td>
-                        <td><button  id="mod_btn">Cotisations</button></td>
-                        <td><button  id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
-                    </tr>          
+                        
                 </tbody>
                 
             </table>         
@@ -109,6 +86,7 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 import add_membre from '../components/membres/modals/add_membre.vue'
 export default{
     components:{
@@ -117,14 +95,54 @@ export default{
     data(){
         return{
             dialog:false,
+            membres:[],
         }
     },
     methods:{
         close(){
             this.dialog=false
-        }
+        },
+        getMembres(){
+            axios
+            .get(this.url+'membres')
+            .then((res)=>{
+                this.$store.state.membres = res.data
+                this.allData = res.data
+                this.links = res.data
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
+      
+        },
+        mounted(){
+            this.getMembres()
+        },
+        computed:{
+            membres(){
+            const membres = this.$store.state?.membres
+            return membres
+        },
+            calculateAge(){
+                for( let i in this.$store.state.membres){
+                   
+                        let currentDate = new Date();
+                        let birthdate = + new Date(this.$store.state.membres[i]?.date_naissance_membre);
+                        console.log(this.$store.state.membres[i].date_naissance_membre);
+                        let difference = currentDate - birthdate;
+                        if(this.$store.state.membres[i].date_naissance_membre){
+                        let age = Math.floor(difference/31557600000);
+                        return age;
+                    }
+                    
+                }
+            
+            
+         }
     }
-}
+    }
 </script>
 <style src="../assets/css/table.css" scoped>
   
