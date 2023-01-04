@@ -12,7 +12,7 @@ const routes = [
   {path: '/districts',name:'districts',component: Districts},
   {path: '/paroisses',name:'paroisses',component: Paroisses},
   {path: '/membres',name:'membres',component: Membres},
-  {path: '/info_membre',name:'info_membre',component: Info_membre},
+  {path: '/info_membre/:id',name:'info_membre',component: Info_membre},
 ]
 
 const router = createRouter({

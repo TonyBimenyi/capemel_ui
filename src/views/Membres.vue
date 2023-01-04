@@ -63,9 +63,9 @@
                         <td>{{membre.nom_membre}}</td>
                         <td>{{membre.prenom_membre}}</td>
                         <td>District x</td>
-                        <td>{{ membre.id_paroisse }}</td>
-                        <td>{{ calculateAge }} Ans</td>
-                        <td>{{membre.id_categorie}}</td>
+                        <td>{{ membre.paroisse[0]?.nom_paroisse }}</td>
+                        <td>{{ ageCal(membre.date_naissance_membre) }} Ans</td>
+                        <td>{{membre.categorie[0]?.nom_categorie}}</td>
                         <td>{{datetime(membre.debut_ministere_membre)}}</td>
                         <td>
                             <div v-if="membre.statut=='actif'" id="actif">
@@ -74,7 +74,7 @@
                         </td>
                         <td><button  id="mod_btn">Modifier</button></td>
                         <td><button  id="mod_btn">Cotisations</button></td>
-                        <td><router-link to="info_membre"><button id="info_btn"> <i class='bx bx-dots-horizontal-rounded'></i></button></router-link></td>                  
+                        <td><button id="info_btn" @click="more_info(membre)"> <i class='bx bx-dots-horizontal-rounded'></i></button></td>                  
                     </tr>          
                         
                 </tbody>
@@ -115,8 +115,19 @@ export default{
                 console.log(error.response.data.message)
             })
         },
-      
+        more_info(n){
+            this.$router.push({name:'info_membre',params:{id:n.matricule_membre}})
         },
+        ageCal(n){
+                        let currentDate = new Date();
+                        let birthdate = + new Date(n);
+                        // console.log(this.$store.state.membres[i].date_naissance_membre);
+                        let difference = currentDate - birthdate;
+                        let age = Math.floor(difference/31557600000);
+                        return age;
+        }
+        
+    },
         mounted(){
             this.getMembres()
         },
@@ -125,24 +136,10 @@ export default{
             const membres = this.$store.state?.membres
             return membres
         },
-            calculateAge(){
-                for( let i in this.$store.state.membres){
-                   
-                        let currentDate = new Date();
-                        let birthdate = + new Date(this.$store.state.membres[i]?.date_naissance_membre);
-                        console.log(this.$store.state.membres[i].date_naissance_membre);
-                        let difference = currentDate - birthdate;
-                        if(this.$store.state.membres[i].date_naissance_membre){
-                        let age = Math.floor(difference/31557600000);
-                        return age;
-                    }
-                    
-                }
-            
-            
-         }
     }
-    }
+}
+    
+    
 </script>
 <style src="../assets/css/table.css" scoped>
   
