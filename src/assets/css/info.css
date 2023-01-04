@@ -242,3 +242,36 @@ tbody tr td{
   border-radius: 30px;
 }
 
+
+.action_btns{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.action_btns button{
+  padding: 5px 10px;
+  margin-top: 10px;
+}
+.action_btns #update_btn{
+  background-color: var(--primary);
+  border: none;
+  border-radius: 3px;
+  color: white;
+}
+.action_btns #delete_btn{
+  background-color: var(--danger);
+  border: none;
+  border-radius: 3px;
+  color: white;
+}
+#delete_btn{
+    background: var(--danger);
+    border:none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    color: white;
+    font-size: 13px;
+    box-shadow: var(--btn_shadow);
+}
+
