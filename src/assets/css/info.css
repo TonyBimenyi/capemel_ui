@@ -197,6 +197,34 @@ tbody tr td{
   text-align: left;
   font-size: 13px;
 }
+.body_info .part .info_conjoint{
+  margin-top: 50px;
+}
+.add_conjoint_btn span{
+  font-size: 16px;
+  color: var(--text);
+  /* margin-top: 20px; */
+}
+.add_conjoint_btn button{
+  margin-top: 20px;
+  padding: 10px 20px;
+  border-radius: 100px;
+  background-color: var(--transparent);
+  border: 2px solid var(--primary);
+  color: var(--text);
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 2px 4px 2px 1px rgba(0, 0, 0, 0.11); 
+}
+.add_conjoint_btn button:hover{
+  transition: all .3s;
+  box-shadow: 2px 4px 2px 1px rgba(0, 0, 0, 0.349); 
+}
+.body_info .part .info_conjoint h6
+{
+  text-align: center;
+  font-size: 13px;
+}
 .body_info .part .info_membre span{
   font-weight: 700;
 }

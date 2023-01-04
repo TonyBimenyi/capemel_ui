@@ -11,6 +11,7 @@ export default createStore({
     paroisse:{},
     membres:[],
     membre:{},
+    conjoint:{},
   },
   getters: {
     user : state =>{

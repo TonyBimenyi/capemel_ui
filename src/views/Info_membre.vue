@@ -67,6 +67,30 @@
                     <div class="title_pers">
                         <p>Conjoint(e)</p>
                     </div>
+                    <div v-if="conjoint.length>0" v-bind="members" class="info_membre">
+                        <p><span>Matricule: </span> {{membre[0]?.matricule_membre}}</p>
+                        <p><span>Nom: </span> {{membre[0]?.nom_membre}}</p>
+                        <p><span>Prenom: </span>{{membre[0]?.prenom_membre}}</p>
+                        <p><span>Nom du Pere: </span> {{membre[0]?.nom_pere_membre}}</p>
+                        <p><span>Nom de la Mere: </span> {{membre[0]?.nom_mere_membre}}</p>
+                        <p><span>Date de Naissance: </span>{{membre[0]?.date_naissance_membre}}</p>
+                        <p><span>Lieu de naissance: </span>{{membre[0]?.colline_membre}}, {{membre[0]?.commune_membre}}, {{membre[0]?.province_membre.toUpperCase()}}</p>
+                        <p><span>Telephone: </span>{{membre[0]?.telephone_membre}}</p>
+                        <p><span>No CIN: </span>{{membre[0]?.cin_membre}}</p>
+                        <p><span>Paroisse: </span> {{membre[0]?.paroisse[0]?.nom_paroisse}}</p>
+                        <p><span>District: </span> Ntahangwa EST</p>
+                        <p><span>Categorie Ministerielle: </span> {{membre[0]?.categorie[0]?.nom_categorie}}</p>
+                        <p><span>Debut Ministere: </span>Le {{membre[0]?.debut_ministere_membre}}</p>
+                        <p><span>Debut Cotisations: </span> {{ membre[0]?.debut_cotisation_membre }}</p>
+                        <p><span>Date de mariage:Le </span>{{ membre[0]?.date_mariage }}</p>
+                        <p><span>Statut: </span> <span v-if="membre[0]?.statut=='actif'" id="actif"> {{membre[0]?.statut}}</span> </p>
+                    </div>
+                    <div v-else v-bind="members" class="info_conjoint">
+                        <h6>Aucun(e) conjoint(e) correspond à {{ membre[0]?.nom_membre }} {{ membre[0]?.prenom_membre }}</h6>
+                        <div class="add_conjoint_btn">
+                            <button @click="dialog_conjoint=true;"> <span><i class='bx bx-folder-plus'></i></span> Ajouter un(e) Conjoint(e)</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="part">
                     <div class="title_pers">
@@ -77,19 +101,23 @@
             </div>
         </div>
         
-     <info_membre @close="close" v-if="info"></info_membre>
+     <add_conjoint @getConjoint="getConjoint" @close="close" v-if="dialog_conjoint"></add_conjoint>
    
     </div>
 </template>
 <script>
 import axios from 'axios'
-
+import add_conjoint from '../components/conjoints/modals/add_conjoint.vue'
 export default {
-    
+    components:{
+        add_conjoint
+    },
     data(){
         return{
-            info:false,
+                 info:false,
                 membre:{},
+                conjoint:{},
+                dialog_conjoint:false,
         };
     },
     methods:{
@@ -98,6 +126,7 @@ export default {
         },
         close(){
             this.info = false;
+            this.dialog_conjoint=false;
         },
         getMembres(){
             let pk = this.$route.params.id
@@ -106,6 +135,20 @@ export default {
             .then((res)=>{
                 this.$store.state.membre = res.data
                 this.membre = res.data
+                this.links = res.data
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
+        getConjoint(){
+            let pk = this.$route.params.id
+            axios
+            .get(this.url+'conjoint/'+pk)
+            .then((res)=>{
+                this.$store.state.membre = res.data
+                this.conjoint = res.data
                 this.links = res.data
             })
             .catch((error)=>{
@@ -124,7 +167,7 @@ export default {
     
     mounted(){
         this.getMembres()
-        
+        this.getConjoint()
     }
    
 }
