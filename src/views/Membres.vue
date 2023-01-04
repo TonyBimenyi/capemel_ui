@@ -116,7 +116,7 @@ export default{
             })
         },
         more_info(n){
-            this.$router.push({name:'info_membre',params:{id:n.matricule_membre}})
+            this.$router.push({name:'info_membre',params:{id:n.matricule_membre},query:{'prodName':n.nom_membre}})
         },
         ageCal(n){
                         let currentDate = new Date();

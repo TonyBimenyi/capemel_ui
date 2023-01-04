@@ -200,6 +200,12 @@ tbody tr td{
 .body_info .part .info_membre span{
   font-weight: 700;
 }
+#actif{
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 0px 20px;
+  background-color: rgb(157, 241, 157);
+}
 .separation{
   height: 5px;
   width: 100%;

@@ -45,22 +45,22 @@
                         <p>Membre</p>
                     </div>
                     <div v-bind="members" class="info_membre">
-                        <p><span>Matricule: </span> CAPEMEL-2022/01</p>
-                        <p><span>Nom: </span> Bimenyimana</p>
-                        <p><span>Prenom: </span> Tony Blaise</p>
-                        <p><span>Nom du Pere: </span> Bimenyimana</p>
-                        <p><span>Nom de la Mere: </span> Mbonigaruye</p>
-                        <p><span>Date de Naissance: </span> Le 23/12/2022</p>
-                        <p><span>Lieu de naissance: </span> Kabere,Mabayi, CIBITOKE</p>
-                        <p><span>Telephone: </span> +257 76 161 970</p>
-                        <p><span>No CIN: </span>531.90.34/89</p>
-                        <p><span>Paroisse: </span> Ngagara</p>
+                        <p><span>Matricule: </span> {{membre[0]?.matricule_membre}}</p>
+                        <p><span>Nom: </span> {{membre[0]?.nom_membre}}</p>
+                        <p><span>Prenom: </span>{{membre[0]?.prenom_membre}}</p>
+                        <p><span>Nom du Pere: </span> {{membre[0]?.nom_pere_membre}}</p>
+                        <p><span>Nom de la Mere: </span> {{membre[0]?.nom_mere_membre}}</p>
+                        <p><span>Date de Naissance: </span>{{membre[0]?.date_naissance_membre}}</p>
+                        <p><span>Lieu de naissance: </span>{{membre[0]?.colline_membre}}, {{membre[0]?.commune_membre}}, {{membre[0]?.province_membre.toUpperCase()}}</p>
+                        <p><span>Telephone: </span>{{membre[0]?.telephone_membre}}</p>
+                        <p><span>No CIN: </span>{{membre[0]?.cin_membre}}</p>
+                        <p><span>Paroisse: </span> {{membre[0]?.paroisse[0]?.nom_paroisse}}</p>
                         <p><span>District: </span> Ntahangwa EST</p>
-                        <p><span>Categorie Ministerielle: </span> Pasteur</p>
-                        <p><span>Debut Ministere: </span> Le 23/12/2022</p>
-                        <p><span>Debut Cotisations: </span> Le 23/12/2022</p>
-                        <p><span>Date de mariage: </span> Le 23/12/2022</p>
-                        <p><span>Statut: </span> Actif</p>
+                        <p><span>Categorie Ministerielle: </span> {{membre[0]?.categorie[0]?.nom_categorie}}</p>
+                        <p><span>Debut Ministere: </span>Le {{membre[0]?.debut_ministere_membre}}</p>
+                        <p><span>Debut Cotisations: </span> {{ membre[0]?.debut_cotisation_membre }}</p>
+                        <p><span>Date de mariage:Le </span>{{ membre[0]?.date_mariage }}</p>
+                        <p><span>Statut: </span> <span v-if="membre[0]?.statut=='actif'" id="actif"> {{membre[0]?.statut}}</span> </p>
                     </div>
                 </div>
                 <div class="part">
@@ -89,28 +89,8 @@ export default {
     data(){
         return{
             info:false,
-            nom_membre:'',
-                prenom_membre:'',
-                nom_pere_membre:'',
-                nom_mere_membre:'',
-                date_naissance_membre:'',
-                colline_membre:'',
-                commune_membre:'',
-                province_membre:'',
-                nationalite_conjoint:'',
-                cin_membre:'',
-                debut_ministere_membre:'',
-                debut_cotisation_membre:'',
-                date_mariage:'',
-                email:'',
-                telephone_membre:'',
-                photo_membre:null,
-                statut:'',
-                id_uti:this.$store.state.user.user.id,
-                id_paroisse:'',
-                id_categorie:'',
-                membres:[],
-        }
+                membre:{},
+        };
     },
     methods:{
         viewInfo(item){
@@ -120,11 +100,12 @@ export default {
             this.info = false;
         },
         getMembres(){
+            let pk = this.$route.params.id
             axios
-            .get(this.url+'membres/'+this.post.id)
+            .get(this.url+'info_membre/'+pk)
             .then((res)=>{
-                this.$store.state.membres = res.data
-                this.allData = res.data
+                this.$store.state.membre = res.data
+                this.membre = res.data
                 this.links = res.data
             })
             .catch((error)=>{
@@ -134,33 +115,15 @@ export default {
         },
         
     },
-    computed:{
-            membres(){
-            const membres = this.$store.state?.membres
-            return membres
-        },
-    },
+    // computed:{
+    //         membre(){
+    //         const membre = this.$store.state?.membre
+    //         return membre
+    //     },
+    // },
+    
     mounted(){
-        this.nom_membre = this.$store.state.membre.nom_membre;
-        this.prenom_membre = this.$store.state.membre.nom_paroisse;
-        this.nom_pere_membre = this.$store.state.membre.nom_paroisse;
-        this.nom_mere_membre = this.$store.state.membre.nom_paroisse;
-        this.date_naissance_membre = this.$store.state.membre.nom_paroisse;
-        this.colline_membre = this.$store.state.membre.nom_paroisse;
-        this.commune_membre = this.$store.state.membre.nom_paroisse;
-        this.province_membre = this.$store.state.membre.nom_paroisse;
-        this.nationalite_conjoint = this.$store.state.membre.nom_paroisse;
-        this.cin_membre = this.$store.state.membre.nom_paroisse;
-        this.debut_ministere_membre = this.$store.state.membre.nom_paroisse;
-        this.debut_cotisation_membre = this.$store.state.membre.nom_paroisse;
-        this.date_mariage = this.$store.state.membre.nom_paroisse;
-        this.email = this.$store.state.membre.nom_paroisse;
-        this.telephone_membre = this.$store.state.membre.nom_paroisse;
-        this.photo_membre = this.$store.state.membre.nom_paroisse;
-        this.statut = this.$store.state.membre.nom_paroisse;
-        this.id_uti = this.$store.state.membre.nom_paroisse;
-        this.id_paroisse = this.$store.state.membre.nom_paroisse;
-        this.id_categorie = this.$store.state.membre.nom_paroisse;
+        this.getMembres()
         
     }
    
