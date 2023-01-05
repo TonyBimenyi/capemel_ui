@@ -112,10 +112,17 @@
                         </thead>
                         <tbody>
                             <tr  v-for="en in enfants" :key="en.id">
-                                <td>{{en.nom_enfant}} {{en.prenom_enfant}}</td>
-                                <td>{{en.date_naissance_enfant}}, ({{ageCal(en.date_naissance_enfant)}} Ans)</td>
+                                <td>
+                                    <div v-if="ageCal(en.date_naissance_enfant)>21" style="color:red">
+                                        {{en.nom_enfant}} {{en.prenom_enfant}}
+                                    </div>
+                                    <div v-else>
+                                        {{en.nom_enfant}} {{en.prenom_enfant}}
+                                    </div>
+                                </td>
+                                <td>{{en.date_naissance_enfant}}, <strong>({{ageCal(en.date_naissance_enfant)}} Ans)</strong> </td>
                                 <td><button @click="editEnfant(en)" id="mod_btn"><i class='bx bxs-trash'></i></button></td>    
-                                <td><button @click="delete_paroisse(par)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>    
+                                <td><button @click="deleteEnfant(en)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>    
                             </tr>
                         </tbody>
                        </table>
@@ -133,6 +140,7 @@
         
      <add_conjoint @update="getConjoint" :edit_conjoint="modifier" @getConjoint="getConjoint" @close="close" v-if="dialog_conjoint"></add_conjoint>
      <delete_modal @getConjoint="getConjoint" @close="close" v-if="dialog_delete"></delete_modal>
+     <delete_enfant_modal @getEnfants="getEnfants" @close="close" v-if="dialog_delete_enfant"></delete_enfant_modal>
      <enfant_modal @getEnfants="getEnfants" :edit_enfant="modifier" @close="close" v-if="dialog_enfant"></enfant_modal>
     </div>
 </template>
@@ -140,12 +148,14 @@
 import axios from 'axios'
 import add_conjoint from '../components/conjoints/modals/add_conjoint.vue'
 import delete_modal from '../components/conjoints/modals/delete_conjoint.vue'
+import delete_enfant_modal from '../components/enfants/modals/delete_enfant.vue'
 import enfant_modal from '../components/enfants/modals/enfant_form.vue'
 export default {
     components:{
         add_conjoint,
         delete_modal,
-        enfant_modal
+        enfant_modal,
+        delete_enfant_modal
     },
     data(){
         return{
@@ -156,6 +166,7 @@ export default {
                 dialog_conjoint:false,
                 modifier:false,
                 dialog_delete:false,
+                dialog_delete_enfant:false,
                 dialog_enfant:false,
                 modifier:false,
         };
@@ -175,6 +186,10 @@ export default {
             this.dialog_delete=true;
             this.$store.state.conjoint = item;
         },
+        deleteEnfant(item){
+            this.dialog_delete_enfant=true;
+            this.$store.state.enfant = item;
+        },
         ageCal(n){
                         let currentDate = new Date();
                         let birthdate = + new Date(n);
@@ -191,6 +206,7 @@ export default {
             this.info = false;
             this.dialog_conjoint=false;
             this.dialog_delete = false;
+            this.dialog_delete_enfant = false;
             this.dialog_enfant = false;
         },
         getMembres(){
