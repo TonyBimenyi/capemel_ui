@@ -81,7 +81,7 @@
                 
             </table>         
         </div>
-     <add_membre @close="close" v-if="dialog"></add_membre>
+     <add_membre  @close="close" v-if="dialog"></add_membre>
         
     </div>
 </template>
@@ -115,6 +115,7 @@ export default{
                 console.log(error.response.data.message)
             })
         },
+        
         more_info(n){
             this.$router.push({name:'info_membre',params:{id:n.matricule_membre},query:{'prodName':n.nom_membre}})
         },

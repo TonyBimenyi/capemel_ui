@@ -287,6 +287,7 @@ export default {
         }
     }
 }
+
 </script>
 <style src='../../../assets/css/modal.css' scoped>
 .fade-enter-active, .fade-leave-active {
