@@ -37,7 +37,7 @@
 <script>
 import axios from 'axios'
 export default {
-    props:['edit_conjoint'],
+    props:['edit_enfant'],
     data(){
         return{
             form:{
@@ -45,7 +45,7 @@ export default {
                 prenom_enfant:'',
                 date_naissance_enfant:'',
                 matricule_membre:'',
-                id_uti:'',
+
             },
             btn:'Enregister',
             districts:[],
@@ -119,14 +119,14 @@ export default {
             data.append('date_naissance_enfant',this.form.date_naissance_enfant)
             data.append('matricule_membre',this.membre[0].matricule_membre)
             data.append('id_uti',this.$store.state.user.user.id)
-            if(this.edit_conjoint){
+            if(this.edit_enfant){
                 this.loading = true;
-                axios.put(this.url+'store_enfant/'+this.$store.state.conjoint.id,data,this.headers)
+                axios.put(this.url+'update_enfant/'+this.$store.state.enfant.id,this.form)
                 .then((response)=>{
                 this.loading = false;
                 this.close();
                 this.getEnfants();
-                this.$toast.success(`Conjoint Modifier`)  
+                this.$toast.success(`Enfant Modifier`)  
                 })
                 .catch((error)=>{
                     if (error.message == "Network Error"){
@@ -182,25 +182,13 @@ export default {
         this.getEnfants()
         this.form.matricule_membre = this.$store.state.membre.matricule_membre;
         
-        if(this.edit_conjoint){
+        if(this.edit_enfant){
           
             this.btn = 'Modifier'
-            this.modal_title = 'Modifier conjoint(e)'; 
-            this.form.nom_conjoint = this.$store.state.conjoint.nom_conjoint
-            this.form.prenom_conjoint = this.$store.state.conjoint.prenom_conjoint
-            this.form.nom_pere_conjoint = this.$store.state.conjoint.nom_pere_conjoint
-            this.form.nom_mere_conjoint = this.$store.state.conjoint.nom_mere_conjoint
-            this.form.date_naissance_conjoint = this.$store.state.conjoint.date_naissance_conjoint
-            this.form.province_conjoint = this.$store.state.conjoint.province_conjoint
-            this.form.commune_conjoint = this.$store.state.conjoint.commune_conjoint
-            this.form.colline_conjoint = this.$store.state.conjoint.colline_conjoint
-            this.form.etat_civil_conjoint = this.$store.state.conjoint.etat_civil_conjoint
-            this.form.telephone_conjoint = this.$store.state.conjoint.telephone_conjoint
-            this.form.fonction_conjoint = this.$store.state.conjoint.fonction_conjoint
-            this.form.id_paroisse = this.$store.state.conjoint.id_paroisse
-            this.form.cin_conjoint = this.$store.state.conjoint.cin_conjoint
-            this.form.telephone_conjoint = this.$store.state.conjoint.telephone_conjoint
-            this.form.fonction_conjoint = this.$store.state.conjoint.fonction_conjoint
+            this.modal_title = 'Modifier les données'; 
+            this.form.nom_enfant = this.$store.state.enfant.nom_enfant
+            this.form.prenom_enfant = this.$store.state.enfant.prenom_enfant
+            this.form.date_naissance_enfant = this.$store.state.enfant.date_naissance_enfant           
         }
     
     }

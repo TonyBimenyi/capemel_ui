@@ -114,14 +114,14 @@
                             <tr  v-for="en in enfants" :key="en.id">
                                 <td>{{en.nom_enfant}} {{en.prenom_enfant}}</td>
                                 <td>{{en.date_naissance_enfant}}, ({{ageCal(en.date_naissance_enfant)}} Ans)</td>
-                                <td><button @click="delete_paroisse(par)" id="mod_btn"><i class='bx bxs-trash'></i></button></td>    
+                                <td><button @click="editEnfant(en)" id="mod_btn"><i class='bx bxs-trash'></i></button></td>    
                                 <td><button @click="delete_paroisse(par)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>    
                             </tr>
                         </tbody>
                        </table>
                         <div class="enfant_action_btns">
                             <div class="btn">
-                                <button @click="dialog_enfant=true;modifier=false" id="mod_btn">Ajouter un enfant</button>
+                                <button @click="dialog_enfant=true;modifier=false;modifier=false" id="mod_btn">Ajouter un enfant</button>
                             </div>
                         </div>
                     </div>
@@ -133,7 +133,7 @@
         
      <add_conjoint @update="getConjoint" :edit_conjoint="modifier" @getConjoint="getConjoint" @close="close" v-if="dialog_conjoint"></add_conjoint>
      <delete_modal @getConjoint="getConjoint" @close="close" v-if="dialog_delete"></delete_modal>
-     <enfant_modal @getEnfants="getEnfants" :edit_enfant="modifier_enfant" @close="close" v-if="dialog_enfant"></enfant_modal>
+     <enfant_modal @getEnfants="getEnfants" :edit_enfant="modifier" @close="close" v-if="dialog_enfant"></enfant_modal>
     </div>
 </template>
 <script>
@@ -157,10 +157,15 @@ export default {
                 modifier:false,
                 dialog_delete:false,
                 dialog_enfant:false,
-                enfant_modal:false,
+                modifier:false,
         };
     },
     methods:{
+        editEnfant(item){
+            this.dialog_enfant = true;
+            this.modifier = true;
+            this.$store.state.enfant = item;
+        },
         editConjoint(item){
             this.dialog_conjoint=true;
             this.modifier=true;
