@@ -83,49 +83,93 @@
                         <p><span>Date de mariage:Le </span>{{ membre[0]?.date_mariage }}</p>
                         <div class="action_btns">
                             <div class="btn">
-                                <button id="mod_btn">Modifier</button>
+                                <button @click="editConjoint(conjoint[0])" id="mod_btn">Modifier</button>
                             </div>
                             <div class="btn">
-                                <button id="delete_btn">Supprimer</button>
+                                <button  @click="deleteConjont(conjoint[0])" id="delete_btn">Supprimer</button>
                             </div>
                         </div>
                     </div>
                     <div v-else v-bind="members" class="info_conjoint">
                         <h6>Aucun(e) conjoint(e) correspond à {{ membre[0]?.nom_membre }} {{ membre[0]?.prenom_membre }}</h6>
                         <div class="add_conjoint_btn">
-                            <button @click="dialog_conjoint=true;"> <span><i class='bx bx-folder-plus'></i></span> Ajouter un(e) Conjoint(e)</button>
+                            <button @click="dialog_conjoint=true;modifier=false"> <span><i class='bx bx-folder-plus'></i></span> Ajouter un(e) Conjoint(e)</button>
                         </div>
                     </div>
                 </div>
-                <div class="part">
+                <div class="part" id="enfant_list">
                     <div class="title_pers">
                         <p>Enfant(s)</p>
                     </div>
+                    <div v-bind="members" class="info_membre">
+                       <table>
+                        <thead>
+                            <tr>
+                                <th>Nom et Prenom</th>
+                                <th>Date de Naissance</th>
+                                <th colspan="2">Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr  v-for="en in enfants" :key="en.id">
+                                <td>{{en.nom_enfant}} {{en.prenom_enfant}}</td>
+                                <td>{{en.date_naissance_enfant}}, ({{ageCal(en.date_naissance_enfant)}} Ans)</td>
+                                <td><button @click="delete_paroisse(par)" id="mod_btn"><i class='bx bxs-trash'></i></button></td>    
+                                <td><button @click="delete_paroisse(par)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>    
+                            </tr>
+                        </tbody>
+                       </table>
+                        <div class="enfant_action_btns">
+                            <div class="btn">
+                                <button @click="dialog_enfant=true;modifier=false" id="mod_btn">Ajouter un enfant</button>
+                            </div>
+                        </div>
+                    </div>
+                   
                 </div>
 
             </div>
         </div>
         
-     <add_conjoint @getConjoint="getConjoint" @close="close" v-if="dialog_conjoint"></add_conjoint>
-   
+     <add_conjoint @update="getConjoint" :edit_conjoint="modifier" @getConjoint="getConjoint" @close="close" v-if="dialog_conjoint"></add_conjoint>
+     <delete_modal @getConjoint="getConjoint" @close="close" v-if="dialog_delete"></delete_modal>
+     <enfant_modal @getEnfants="getEnfants" :edit_enfant="modifier_enfant" @close="close" v-if="dialog_enfant"></enfant_modal>
     </div>
 </template>
 <script>
 import axios from 'axios'
 import add_conjoint from '../components/conjoints/modals/add_conjoint.vue'
+import delete_modal from '../components/conjoints/modals/delete_conjoint.vue'
+import enfant_modal from '../components/enfants/modals/enfant_form.vue'
 export default {
     components:{
-        add_conjoint
+        add_conjoint,
+        delete_modal,
+        enfant_modal
     },
     data(){
         return{
                  info:false,
                 membre:{},
                 conjoint:{},
+                enfants:[],
                 dialog_conjoint:false,
+                modifier:false,
+                dialog_delete:false,
+                dialog_enfant:false,
+                enfant_modal:false,
         };
     },
     methods:{
+        editConjoint(item){
+            this.dialog_conjoint=true;
+            this.modifier=true;
+            this.$store.state.conjoint = item;
+        },
+        deleteConjont(item){
+            this.dialog_delete=true;
+            this.$store.state.conjoint = item;
+        },
         ageCal(n){
                         let currentDate = new Date();
                         let birthdate = + new Date(n);
@@ -138,8 +182,11 @@ export default {
             this.info = true;
         },
         close(){
+            this.modifier=false,
             this.info = false;
             this.dialog_conjoint=false;
+            this.dialog_delete = false;
+            this.dialog_enfant = false;
         },
         getMembres(){
             let pk = this.$route.params.id
@@ -169,6 +216,20 @@ export default {
                 console.log(error.response.data.message)
             })
         },
+        getEnfants(){
+            let pk = this.$route.params.id
+            axios
+            .get(this.url+'enfants/'+pk)
+            .then((res)=>{
+                this.$store.state.enfants = res.data
+                this.enfants = res.data
+                this.links = res.data
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
         
     },
     // computed:{
@@ -181,6 +242,7 @@ export default {
     mounted(){
         this.getMembres()
         this.getConjoint()
+        this.getEnfants()
     }
    
 }

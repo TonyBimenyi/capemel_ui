@@ -63,7 +63,7 @@
                 </div>
                 <div class="input-container ic2">
                     <select class="input" v-model="form.id_paroisse" name="" id="">
-                        <option value="">--Selectionner Paroisse--</option>
+                        <option disabled value="">--Selectionner Paroisse--</option>
                         <option v-for="par in paroisses" :key="par.id" :value="par.id">{{par.nom_paroisse}}</option>
                     </select>
                     <div class="cut"></div>
@@ -76,7 +76,7 @@
         <div class="part1">
                 <div class="input-container ic2">
                     <select class="input" v-model="form.etat_civil_conjoint" name="" id="">
-                        <option value="" selected disabled>--Selectionner la Categorie--</option>
+                        <option value="" >--Selectionner la EC--</option>
                         <option value="Marie">Marie</option>
                         <option value="Divorce">Divorce</option>
                         <option value="Veuf">Veuf</option>
@@ -123,7 +123,7 @@
 <script>
 import axios from 'axios'
 export default {
-    props:['edit_paroisse'],
+    props:['edit_conjoint'],
     data(){
         return{
             form:{
@@ -250,14 +250,14 @@ export default {
             data.append('matricule_membre',this.form.telephone_conjoint)
             data.append('id_uti',this.$store.state.user.user.id)
             data.append('matricule_membre',this.membre[0]?.matricule_membre)
-            if(this.edit_paroisse){
+            if(this.edit_conjoint){
                 this.loading = true;
-                axios.put(this.url+'update_paroisse/'+this.$store.state.paroisse.id,this.form)
+                axios.put(this.url+'update_conjoint/'+this.$store.state.conjoint.id,data,this.headers)
                 .then((response)=>{
                 this.loading = false;
                 this.close();
-                this.getParoisses();
-                this.$toast.success(`Paroisse Modifier`)  
+                this.getConjoint();
+                this.$toast.success(`Conjoint Modifier`)  
                 })
                 .catch((error)=>{
                     if (error.message == "Network Error"){
@@ -299,6 +299,7 @@ export default {
             })
          }
         },
+     
     },
     computed:{
       user(){
@@ -312,7 +313,27 @@ export default {
         this.getMembres()
         this.getConjoint()
         this.form.matricule_membre = this.$store.state.membre.matricule_membre;
- 
+        
+        if(this.edit_conjoint){
+          
+            this.btn = 'Modifier'
+            this.modal_title = 'Modifier conjoint(e)'; 
+            this.form.nom_conjoint = this.$store.state.conjoint.nom_conjoint
+            this.form.prenom_conjoint = this.$store.state.conjoint.prenom_conjoint
+            this.form.nom_pere_conjoint = this.$store.state.conjoint.nom_pere_conjoint
+            this.form.nom_mere_conjoint = this.$store.state.conjoint.nom_mere_conjoint
+            this.form.date_naissance_conjoint = this.$store.state.conjoint.date_naissance_conjoint
+            this.form.province_conjoint = this.$store.state.conjoint.province_conjoint
+            this.form.commune_conjoint = this.$store.state.conjoint.commune_conjoint
+            this.form.colline_conjoint = this.$store.state.conjoint.colline_conjoint
+            this.form.etat_civil_conjoint = this.$store.state.conjoint.etat_civil_conjoint
+            this.form.telephone_conjoint = this.$store.state.conjoint.telephone_conjoint
+            this.form.fonction_conjoint = this.$store.state.conjoint.fonction_conjoint
+            this.form.id_paroisse = this.$store.state.conjoint.id_paroisse
+            this.form.cin_conjoint = this.$store.state.conjoint.cin_conjoint
+            this.form.telephone_conjoint = this.$store.state.conjoint.telephone_conjoint
+            this.form.fonction_conjoint = this.$store.state.conjoint.fonction_conjoint
+        }
     
     }
 }
