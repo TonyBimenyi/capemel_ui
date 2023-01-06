@@ -43,34 +43,34 @@
                 </div>
             </div>
         </div>
-        <div class="cotisation_list">
+        <div class="table_content">
             <table>
                 <thead>
                     <tr>
+                        <th>No Cotisation</th>
                         <th>Matricule</th>
                         <th>Nom</th>
                         <th>Prenom</th>
-                        <th>Cotisation Trimestrielle</th>
-                        <th>Categorie</th>
-                        <th>Derniere cotisation</th>
-                        <th>Options</th>
+                        <th>Montant Cotisé</th>
+                        <th>Periode</th>
+                        <th>Date</th>
+                        <th colspan="2">Options</th>
                     </tr>
                 </thead>
                 <tbody class="er">
                     <tr class="spacer">
                         <td colspan="100"></td>
                     </tr>
-                    <tr v-for="mem in membres" :key="mem.id">
-                        <td>{{mem.matricule_membre}}</td>
-                        <td>{{mem.nom_membre}}</td>
-                        <td>{{mem.prenom_membre}}</td>             
-                        <td>  <div class="search">
-                                     <input v-model="montant_cotisation"  @keydown="inputSearchMethods" type="text" placeholder="Entrer le montant...">
-                                </div>
-                        </td>
-                        <td>{{mem.categorie[0]?.nom_categorie}}</td>
-                        <td>1er trimestre 2022</td>     
-                        <td><button @click="add_cot(mem)" id="mod_btn">Appliquer</button></td>           
+                    <tr v-for="cot in cotisations" :key="cot.id">
+                        <td>{{cot.id}}</td>
+                        <td>{{cot.matricule_membre}}</td>
+                        <td>{{cot.membre[0]?.nom_membre}}</td>
+                        <td>{{cot.membre[0]?.nom_membre}}</td>
+                        <td>{{money(cot.montant_total)}} Fbu</td>
+                        <td>{{cot.trimestre_annee}}</td>        
+                        <td>{{datetime(cot.created_at)}}</td>
+                        <td><button @click="add_cot(cot)" id="mod_btn">Modifier</button></td>  
+                        <td><button @click="delete_paroisse(par)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>         
                     </tr>          
                 </tbody>
                 
@@ -110,6 +110,19 @@ export default {
         }
     },
     methods:{
+        getCotisations(){
+            axios
+            .get(this.url+'cotisations')
+            .then((res)=>{
+                this.$store.state.cotisations = res.data
+                this.allData = res.data
+                this.links = res.data
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
         sortDistrict(){
             axios
             .get(this.url+'districts?conference_select=' +this.conference_select)
@@ -131,9 +144,9 @@ export default {
         },
         searchInDb(){
             axios
-            .get(this.url+'membres?district_select=' +this.district_select)
+            .get(this.url+'cotisations?district_select=' +this.district_select)
             .then((res)=>{
-                this.$store.state.membres_cotisation = res.data
+                this.$store.state.cotisations = res.data
                 this.allData = res.data
                 this.links = res.data
                 console.log(this.district_select)
@@ -174,19 +187,19 @@ export default {
             this.dialog_cotisation = false
         },
         add_cot(membre){
-            
+
         }
      
       
     },
     mounted(){
-      
+        this.getCotisations()
         this.getConferences()
      },
     computed:{
-        membres(){
-            const membres = this.$store.state?.membres_cotisation
-            return membres
+        cotisations(){
+            const cotisations = this.$store.state?.cotisations
+            return cotisations
         }
     }
 }
