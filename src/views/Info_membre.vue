@@ -9,7 +9,7 @@
                     <button>Voir les Cotisations</button>
                 </div>
                 <div class="btn1">
-                    <button>Ajouter aux abandons</button>
+                    <button @click="dialog_abandon=true">Ajouter aux abandons</button>
                 </div>
                 <div class="btn1">
                     <button>Ajouter aux pensionnes</button>
@@ -142,6 +142,7 @@
      <delete_modal @getConjoint="getConjoint" @close="close" v-if="dialog_delete"></delete_modal>
      <delete_enfant_modal @getEnfants="getEnfants" @close="close" v-if="dialog_delete_enfant"></delete_enfant_modal>
      <enfant_modal @getEnfants="getEnfants" :edit_enfant="modifier" @close="close" v-if="dialog_enfant"></enfant_modal>
+     <abandon_modal :edit_enfant="modifier" @close="close" v-if="dialog_abandon"></abandon_modal>
     </div>
 </template>
 <script>
@@ -150,12 +151,14 @@ import add_conjoint from '../components/conjoints/modals/add_conjoint.vue'
 import delete_modal from '../components/conjoints/modals/delete_conjoint.vue'
 import delete_enfant_modal from '../components/enfants/modals/delete_enfant.vue'
 import enfant_modal from '../components/enfants/modals/enfant_form.vue'
+import abandon_modal from '../components/abandons/modals/abandon_form.vue'
 export default {
     components:{
         add_conjoint,
         delete_modal,
         enfant_modal,
-        delete_enfant_modal
+        delete_enfant_modal,
+        abandon_modal
     },
     data(){
         return{
@@ -169,6 +172,7 @@ export default {
                 dialog_delete_enfant:false,
                 dialog_enfant:false,
                 modifier:false,
+                dialog_abandon:false
         };
     },
     methods:{
@@ -208,6 +212,7 @@ export default {
             this.dialog_delete = false;
             this.dialog_delete_enfant = false;
             this.dialog_enfant = false;
+            this.dialog_abandon = false;
         },
         getMembres(){
             let pk = this.$route.params.id
