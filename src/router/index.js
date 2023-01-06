@@ -5,6 +5,7 @@ import Districts from '../views/District.vue'
 import Paroisses from '../views/Paroisse.vue'
 import Membres from '../views/Membres.vue'
 import Info_membre from '../views/Info_membre.vue'
+import Cotisations from '../views/Cotisations.vue'
 
 const routes = [
   {path: '/',name:'dashboard',component: Dashboard},
@@ -13,6 +14,7 @@ const routes = [
   {path: '/paroisses',name:'paroisses',component: Paroisses},
   {path: '/membres',name:'membres',component: Membres},
   {path: '/info_membre/:id',name:'info_membre',component: Info_membre},
+  {path: '/cotisations',name:'cotisations',component: Cotisations},
 ]
 
 const router = createRouter({

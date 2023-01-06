@@ -40,7 +40,7 @@
             </ul>
           </li>
           <li>
-            <a href="#">MEMBRES</a>
+            <router-link to="membres"> <a href="#">MEMBRES</a></router-link>
             <i class='bx bxs-chevron-down js-arrow arrow '></i>
             <ul class="js-sub-menu sub-menu">
               <router-link to="membres"><li><a href="#">Tous les membres</a></li></router-link> 
@@ -48,7 +48,7 @@
               <li><a href="#">Pensionnes</a></li>
             </ul>
           </li>
-          <li><a href="#">COTISATIONS</a></li>
+          <router-link style="text-decoration:none" to="cotisations"><li><a href="#">COTISATIONS</a></li></router-link> 
           <li><a href="#">ABANDONS</a></li>
           <li><a href="#">PENSIONNES</a></li>
           

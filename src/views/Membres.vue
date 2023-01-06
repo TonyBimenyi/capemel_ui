@@ -73,7 +73,7 @@
                             </div>
                         </td>
                         <td><button  id="mod_btn">Modifier</button></td>
-                        <td><button  id="mod_btn">Cotisations</button></td>
+                        <td><button @click="addCot(membre)"  id="mod_btn">Cotiser</button></td>
                         <td><button id="info_btn" @click="more_info(membre)"> <i class='bx bx-dots-horizontal-rounded'></i></button></td>                  
                     </tr>          
                         
@@ -82,25 +82,30 @@
             </table>         
         </div>
      <add_membre  @close="close" v-if="dialog"></add_membre>
+     <cotisation_modal @getMembres="getMembres"  @close="close" v-if="dialog_cotisation"></cotisation_modal>
         
     </div>
 </template>
 <script>
 import axios from 'axios'
 import add_membre from '../components/membres/modals/add_membre.vue'
+import cotisation_modal from '../components/cotisations/modals/form_cotisation.vue'
 export default{
     components:{
-        add_membre
+        add_membre,
+        cotisation_modal
     },
     data(){
         return{
             dialog:false,
+            dialog_cotisation:false,
             membres:[],
         }
     },
     methods:{
         close(){
             this.dialog=false
+            this.dialog_cotisation = false
         },
         getMembres(){
             axios
@@ -126,7 +131,12 @@ export default{
                         let difference = currentDate - birthdate;
                         let age = Math.floor(difference/31557600000);
                         return age;
+        },
+        addCot(membre){
+            this.dialog_cotisation = true
+            this.$store.state.membre_cotisation = membre;
         }
+        
         
     },
         mounted(){
