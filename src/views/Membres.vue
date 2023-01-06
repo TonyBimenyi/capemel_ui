@@ -116,8 +116,8 @@ export default{
                 this.links = res.data
             })
             .catch((error)=>{
-                this.$toast.error(error.response.data.message)
-                console.log(error.response.data.message)
+                this.$toast.error(error.res.data.message)
+                console.log(error.res.data.message)
             })
         },
         

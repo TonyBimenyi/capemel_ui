@@ -3,33 +3,46 @@
 <transition name="fade" appear>
     <div class="form" >
         <div class="top">
-             <div class="title"><h5 style="font-size:14px">{{ modal_title }} {{ membre[0]?.nom_membre }} {{ membre[0]?.prenom_membre }}</h5></div>
+             <div class="title"><h5 style="font-size:14px">{{ modal_title }} {{ this.$store.state.membre_cotisation.nom_membre }} {{ this.$store.state.membre_cotisation.prenom_membre }}</h5></div>
              <div class="close"><button @click="close">X</button></div>
          </div>
       <!-- <div class="subtitle">Let's create your account!</div> -->
       <div class="inputs">
         <div class="part1">
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.nom_enfant" class="input" type="text" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom</label>
+                <div class="infos_membre">
+                    <p> <strong>Nom:</strong>  {{this.$store.state.membre_cotisation.nom_membre}}</p>
+                    <p> <strong>Prenom:</strong>  {{form.prenom_membre}}</p>
+                    <p> <strong>Paroisse:</strong>  {{form.paroisse}}</p>
+                    <p> <strong>Categorie:</strong>  {{form.categorie}}</p>
+                    <p> <strong>Dirniere Cotisation:</strong>  1er Trimestre 2022</p>
                 </div>
                 <div class="input-container ic1">
-                    <input id="firstname" v-model="form.prenom_enfant" class="input" type="text" required placeholder=" " />
+                    <input id="firstname" v-model="form.montant_total" class="input" type="number" required placeholder=" " />
                     <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Prenom</label>
+                    <label for="firstname" class="placeholder">Montant</label>
+                </div>
+                <div class="input-container ic2">
+                    <select class="input" v-model="form.trimestre" name="" id="">
+                        <option  selected disabled >--TRIMESTRE--</option>
+                        <option value="1er Trimestre">1er Trimestre</option>
+                        <option value="2eme Trimestre">2eme Trimestre</option>
+                        <option value="3eme Trimestre">3eme Trimestre</option>
+                        <option value="4eme Trimestre">4eme Trimestre</option>
+                    </select>
+                    <div class="cut"></div>
+                    <label for="firstname" class="placeholder">Trimestre</label>
                 </div>
                 <div class="input-container ic1">
-                    <input id="firstname" v-model="form.date_naissance_enfant" class="input" type="date" required placeholder=" " />
+                    <input id="firstname" v-model="form.annee" class="input" type="number" required placeholder=" " />
                     <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Date de naissance</label>
+                    <label for="firstname" class="placeholder">Annee</label>
                 </div>
              
         </div>
         
             
          </div>
-      <button  class="submit" @click="saveConjoint()">{{loading?"Chargement...":btn}}</button>
+      <button  class="submit" @click="saveCot()">{{loading?"Chargement...":btn}}</button>
     </div>
 </transition>
     </div>
@@ -41,11 +54,14 @@ export default {
     data(){
         return{
             form:{
-                nom_enfant:'',
-                prenom_enfant:'',
-                date_naissance_enfant:'',
-                matricule_membre:'',
-
+                nom_membre:this.$store.state.membre_cotisation.nom_membre,
+                prenom_membre:this.$store.state.membre_cotisation.prenom_membre,
+                paroisse:this.$store.state.membre_cotisation.paroisse[0]?.nom_paroisse,
+                categorie:this.$store.state.membre_cotisation.categorie[0]?.nom_categorie,
+                montant_total:0,
+                trimestre:'',
+                annee:new Date().getFullYear(),
+                matricule_membre:this.$store.state.membre_cotisation.matricule_membre
             },
             btn:'Enregister',
             districts:[],
@@ -55,11 +71,66 @@ export default {
             errorMessage:"",
             district_select:'',
             loading:false,
-            modal_title:'Abandon pour',
+            modal_title:'Cotisation pour',
             
         }
     },
     methods:{
+        saveCot(){
+            let data = new FormData()
+            data.append('montant_total',this.form.montant_total)
+            data.append('trimestre_annee',this.form.trimestre+' '+this.form.annee )
+            data.append('matricule_membre',this.$store.state.membre_cotisation.matricule_membre)
+            data.append('id_uti',this.$store.state.user.user.id)
+            
+            if(this.edit_enfant){
+                this.loading = true;
+                axios.put(this.url+'update_enfant/'+this.$store.state.enfant.id,this.form)
+                .then((response)=>{
+                this.loading = false;
+                this.close();
+                this.getEnfants();
+                this.$toast.success(`Enfant Modifier`)  
+                })
+                .catch((error)=>{
+                    if (error.message == "Network Error"){
+                        this.errorMessage = "Vous n'êtes pas connecté au serveur"
+                    
+                    }else{
+                        this.errorMessage = error.response.data.message;
+                        this.loading = false;
+                        this.$toast.error(error.response.data.message,{
+                            position:"bottom-right"
+                        });
+                    }
+                    
+                })
+            }
+            else{
+            this.loading = true;
+            axios.post(this.url+'store_cotisation',data,this.headers)
+            .then((response)=>{
+                this.loading = false;
+                this.close();
+                // this.getUsers();
+                this.$toast.success(`Cotisation est enregistré(e)`) 
+                this.getEnfants();
+                
+            })
+            .catch((error)=>{
+                if (error.message == "Network Error"){
+                
+                  
+                }else{
+                    this.loading = false;
+                    this.$toast.error(error.response.data.message,{
+                        position:"bottom-right"
+                    });
+                }
+                
+            })
+         }
+        },
         getMembres(){
             let pk = this.$route.params.id
             axios
@@ -180,15 +251,17 @@ export default {
         this.getCategories()
         this.getMembres()
         this.getEnfants()
+        this.nom_membre = this.$store.state.membre_cotisation.nom_membre
         this.form.matricule_membre = this.$store.state.membre.matricule_membre;
         
         if(this.edit_enfant){
           
             this.btn = 'Modifier'
             this.modal_title = 'Modifier les données'; 
-            this.form.nom_enfant = this.$store.state.enfant.nom_enfant
             this.form.prenom_enfant = this.$store.state.enfant.prenom_enfant
             this.form.date_naissance_enfant = this.$store.state.enfant.date_naissance_enfant           
+        }else{
+            
         }
     
     }

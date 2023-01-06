@@ -191,6 +191,10 @@ body {
   .submit:active {
     background-color: #06b;
   }
+
+  .infos_membre p{
+    font-size: 14px;
+  }
   
 
   
