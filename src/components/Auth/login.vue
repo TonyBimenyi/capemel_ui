@@ -16,7 +16,7 @@
                             <input type="text" v-model="form.email" placeholder="Entrez l'Email...">
                         </div>
                         <div class="input">
-                            <input type="text" v-model="form.password" placeholder="Mot de passe">
+                            <input type="password" v-model="form.password" placeholder="Mot de passe">
                         </div>
                         <p class="error">{{errorMessage}}</p>
                         <div class="login_btn">

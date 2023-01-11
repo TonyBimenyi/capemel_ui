@@ -10,11 +10,9 @@
       <div class="inputs">
         <div class="part1">
                 <div class="infos_membre">
-                    <p> <strong>Nom:</strong>  {{this.$store.state.membre_cotisation.nom_membre}}</p>
+                    <p> <strong>Nom:</strong>  {{form.nom_membre}}</p>
                     <p> <strong>Prenom:</strong>  {{form.prenom_membre}}</p>
-                    <p> <strong>Paroisse:</strong>  {{form.paroisse}}</p>
-                    <p> <strong>Categorie:</strong>  {{form.categorie}}</p>
-                    <p> <strong>Dirniere Cotisation:</strong>  1er Trimestre 2022</p>
+                    <p> <strong>Derniere Cotisation:</strong>  1er Trimestre 2022</p>
                 </div>
                 <div class="input-container ic1">
                     <input id="firstname" v-model="form.montant_total" class="input" type="number" required placeholder=" " />
@@ -50,14 +48,13 @@
 <script>
 import axios from 'axios'
 export default {
-    props:['edit_enfant'],
+    props:['edit_cotisation'],
     data(){
         return{
             form:{
                 nom_membre:this.$store.state.membre_cotisation.nom_membre,
                 prenom_membre:this.$store.state.membre_cotisation.prenom_membre,
-                paroisse:this.$store.state.membre_cotisation.paroisse[0]?.nom_paroisse,
-                categorie:this.$store.state.membre_cotisation.categorie[0]?.nom_categorie,
+
                 montant_total:0,
                 trimestre:'',
                 annee:new Date().getFullYear(),
@@ -79,18 +76,19 @@ export default {
         saveCot(){
             let data = new FormData()
             data.append('montant_total',this.form.montant_total)
-            data.append('trimestre_annee',this.form.trimestre+' '+this.form.annee )
+            data.append('trimestre',this.form.trimestre)
+            data.append('annee',this.form.annee)
             data.append('matricule_membre',this.$store.state.membre_cotisation.matricule_membre)
             data.append('id_uti',this.$store.state.user.user.id)
             
-            if(this.edit_enfant){
+            if(this.edit_cotisation){
                 this.loading = true;
-                axios.put(this.url+'update_enfant/'+this.$store.state.enfant.id,this.form)
+                axios.put(this.url+'update_cotisation/'+this.$store.state.membre_cotisation.id,this.form)
                 .then((response)=>{
                 this.loading = false;
                 this.close();
-                this.getEnfants();
-                this.$toast.success(`Enfant Modifier`)  
+                this.getCotisations();
+                this.$toast.success(`Cotisation est modifié`)  
                 })
                 .catch((error)=>{
                     if (error.message == "Network Error"){
@@ -145,8 +143,8 @@ export default {
                 console.log(error.response.data.message)
             })
         },
-        getParoisses(){
-            this.$emit('getParoisses')
+        getCotisations(){
+            this.$emit('getCotisations')
         },
         getDistricts(){
             axios
@@ -247,19 +245,22 @@ export default {
     },  
     mounted(){
         this.getDistricts()
-        this.getParoisses()
+        this.getCotisations()
         this.getCategories()
         this.getMembres()
         this.getEnfants()
         this.nom_membre = this.$store.state.membre_cotisation.nom_membre
         this.form.matricule_membre = this.$store.state.membre.matricule_membre;
         
-        if(this.edit_enfant){
+        if(this.edit_cotisation){
           
             this.btn = 'Modifier'
             this.modal_title = 'Modifier les données'; 
-            this.form.prenom_enfant = this.$store.state.enfant.prenom_enfant
-            this.form.date_naissance_enfant = this.$store.state.enfant.date_naissance_enfant           
+            this.form.nom_membre = this.$store.state.membre_cotisation.membre[0]?.nom_membre
+            this.form.prenom_membre = this.$store.state.membre_cotisation.membre[0]?.prenom_membre  
+            this.form.montant_total = this.$store.state.membre_cotisation.montant_total
+            this.form.trimestre = this.$store.state.membre_cotisation.trimestre
+            this.form.annee = this.$store.state.membre_cotisation.annee
         }else{
             
         }

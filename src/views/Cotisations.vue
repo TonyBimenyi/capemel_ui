@@ -65,12 +65,12 @@
                         <td>{{cot.id}}</td>
                         <td>{{cot.matricule_membre}}</td>
                         <td>{{cot.membre[0]?.nom_membre}}</td>
-                        <td>{{cot.membre[0]?.nom_membre}}</td>
+                        <td>{{cot.membre[0]?.prenom_membre}}</td>
                         <td>{{money(cot.montant_total)}} Fbu</td>
-                        <td>{{cot.trimestre_annee}}</td>        
+                        <td>{{cot.trimestre}} {{cot.annee}}</td>        
                         <td>{{datetime(cot.created_at)}}</td>
-                        <td><button @click="add_cot(cot)" id="mod_btn">Modifier</button></td>  
-                        <td><button @click="delete_paroisse(par)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>         
+                        <td><button @click="edit_cotisation(cot)" id="mod_btn">Modifier</button></td>  
+                        <td><button @click="delete_paroisse(par);dialog=true" id="delete_btn"><i class='bx bxs-trash'></i></button></td>         
                     </tr>          
                 </tbody>
                 
@@ -78,13 +78,13 @@
             
         </div>
      
-        <form_modal @update="getParoisses" :edit_paroisse="modifier" @getParoisses="getParoisses"  @close="close" v-if="dialog"></form_modal>
+        <form_modal @update="getCotisations" :edit_cotisation="modifier" @getCotisations="getCotisations"  @close="close" v-if="dialog"></form_modal>
         <delete_modal @getParoisses="getParoisses" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
 </template>
 <script>
 import axios from 'axios'
-import form_modal from '../components/paroisse/modals/add_paroisse.vue'
+import form_modal from '../components/cotisations/modals/form_cotisation.vue'
 import delete_modal from '../components/paroisse/modals/delete_paroisse.vue'
 import cotisation_modal from '../components/cotisations/modals/form_cotisation.vue'
 export default {
@@ -92,6 +92,7 @@ export default {
         delete_modal,
         form_modal,
         cotisation_modal,
+
     },
     data(){
         return{
@@ -176,10 +177,12 @@ export default {
             this.dialog_delete=true,
             this.$store.state.paroisse = item
         },
-        edit_paroisse(item){
+        edit_cotisation(item){
             this.dialog = true
             this.modifier = true
+            this.$store.state.membre_cotisation = item
             this.$store.state.paroisse = item
+            this.$store.state.categorie = item
         },
         close(){
             this.dialog = false
