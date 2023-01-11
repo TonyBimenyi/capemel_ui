@@ -71,6 +71,9 @@
                             <div v-if="membre.statut=='actif'" id="actif">
                                 {{membre.statut}}
                             </div>
+                            <div v-if="membre.statut=='Abandon'" id="abandon">
+                                {{membre.statut}}
+                            </div>
                         </td>
                         <td><button  id="mod_btn">Modifier</button></td>
                         <td><button @click="addCot(membre)"  id="mod_btn">Cotiser</button></td>

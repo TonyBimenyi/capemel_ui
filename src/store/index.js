@@ -11,6 +11,7 @@ export default createStore({
     paroisse:{},
     membres:[],
     membre:{},
+    membre_info:{},
     conjoint:{},
     enfant:{},
     membre_cotisation:{},

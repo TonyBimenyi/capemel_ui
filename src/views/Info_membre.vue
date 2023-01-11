@@ -5,11 +5,9 @@
                 <div class="btn1">
                     <button>Imprimer</button>
                 </div>
+    
                 <div class="btn1">
-                    <button>Voir les Cotisations</button>
-                </div>
-                <div class="btn1">
-                    <button @click="dialog_abandon=true">Ajouter aux abandons</button>
+                    <button  @click="add_abandon(membre);dialog_abandon=true">Ajouter aux abandons</button>
                 </div>
                 <div class="btn1">
                     <button>Ajouter aux pensionnes</button>
@@ -60,7 +58,10 @@
                         <p><span>Debut Ministere: </span>Le {{membre[0]?.debut_ministere_membre}}</p>
                         <p><span>Debut Cotisations: </span> {{ membre[0]?.debut_cotisation_membre }}</p>
                         <p><span>Date de mariage:Le </span>{{ membre[0]?.date_mariage }}</p>
-                        <p><span>Statut: </span> <span v-if="membre[0]?.statut=='actif'" id="actif"> {{membre[0]?.statut}}</span> </p>
+                        <p><span>Statut: </span>
+                            <span v-if="membre[0]?.statut=='actif'" id="actif"> {{membre[0]?.statut}}</span> 
+                            <span v-else-if="membre[0]?.statut=='Abandon'" id="abandon"> {{membre[0]?.statut}}</span>
+                        </p>
                     </div>
                 </div>
                 <div class="part">
@@ -176,6 +177,9 @@ export default {
         };
     },
     methods:{
+        add_abandon(item){
+            this.$store.state.membre_info = item;
+        },
         editEnfant(item){
             this.dialog_enfant = true;
             this.modifier = true;

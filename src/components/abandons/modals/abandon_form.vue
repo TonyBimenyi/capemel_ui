@@ -9,27 +9,26 @@
       <!-- <div class="subtitle">Let's create your account!</div> -->
       <div class="inputs">
         <div class="part1">
+            <div class="input-container ic2">
+                <select class="input" v-model="form.type_abandon" name="" id="">
+                    <option  selected disabled >--------</option>
+                    <option value="Desertation">Desertation</option>
+                    <option value="Abandon">Abandon</option>
+                </select>
+                <div class="cut"></div>
+                <label for="firstname" class="placeholder">Type d'abandon</label>
+            </div>
                 <div class="input-container ic1">
-                    <input id="firstname" v-model="form.nom_enfant" class="input" type="text" required placeholder=" " />
+                    <input id="firstname" v-model="form.motif" class="input" type="text" required placeholder=" " />
                     <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom</label>
-                </div>
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.prenom_enfant" class="input" type="text" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Prenom</label>
-                </div>
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.date_naissance_enfant" class="input" type="date" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Date de naissance</label>
+                    <label for="firstname" class="placeholder">Motif</label>
                 </div>
              
         </div>
         
             
          </div>
-      <button  class="submit" @click="saveConjoint()">{{loading?"Chargement...":btn}}</button>
+      <button  class="submit" @click="saveAbandon()">{{loading?"Chargement...":btn}}</button>
     </div>
 </transition>
     </div>
@@ -41,13 +40,13 @@ export default {
     data(){
         return{
             form:{
-                nom_enfant:'',
-                prenom_enfant:'',
-                date_naissance_enfant:'',
+                type_abandon:'',
+                motif:'-',
+                id_uti:'',
                 matricule_membre:'',
 
             },
-            btn:'Enregister',
+            btn:'Ajouter',
             districts:[],
             categories:[],
             paroisses:[],
@@ -112,11 +111,10 @@ export default {
         image(e){
             this.photo_membre = e.target.files[0]
         },
-        saveConjoint(){
+        saveAbandon(){
             let data = new FormData()
-            data.append('nom_enfant',this.form.nom_enfant)
-            data.append('prenom_enfant',this.form.prenom_enfant)
-            data.append('date_naissance_enfant',this.form.date_naissance_enfant)
+            data.append('type_abandon',this.form.type_abandon)
+            data.append('motif',this.form.motif)
             data.append('matricule_membre',this.membre[0].matricule_membre)
             data.append('id_uti',this.$store.state.user.user.id)
             if(this.edit_enfant){
@@ -144,12 +142,12 @@ export default {
             }
             else{
             this.loading = true;
-            axios.post(this.url+'store_enfant',data,this.headers)
+            axios.post(this.url+'store_abandon',data,this.headers)
             .then((response)=>{
                 this.loading = false;
                 this.close();
                 // this.getUsers();
-                this.$toast.success(`Enfant est enregistré(e)`) 
+                this.$toast.success(`Abandon est enregistré(e)`) 
                 this.getEnfants();
                 
             })

@@ -152,6 +152,12 @@ tbody tr td{
     border-radius: 10px;
     background-color: rgb(157, 241, 157);
 }
+#abandon{
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 0px 0px;
+    background-color: rgb(253, 221, 76);
+  }
 #delete_btn,#info_btn:hover{
     transition: all .3s;
     cursor: pointer;
