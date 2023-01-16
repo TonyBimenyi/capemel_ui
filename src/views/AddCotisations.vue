@@ -2,9 +2,9 @@
     <div class="container">
         <div class="top_part">
             <div class="part_left">
-                <!-- <div class="btn1">
+                <div class="btn1">
                     <button>Imprimer</button>
-                </div> -->
+                </div>
                 <div class="btn1">
                     <select @change="sortDistrict"   v-model="conference_select" name="" id="">
                         <option selected value="">{{ conf_text }}</option>
@@ -18,7 +18,7 @@
                     </select>
                 </div>
                 <div class="btn1">
-                    <select v-model="trimestre"  name="" id="">
+                    <select v-model="form.trimestre"  name="" id="">
                         <option selected disabled value="">--TRIMESTRE--</option>
                         <option value="1er Trimestre">1er Trimestre</option>
                         <option value="2eme Trimestre">2eme Trimestre</option>
@@ -26,20 +26,19 @@
                         <option value="4eme Trimestre">4eme Trimestre</option>
                     </select>
                 </div>
+                <div class="annee">
+                    <input v-model="form.annee" id="annee"  type="number" placeholder="Annee...">
+                 </div>
+                 
                 <!-- <div class="btn1">
                     <button>Importer</button>
                 </div> -->
-                <div class="search">
-                   <input v-model="annee"  type="number" placeholder="Annee...">
-                </div>
-                <div class="search">
-                   <input v-model="inputSearch" readonly @keydown="inputSearchMethods" type="hidden" placeholder="Rechercher...">
-                </div>
+               
             </div>
             <div class="part_right">
                 
                 <div class="add_btn">
-                    <router-link to="add-cotisations"><button @click="dialog=true,modifier=false">+</button></router-link>
+                    <button @click="saveCotisations()" >+</button>
                 </div>
             </div>
         </div>
@@ -47,58 +46,54 @@
             <table>
                 <thead>
                     <tr>
-                        <th>No Cotisation</th>
-                        <th>Matricule</th>
+                        <th>Matricuke</th>
                         <th>Nom</th>
                         <th>Prenom</th>
-                        <th>Montant Cotisé</th>
-                        <th>Periode</th>
-                        <th>Date</th>
-                        <th colspan="2">Options</th>
+                        <th>Paroisse</th>
+                        <th>Categorie</th>
+                        <th>Montant à cotisé</th>
+                        <th>Montant Paye</th>
+                        
                     </tr>
                 </thead>
                 <tbody class="er">
                     <tr class="spacer">
                         <td colspan="100"></td>
                     </tr>
-                    <tr v-for="cot in cotisations" :key="cot.id">
-                        <td>{{cot.id}}</td>
-                        <td>{{cot.matricule_membre}}</td>
-                        <td>{{cot.membre[0]?.nom_membre}}</td>
-                        <td>{{cot.membre[0]?.prenom_membre}}</td>
-                        <td>{{money(cot.montant_total)}} Fbu</td>
-                        <td>{{cot.trimestre}} {{cot.annee}}</td>        
-                        <td>{{datetime(cot.created_at)}}</td>
-                        <td><button @click="edit_cotisation(cot)" id="mod_btn">Modifier</button></td>  
-                        <td><button @click="delete_paroisse(par);dialog=true" id="delete_btn"><i class='bx bxs-trash'></i></button></td>         
+                    <tr v-for="(membre,m) in membres" :key="membre.matricule_membre">
+                        <td>{{membre.matricule_membre}}</td>
+                        <td>{{membre.nom_membre}}</td>
+                        <td>{{membre.prenom_membre}}</td>             
+                        <td>{{membre.paroisse[0]?.nom_paroisse}}</td>
+                        <td>{{membre.categorie[0]?.nom_categorie}}</td>
+                        <td>{{money(membre.categorie[0]?.montant_a_paye)}} Fbu</td>
+                        <td>
+                            <div class="search">
+                                <input v-model="form.montant_paye[m]"  type="text" placeholder="Entrer le montant...">
+                            </div> 
+                        </td>
                     </tr>          
                 </tbody>
                 
             </table>         
-            
         </div>
-     
-        <form_modal @update="getCotisations" :edit_cotisation="modifier" @getCotisations="getCotisations"  @close="close" v-if="dialog"></form_modal>
+        <form_modal @update="getParoisses" :edit_paroisse="modifier" @getParoisses="getParoisses"  @close="close" v-if="dialog"></form_modal>
         <delete_modal @getParoisses="getParoisses" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
 </template>
 <script>
 import axios from 'axios'
-import form_modal from '../components/cotisations/modals/form_cotisation.vue'
+import form_modal from '../components/paroisse/modals/add_paroisse.vue'
 import delete_modal from '../components/paroisse/modals/delete_paroisse.vue'
-import cotisation_modal from '../components/cotisations/modals/form_cotisation.vue'
 export default {
     components:{
         delete_modal,
-        form_modal,
-        cotisation_modal,
-
+        form_modal
     },
     data(){
         return{
             modifier:false,
             dialog:false,
-            dialog_cotisation:false,
             allData:[],
             dialog_delete:false,
             conferences:[],
@@ -107,21 +102,45 @@ export default {
             inputSearch:'',
             districts:[],
             conf_text:'--CONFERENCE--',
-            montant_cotisation:0,
+            annee:new Date().getFullYear(),
+            form:{
+                id_uti:this.$store.state.user.user.id,
+                trimestre:'',
+                annee:new Date().getFullYear(),
+                montant_paye:{},
+                montant_a_paye:this.$store.state.membre_cot[0]?.categorie.montant_a_paye,
+                cotis:this.$store.state.membre_cot
+            }
+            
         }
     },
     methods:{
-        getCotisations(){
-            axios
-            .get(this.url+'cotisations')
-            .then((res)=>{
-                this.$store.state.cotisations = res.data
-                this.allData = res.data
-                this.links = res.data
+        // saveCoti(){
+        //     this.carts.push(this.$store.state.membre_cot);
+        //     console.log(this.carts)
+        //     this.$store.state.carts = this.carts
+        // },  
+        saveCotisations(){
+            axios.post(this.url+'store_cotisation',this.form,this.headers)
+            .then((response)=>{
+                this.loading = false;
+                this.close();
+                // this.getUsers();
+                this.$toast.success(`Cotisation est enregistré(e)`) 
+                this.getEnfants();
+                
             })
             .catch((error)=>{
-                this.$toast.error(error.response.data.message)
-                console.log(error.response.data.message)
+                if (error.message == "Network Error"){
+                
+                  
+                }else{
+                    this.loading = false;
+                    this.$toast.error(error.data.message,{
+                        position:"bottom-right"
+                    });
+                }
+                
             })
         },
         sortDistrict(){
@@ -145,9 +164,9 @@ export default {
         },
         searchInDb(){
             axios
-            .get(this.url+'cotisations?district_select=' +this.district_select)
+            .get(this.url+'membres?district_select=' +this.district_select)
             .then((res)=>{
-                this.$store.state.cotisations = res.data
+                this.$store.state.membre_cot = res.data
                 this.allData = res.data
                 this.links = res.data
                 console.log(this.district_select)
@@ -177,32 +196,38 @@ export default {
             this.dialog_delete=true,
             this.$store.state.paroisse = item
         },
-        edit_cotisation(item){
+        edit_paroisse(item){
             this.dialog = true
             this.modifier = true
-            this.$store.state.membre_cotisation = item
             this.$store.state.paroisse = item
-            this.$store.state.categorie = item
         },
         close(){
             this.dialog = false
             this.dialog_delete  = false
-            this.dialog_cotisation = false
         },
-        add_cot(membre){
-
-        }
-     
+        getParoisses(){
+            axios
+            .get(this.url+'paroisses')
+            .then((res)=>{
+                this.$store.state.paroisses = res.data
+                this.allData = res.data
+                this.links = res.data
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
       
     },
     mounted(){
-        this.getCotisations()
+        this.getParoisses()
         this.getConferences()
      },
     computed:{
-        cotisations(){
-            const cotisations = this.$store.state?.cotisations
-            return cotisations
+        membres(){
+            const membres = this.$store.state?.membre_cot
+            return membres
         }
     }
 }

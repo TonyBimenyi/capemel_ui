@@ -80,7 +80,7 @@
   <!--<script src="script.js"></script>-->
   <div class="footer">
       <footer>
-         <p>CAPEMEL---Copyright 2022 tous les droits reserves</p>
+         <p>CAPEMEL---Copyright {{ annee }} tous les droits reserves</p>
       </footer>
   </div>
 </body>
@@ -88,7 +88,11 @@
 </template>
 <script>
 export default {
-
+    data(){
+      return{
+        annee:new Date().getFullYear(),
+      }
+    },
     methods:{
       logout(){
         localStorage.removeItem('user')

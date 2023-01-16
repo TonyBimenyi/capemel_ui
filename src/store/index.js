@@ -16,6 +16,8 @@ export default createStore({
     enfant:{},
     membre_cotisation:{},
     cotisations:{},
+    membre_cot:{},
+    carts:[],
   },
   getters: {
     user : state =>{
