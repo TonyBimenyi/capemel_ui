@@ -71,7 +71,14 @@
                         <td>{{money(cot.montant_a_paye-cot.montant_paye)}} Fbu</td>
                         <td>{{cot.trimestre}} {{cot.annee}}</td>        
                         <td>{{datetime(cot.created_at)}}</td>
-                        <td><button @click="edit_cotisation(cot)" id="mod_btn">Modifier</button></td>  
+                        <td>
+                            <div v-if="cot.montant_paye==0">
+                                <button @click="edit_cotisation(cot)" id="mod_btn">Payer</button>
+                            </div>
+                            <div v-else>
+                               
+                            </div>
+                        </td>  
                         <td><button @click="delete_paroisse(par);dialog=true" id="delete_btn"><i class='bx bxs-trash'></i></button></td>         
                     </tr>          
                 </tbody>
