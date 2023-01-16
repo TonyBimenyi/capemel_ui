@@ -14,10 +14,10 @@ export default createStore({
     membre_info:{},
     conjoint:{},
     enfant:{},
+    membres_cotisation:[],
     membre_cotisation:{},
     cotisations:{},
-    membre_cot:{},
-    carts:[],
+    
   },
   getters: {
     user : state =>{

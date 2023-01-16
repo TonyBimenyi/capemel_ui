@@ -51,7 +51,8 @@
                         <th>Matricule</th>
                         <th>Nom</th>
                         <th>Prenom</th>
-                        <th>Montant Cotisé</th>
+                        <th>Montant Payé</th>
+                        <th>Montant non Payé</th>
                         <th>Periode</th>
                         <th>Date</th>
                         <th colspan="2">Options</th>
@@ -66,7 +67,8 @@
                         <td>{{cot.matricule_membre}}</td>
                         <td>{{cot.membre[0]?.nom_membre}}</td>
                         <td>{{cot.membre[0]?.prenom_membre}}</td>
-                        <td>{{money(cot.montant_total)}} Fbu</td>
+                        <td>{{money(cot.montant_paye)}} Fbu</td>
+                        <td>{{money(cot.montant_a_paye-cot.montant_paye)}} Fbu</td>
                         <td>{{cot.trimestre}} {{cot.annee}}</td>        
                         <td>{{datetime(cot.created_at)}}</td>
                         <td><button @click="edit_cotisation(cot)" id="mod_btn">Modifier</button></td>  
@@ -79,6 +81,7 @@
         </div>
      
         <form_modal @update="getCotisations" :edit_cotisation="modifier" @getCotisations="getCotisations"  @close="close" v-if="dialog"></form_modal>
+    
         <delete_modal @getParoisses="getParoisses" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
 </template>

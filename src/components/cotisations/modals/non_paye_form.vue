@@ -13,7 +13,7 @@
                     <p> <strong>Nom:</strong>  {{form.nom_membre}}</p>
                     <p> <strong>Prenom:</strong>  {{form.prenom_membre}}</p>
                     <p> <strong>Montant à cotiser:</strong>  {{money(form.montant_a_paye)}} Fbu</p>
-            
+        
                 </div>
                 <div class="input-container ic1">
                     <input id="firstname" v-model="form.montant_paye" readonly class="input" type="number" required placeholder=" " />
@@ -56,7 +56,7 @@ export default {
                 nom_membre:this.$store.state.membre_cotisation.nom_membre,
                 prenom_membre:this.$store.state.membre_cotisation.prenom_membre,
                 montant_a_paye:this.$store.state.membre_cotisation.categorie[0]?.montant_a_paye,
-                montant_paye:this.$store.state.membre_cotisation.categorie[0]?.montant_a_paye,
+                montant_paye:0,
                 trimestre:'',
                 annee:new Date().getFullYear(),
                 matricule_membre:this.$store.state.membre_cotisation.matricule_membre

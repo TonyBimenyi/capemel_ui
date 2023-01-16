@@ -76,8 +76,8 @@
                             </div>
                         </td>
                         <td><button  id="mod_btn">Modifier</button></td>
-                        <td><button @click="addCot(membre)"  id="mod_btn">Cotiser</button></td>
-                        <td><button id="info_btn" @click="more_info(membre)"> <i class='bx bx-dots-horizontal-rounded'></i></button></td>                  
+                        <!-- <td><button @click="addCot(membre)"  id="mod_btn">Cotiser</button></td> -->
+                        <td><button id="info_btn" @click="more_info(membre)">Voir Plus <i class='bx bx-dots-horizontal-rounded'></i></button></td>                  
                     </tr>          
                         
                 </tbody>
