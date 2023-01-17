@@ -60,8 +60,13 @@
                         <p><span>Date de mariage:Le </span>{{ membre[0]?.date_mariage }}</p>
                         <p><span>Statut: </span>
                             <span v-if="membre[0]?.statut=='actif'" id="actif"> {{membre[0]?.statut}}</span> 
-                            <span v-else-if="membre[0]?.statut=='Abandon'" id="abandon"> {{membre[0]?.statut}}</span>
+                            <span v-else-if="membre[0]?.statut=='abandon'" id="abandon"> {{membre[0]?.statut}}, Avec frais de : <strong>{{(sumCotisation[0].sum_cotisation/2)+(sumCotisation[0].sum_cotisation*2/100)}} Fbu </strong> </span>
+                            <span v-else-if="membre[0]?.statut=='deserteur'" id="deserteur"> {{membre[0]?.statut}}</span>
                         </p>
+                        <!-- <p v-if="membre[0]?.statut=='abandon'"><span>Frais d'abandon anticipe:
+                             
+                            </span></p>
+                        <p></p> -->
                     </div>
                 </div>
                 <div class="part">
@@ -165,6 +170,7 @@ export default {
         return{
                  info:false,
                 membre:{},
+                sumCotisation:{},
                 conjoint:{},
                 enfants:[],
                 dialog_conjoint:false,
@@ -232,6 +238,20 @@ export default {
                 console.log(error.response.data.message)
             })
         },
+        getSumCotisation(){
+            let pk = this.$route.params.id
+            axios
+            .get(this.url+'sumCotisation/'+pk)
+            .then((res)=>{
+                this.$store.state.sumCotisation = res.data
+                this.sumCotisation = res.data
+                this.links = res.data
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
         getConjoint(){
             let pk = this.$route.params.id
             axios
@@ -270,6 +290,7 @@ export default {
     // },
     
     mounted(){
+        this.getSumCotisation()
         this.getMembres()
         this.getConjoint()
         this.getEnfants()

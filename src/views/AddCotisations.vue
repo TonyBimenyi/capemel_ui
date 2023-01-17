@@ -22,7 +22,10 @@
                     <button>Importer</button>
                 </div> -->
                 <div class="search">
-                   <input v-model="inputSearch" @keydown="inputSearchMethods" type="text" placeholder="Rechercher...">
+                    <input type="text"  v-model="form.we"> 
+                </div>
+                <div class="search">
+                    <input type="date"  v-model="form.date"> 
                 </div>
             </div>
             <div class="part_right">
@@ -41,7 +44,7 @@
                         <th>Prenom</th>
                         <th>District</th>
                         <th>Paroisse</th>
-                        <th>Age</th>
+                        <th>Paye/Nom Paye</th>
                         <th>Categorie</th>
                         <th>Montant a paye</th>
                         <th>Status</th>
@@ -59,7 +62,13 @@
                         <td>{{membre.prenom_membre}}</td>
                         <td>District x</td>
                         <td>{{ membre.paroisse[0]?.nom_paroisse }}</td>
-                        <td>{{ ageCal(membre.date_naissance_membre) }} Ans</td>
+                        <td>
+                             <input type="text" readonly v-model="form.we"> 
+                        </td>
+                        <td>
+                            <input type="text" readonly v-model="form.date"> 
+                       </td>
+                        <!-- <td>{{ ageCal(membre.date_naissance_membre) }} Ans</td> -->
                         <td>{{membre.categorie[0]?.nom_categorie}}</td>
                         <td>{{money(membre.categorie[0]?.montant_a_paye)}} Fbu</td>
                         <td>{{datetime(membre.debut_ministere_membre)}}</td>
@@ -105,6 +114,10 @@ export default{
             dialog_cotisation:false,
             dialog_non_cotisation:false,
             membres:[],
+            form:{
+                we:'',
+                date:''
+            },
         }
     },
     methods:{

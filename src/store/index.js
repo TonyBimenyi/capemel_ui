@@ -12,6 +12,7 @@ export default createStore({
     membres:[],
     membre:{},
     membre_info:{},
+    sumCotisation:{},
     conjoint:{},
     enfant:{},
     membres_cotisation:[],
