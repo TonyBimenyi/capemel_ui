@@ -2,9 +2,7 @@
     <div class="container">
         <div class="top_part">
             <div class="part_left">
-                <div class="btn1">
-                    <button>Imprimer</button>
-                </div>
+         
                 <div class="btn1">
                     <select @change="sortDistrict" class="select_"   v-model="conference_select" name="" id="">
                         <option selected value="">{{ conf_text }}</option>
@@ -17,21 +15,32 @@
                         <!-- <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option> -->
                     </select>
                 </div>
-               
+                <div class="btn1">
+                    <select style="width:150px;font-size:11px" required v-model="form.trimestre"  name="" id="">
+                        <option selected disabled value="">--TRIMESTRE--</option>
+                        <option value="1er Trimestre">1er Trimestre</option>
+                        <option value="2eme Trimestre">2eme Trimestre</option>
+                        <option value="3eme Trimestre">3eme Trimestre</option>
+                        <option value="4eme Trimestre">4eme Trimestre</option>
+                    </select>
+                </div>
+                <div  class="annee">
+                    <input style="width:200px" required v-model="form.annee" id="annee"  type="number" placeholder="Annee...">
+                 </div>
                 <!-- <div class="btn1">
                     <button>Importer</button>
                 </div> -->
-                <div class="search">
-                    <input type="text"  v-model="form.we"> 
+                <div  class="search">
+                    <input style="width:200px;font-size:11px" required type="number" placeholder="No Borderrau"  v-model="form.numero_bordereau"> 
                 </div>
-                <div class="search">
-                    <input type="date"  v-model="form.date"> 
+                <div  class="search">
+                    <input style="width:200px" required type="date"  v-model="form.date_paiement"> 
                 </div>
             </div>
             <div class="part_right">
                 
                 <div class="add_btn">
-                    <button @click="dialog=true,modifier=false">+</button>
+                    <!-- <button @click="dialog=true,modifier=false">+</button> -->
                 </div>
             </div>
         </div>
@@ -44,10 +53,10 @@
                         <th>Prenom</th>
                         <th>District</th>
                         <th>Paroisse</th>
-                        <th>Paye/Nom Paye</th>
+                        <th>Age</th>
                         <th>Categorie</th>
-                        <th>Montant a paye</th>
-                        <th>Status</th>
+                        <th>Montant</th>
+                        <th>Statut</th>
                         <th colspan="3">Options</th>
                         
                     </tr>
@@ -58,20 +67,14 @@
                     </tr>
                     <tr v-for="membre in membres" :key="membre.id">
                         <td>{{ membre.matricule_membre }}</td>
-                        <td>{{membre.nom_membre}}</td>
-                        <td>{{membre.prenom_membre}}</td>
+                        <td> <strong>{{membre.nom_membre}} </strong> </td>
+                        <td> <strong>{{membre.prenom_membre}} </strong></td>
                         <td>District x</td>
                         <td>{{ membre.paroisse[0]?.nom_paroisse }}</td>
-                        <td>
-                             <input type="text" readonly v-model="form.we"> 
-                        </td>
-                        <td>
-                            <input type="text" readonly v-model="form.date"> 
-                       </td>
-                        <!-- <td>{{ ageCal(membre.date_naissance_membre) }} Ans</td> -->
+                        
+                        <td>{{ ageCal(membre.date_naissance_membre) }} Ans</td>
                         <td>{{membre.categorie[0]?.nom_categorie}}</td>
                         <td>{{money(membre.categorie[0]?.montant_a_paye)}} Fbu</td>
-                        <td>{{datetime(membre.debut_ministere_membre)}}</td>
                         <td>
                             <div v-if="membre.statut=='actif'" id="actif">
                                 {{membre.statut}}
@@ -81,10 +84,9 @@
                             </div>
                         </td>
                         <!-- <td><button  id="mod_btn">Modifier</button></td> -->
-                        <td><button @click="addCot(membre)"  id="mod_btn">Payer</button></td>
-                        <td><button @click="addNonCot(membre)" style="font-size:13px"  id="delete_btn">Non Payer</button></td>
-                        <td><button id="info_btn" @click="more_info(membre)"> <i class='bx bx-dots-horizontal-rounded'></i></button></td>                  
-                    </tr>          
+                        <td><button @click="add_cotisation(membre)"  id="mod_btn">Payer</button></td>
+                        <td><button @click="add_cotisation_non_paye(membre)" style="font-size:13px"  id="delete_btn">Non Payer</button></td>
+                    </tr>
                         
                 </tbody>
                 
@@ -115,12 +117,101 @@ export default{
             dialog_non_cotisation:false,
             membres:[],
             form:{
-                we:'',
-                date:''
+                numero_bordereau:'',
+                date_paiement:'',
+                trimestre:'',
+                annee:new Date().getFullYear(),
+                montant_paye:'',
+                matricule_membre:'',
+                montant_a_paye:'',
+                id_uti:''
             },
         }
     },
     methods:{
+        add_cotisation(item){
+            this.loading = true;
+            this.form.matricule_membre = item.matricule_membre
+            this.form.montant_paye = item.categorie[0]?.montant_a_paye
+            this.form.montant_a_paye = item.categorie[0]?.montant_a_paye
+            this.form.id_uti = this.$store.state.user.user.id
+            if(this.form.numero_bordereau==''){
+                this.$toast.error("Veuillez completer le numero de bordereau",{
+                        position:"bottom-right"
+                    });
+            }else if(this.form.date_paiement==''){
+                this.$toast.error("Veuillez completer la date",{
+                        position:"bottom-right"
+                    });
+            }
+            
+            else{
+           
+            axios.post(this.url+'store_cotisation',this.form)
+            .then((response)=>{
+                this.loading = false;
+                this.close();
+                // this.getUsers();
+                this.$toast.success(`Cotisation est enregistré(e)`) 
+                this.getEnfants();
+                
+            })
+            .catch((error)=>{
+                if (error.message == "Network Error"){
+                
+                  
+                }else{
+                    this.loading = false;
+                    this.$toast.error(error.response.data.message,{
+                        position:"bottom-right"
+                    });
+                }
+                
+            })
+        }
+        },
+        add_cotisation_non_paye(item){
+            this.loading = true;
+            this.form.matricule_membre = item.matricule_membre
+            this.form.montant_paye = 0
+            this.form.montant_a_paye = item.categorie[0]?.montant_a_paye
+            this.form.id_uti = this.$store.state.user.user.id
+           
+            this.form.id_uti = this.$store.state.user.user.id
+            if(this.form.numero_bordereau==''){
+                this.$toast.error("Veuillez completer le numero de bordereau",{
+                        position:"bottom-right"
+                    });
+            }else if(this.form.date_paiement==''){
+                this.$toast.error("Veuillez completer la date",{
+                        position:"bottom-right"
+                    });
+            }
+            
+            else{
+            axios.post(this.url+'store_cotisation',this.form)
+            .then((response)=>{
+                this.loading = false;
+                this.close();
+                // this.getUsers();
+                this.$toast.success(`Cotisation est enregistré(e)`) 
+                this.getEnfants();
+                
+            })
+            .catch((error)=>{
+                if (error.message == "Network Error"){
+                
+                  
+                }else{
+                    this.loading = false;
+                    this.$toast.error(error.response.data.message,{
+                        position:"bottom-right"
+                    });
+                }
+                
+            })
+        }
+        },
         close(){
             this.dialog=false
             this.dialog_cotisation = false

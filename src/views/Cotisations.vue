@@ -47,13 +47,14 @@
             <table>
                 <thead>
                     <tr>
-                        <th>No Cotisation</th>
+                        <th>No</th>
                         <th>Matricule</th>
                         <th>Nom</th>
                         <th>Prenom</th>
                         <th>Montant Payé</th>
                         <th>Montant non Payé</th>
                         <th>Periode</th>
+                        <th>Bordereau</th>
                         <th>Date</th>
                         <th colspan="2">Options</th>
                     </tr>
@@ -69,8 +70,9 @@
                         <td>{{cot.membre[0]?.prenom_membre}}</td>
                         <td>{{money(cot.montant_paye)}} Fbu</td>
                         <td>{{money(cot.montant_a_paye-cot.montant_paye)}} Fbu</td>
-                        <td>{{cot.trimestre}} {{cot.annee}}</td>        
-                        <td>{{datetime(cot.created_at)}}</td>
+                        <td>{{cot.trimestre}} {{cot.annee}}</td>    
+                        <td>{{cot.numero_bordereau}}</td>    
+                        <td>{{datetime(cot.date_paiement)}}</td>
                         <td>
                             <div v-if="cot.montant_paye==0">
                                 <button @click="edit_cotisation(cot)" id="mod_btn">Payer</button>
