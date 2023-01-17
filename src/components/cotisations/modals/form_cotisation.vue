@@ -108,29 +108,29 @@ export default {
                 })
             }
             else{
-            this.loading = true;
-            axios.post(this.url+'store_cotisation',data,this.headers)
-            .then((response)=>{
-                this.loading = false;
-                this.close();
-                // this.getUsers();
-                this.$toast.success(`Cotisation est enregistré(e)`) 
-                this.getEnfants();
-                
-            })
-            .catch((error)=>{
-                if (error.message == "Network Error"){
-                
-                  
-                }else{
+                this.loading = true;
+                axios.post(this.url+'store_cotisation',data,this.headers)
+                .then((response)=>{
                     this.loading = false;
-                    this.$toast.error(error.response.data.message,{
-                        position:"bottom-right"
-                    });
-                }
-                
-            })
-         }
+                    this.close();
+                    // this.getUsers();
+                    this.$toast.success(`Cotisation est enregistré(e)`) 
+                    this.getEnfants();
+                    
+                })
+                .catch((error)=>{
+                    if (error.message == "Network Error"){
+                    
+                    
+                    }else{
+                        this.loading = false;
+                        this.$toast.error(error.response.data.message,{
+                            position:"bottom-right"
+                        });
+                    }
+                    
+                })
+            }
         },
         getMembres(){
             let pk = this.$route.params.id
