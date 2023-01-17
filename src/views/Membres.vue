@@ -71,7 +71,10 @@
                             <div v-if="membre.statut=='actif'" id="actif">
                                 {{membre.statut}}
                             </div>
-                            <div v-if="membre.statut=='Abandon'" id="abandon">
+                            <div v-if="membre.statut=='abandon'" id="abandon">
+                                {{membre.statut}}
+                            </div>
+                            <div v-if="membre.statut=='deserteur'" id="deserteur">
                                 {{membre.statut}}
                             </div>
                         </td>

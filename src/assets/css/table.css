@@ -166,6 +166,13 @@ tbody tr td{
     padding: 0px 0px;
     background-color: rgb(253, 221, 76);
   }
+#deserteur{
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 0px 0px;
+    color: black;
+    background-color: rgb(253, 155, 155);
+  }
 #delete_btn,#info_btn:hover{
     transition: all .3s;
     cursor: pointer;
