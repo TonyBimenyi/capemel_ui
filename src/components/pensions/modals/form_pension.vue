@@ -10,6 +10,11 @@
       <div class="inputs">
         <div class="part1">
                 <div class="input-container ic1">
+                    <input id="firstname" readonly v-model="form.montant_pension" class="input" type="number" required placeholder=" " />
+                    <div class="cut"></div>
+                    <label for="firstname" class="placeholder">Frais de Pension</label>
+                </div>
+                <div class="input-container ic1">
                     <input id="firstname" v-model="form.motif" class="input" type="text" required placeholder=" " />
                     <div class="cut"></div>
                     <label for="firstname" class="placeholder">Motif</label>
