@@ -87,7 +87,7 @@
                 
             </table>         
         </div>
-     <add_membre  @close="close" v-if="dialog"></add_membre>
+     <add_membre @getMembres="getMembres"  @close="close" v-if="dialog"></add_membre>
      <cotisation_modal @getMembres="getMembres"  @close="close" v-if="dialog_cotisation"></cotisation_modal>
         
     </div>

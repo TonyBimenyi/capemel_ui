@@ -182,8 +182,8 @@ export default {
                 console.log(error.response.data.message)
             })
         },
-        getParoisses(){
-            this.$emit('getParoisses')
+        getMembres(){
+            this.$emit('getMembres')
         },
         getDistricts(){
             axios
@@ -250,8 +250,8 @@ export default {
                 this.loading = false;
                 this.close();
                 // this.getUsers();
-                this.$toast.success(`Paroisse enregistre`) 
-                this.getParoisses();
+                this.$toast.success(`Membre enregistre avec succes`) 
+                this.getMembres();
                 
             })
             .catch((error)=>{
@@ -277,7 +277,7 @@ export default {
     },  
     mounted(){
         this.getDistricts()
-        this.getParoisses()
+        this.getMembres()
         this.getCategories()
         if(this.edit_paroisse){
             this.form.nom_paroisse = this.$store.state.paroisse.nom_paroisse;

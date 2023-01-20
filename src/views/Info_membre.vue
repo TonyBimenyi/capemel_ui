@@ -10,7 +10,7 @@
                     <button  @click="add_abandon(membre);dialog_abandon=true">Ajouter aux abandons</button>
                 </div>
                 <div class="btn1">
-                    <button>Ajouter aux pensionnes</button>
+                    <button @click="add_pension(membre);dialog_pension=true">Ajouter aux pensionnes</button>
                 </div>
             </div>
             <div class="part_right">
@@ -149,6 +149,7 @@
      <delete_enfant_modal @getEnfants="getEnfants" @close="close" v-if="dialog_delete_enfant"></delete_enfant_modal>
      <enfant_modal @getEnfants="getEnfants" :edit_enfant="modifier" @close="close" v-if="dialog_enfant"></enfant_modal>
      <abandon_modal :edit_enfant="modifier" @close="close" v-if="dialog_abandon"></abandon_modal>
+     <pension_modal :edit_enfant="modifier" @close="close" v-if="dialog_pension"></pension_modal>
     </div>
 </template>
 <script>
@@ -158,13 +159,16 @@ import delete_modal from '../components/conjoints/modals/delete_conjoint.vue'
 import delete_enfant_modal from '../components/enfants/modals/delete_enfant.vue'
 import enfant_modal from '../components/enfants/modals/enfant_form.vue'
 import abandon_modal from '../components/abandons/modals/abandon_form.vue'
+import pension_modal from '../components/pensions/modals/form_pension.vue'
+
 export default {
     components:{
         add_conjoint,
         delete_modal,
         enfant_modal,
         delete_enfant_modal,
-        abandon_modal
+        abandon_modal,
+        pension_modal,
     },
     data(){
         return{
@@ -179,12 +183,16 @@ export default {
                 dialog_delete_enfant:false,
                 dialog_enfant:false,
                 modifier:false,
-                dialog_abandon:false
+                dialog_abandon:false,
+                dialog_pension:false,
         };
     },
     methods:{
+        add_pension(item){
+            this.$store.state.membre_info = item;     
+        },  
         add_abandon(item){
-            this.$store.state.membre_info = item;
+            this.$store.state.membre_info = item;      
         },
         editEnfant(item){
             this.dialog_enfant = true;
@@ -223,6 +231,7 @@ export default {
             this.dialog_delete_enfant = false;
             this.dialog_enfant = false;
             this.dialog_abandon = false;
+            this.dialog_pension = false
         },
         getMembres(){
             let pk = this.$route.params.id
