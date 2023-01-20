@@ -7,6 +7,7 @@ import Membres from '../views/Membres.vue'
 import Info_membre from '../views/Info_membre.vue'
 import Cotisations from '../views/Cotisations.vue'
 import AddCotisations from '../views/AddCotisations.vue'
+import Abandons from '../views/Abandons.vue'
 
 const routes = [
   {path: '/',name:'dashboard',component: Dashboard},
@@ -17,6 +18,7 @@ const routes = [
   {path: '/info_membre/:id',name:'info_membre',component: Info_membre},
   {path: '/cotisations',name:'cotisations',component: Cotisations},
   {path: '/add-cotisations',name:'AddCotisations',component: AddCotisations},
+  {path: '/abandons',name:'Abadons',component: Abandons},
 ]
 
 const router = createRouter({

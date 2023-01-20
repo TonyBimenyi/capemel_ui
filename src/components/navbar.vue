@@ -41,15 +41,10 @@
           </li>
           <li>
             <router-link to="membres"> <a href="#">MEMBRES</a></router-link>
-            <i class='bx bxs-chevron-down js-arrow arrow '></i>
-            <ul class="js-sub-menu sub-menu">
-              <router-link to="membres"><li><a href="#">Tous les membres</a></li></router-link> 
-              <li><a href="#">Abandones</a></li>
-              <li><a href="#">Pensionnes</a></li>
-            </ul>
+            
           </li>
           <router-link style="text-decoration:none" to="cotisations"><li><a href="#">COTISATIONS</a></li></router-link> 
-          <li><a href="#">ABANDONS</a></li>
+          <router-link to="abandons"> <a href="#">ABANDONS</a></router-link>
           <li><a href="#">PENSIONNES</a></li>
           
         </ul>

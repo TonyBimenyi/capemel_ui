@@ -18,6 +18,7 @@ export default createStore({
     membres_cotisation:[],
     membre_cotisation:{},
     cotisations:{},
+    abandons:{},
     
   },
   getters: {
