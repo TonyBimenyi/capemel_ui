@@ -2,9 +2,9 @@
     <div class="container">
         <div class="top_part">
             <div class="part_left">
-                <!-- <div class="btn1">
+                <div class="btn1">
                     <button>Imprimer</button>
-                </div> -->
+                </div>
                 <div class="btn1">
                     <select @change="sortDistrict"   v-model="conference_select" name="" id="">
                         <option selected value="">{{ conf_text }}</option>
@@ -12,7 +12,7 @@
                     </select>
                 </div>
                 <div class="btn1">
-                    <select @change="searchInDb" v-model="district_select"  name="" id="">
+                    <select  v-model="district_select"  name="" id="">
                         <option selected value="">--DISTRICT--</option>
                         <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option>
                     </select>
@@ -26,6 +26,7 @@
                         <option value="4eme Trimestre">4eme Trimestre</option>
                     </select>
                 </div>
+             
                 <!-- <div class="btn1">
                     <button>Importer</button>
                 </div> -->
@@ -33,7 +34,10 @@
                    <input v-model="annee"  type="number" placeholder="Annee...">
                 </div>
                 <div class="search">
-                   <input v-model="inputSearch" readonly @keydown="inputSearchMethods" type="hidden" placeholder="Rechercher...">
+                   <input v-model="inputSearch" readonly @keydown="inputSearchMethods" type="text" placeholder="Rechercher...">
+                </div>
+                <div class="search_btn">
+                    <button>Rechercher</button>
                 </div>
             </div>
             <div class="part_right">
@@ -82,7 +86,11 @@
                             </div>
                         </td>  
                         <td><button @click="delete_paroisse(par);dialog=true" id="delete_btn"><i class='bx bxs-trash'></i></button></td>         
-                    </tr>          
+                    </tr> 
+                    
+                    <tr id="total">
+                        <td >TOTAL</td>
+                    </tr>
                 </tbody>
                 
             </table>         
