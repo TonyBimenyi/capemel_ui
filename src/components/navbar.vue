@@ -24,7 +24,7 @@
             <a href="#">EGLISE</a>
             <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
             <ul class="htmlCss-sub-menu sub-menu">
-              <li><a href="#">Conferences</a></li>
+              <!-- <li><a href="#">Conferences</a></li> -->
               <router-link to="districts"><li><a href="#">Districts</a></li></router-link> 
               <router-link to="paroisses"><li><a href="#">Paroisses</a></li></router-link> 
               <!-- <li class="more">
@@ -44,7 +44,7 @@
             
           </li>
           <router-link style="text-decoration:none" to="cotisations"><li><a href="#">COTISATIONS</a></li></router-link> 
-          <router-link to="abandons"> <a href="#">ABANDONS</a></router-link>
+          <router-link style="text-decoration:none" to="abandons"><li> <a href="#">ABANDONS</a></li></router-link>
           <li><a href="#">PENSIONNES</a></li>
           
         </ul>

@@ -64,7 +64,7 @@ input{
     cursor:pointer;
 }
 .search_btn button:hover{
-    
+
 }
 select {
     background-color: var(--transparent);
@@ -193,12 +193,73 @@ tbody tr td{
 #table{
     position: fixed;
 }
+#total{
+    position: sticky;
+    bottom: 0;
+}
+#total td{
+    font-weight: 700;
+}
 
 /* ---------------------------------------------- */
 
 
 a{
     color: white;
+}
+.printCode{
+    display:  none;
+}
+
+
+@media print{
+    .printCode{
+        display: flex !important; 
+    }
+    .navbar{
+        display: none;
+    }
+    .top_part{
+        margin-top: -100px !important;
+        display: none !important;
+    }
+    .table_content {
+        display: none !important;
+    }
+    .paper .header .title h2{
+        text-align: center  !important;
+        margin-top: 30px !important;
+    }
+   
+}
+
+.paper{
+    /* background-color: red; */
+    width: 210mm;
+    height: 290mm;
+    padding: 10px;
+    border: 1px solid black;
+}
+.paper .header .left h2{
+    font-size: 15px;
+}
+.paper .header .title h2{
+    text-align: center;
+    margin-top: 30px;
+}
+.paper table{
+    border-collapse: collapse;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+.paper thead tr th{
+    border: 1px solid black;
+    padding: 5px 20px;
+    text-align: center;
+}
+.paper tr td{
+    text-align: center;
+    border: 1px solid black;
 }
 
 

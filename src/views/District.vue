@@ -3,10 +3,10 @@
         <div class="top_part">
             <div class="part_left">
                 <div class="btn1">
-                    <button>Imprimer</button>
+                    <button @click="printPage">Imprimer</button>
                 </div>
                 <div class="btn1">
-                    <select @change="searchInDb" v-model="conference_select" name="" id="">
+                    <select style="width:250px" @change="searchInDb" v-model="conference_select" name="" id="">
                         <option value="">--CONFERENCE--</option>
                         <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
                     </select>
@@ -14,8 +14,8 @@
                 <!-- <div class="btn1">
                     <button>Importer</button>
                 </div> -->
-                <div class="search">
-                   <input v-model="inputSearch" @keydown="inputSearchMethods" type="text" placeholder="Rechercher...">
+                <div  class="search">
+                   <input style="width:250px" v-model="inputSearch" @keydown="inputSearchMethods" type="text" placeholder="Rechercher...">
                 </div>
             </div>
             <div class="part_right">
@@ -63,6 +63,44 @@
         <form_modal @update="getDistricts" :edit_district="modifier" @getDistricts="getDistricts"  @close="close" v-if="dialog"></form_modal>
         <delete_modal @getDistricts="getDistricts" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
+    <div class="printCode">
+    <div class="container">
+        <div class="paper">
+            <div class="header">
+                <div class="left">
+                    <h2>EGLISE METHODISTE LIBRE AU BURUNDI</h2>
+                    <H2>Conference General</H2>
+                    <h2>Departement des pensions</h2>
+                </div>
+                <div class="title">
+                    <h2>LISTE DES DISTRICTS</h2>
+                </div>
+            </div>
+            <div class="body">
+                <div class="table">
+                    <table>
+                    <thead>
+                        <tr>
+                            <th>NOM DU DISTRICT</th>
+                            <th>CONFERENCE</th>
+                            <th>SURINTENDANT</th>
+                            <th>TELEPHONE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="dis in districts" :key="dis.id">
+                            <td>{{dis.nom_district}}</td>
+                            <td>{{dis.conference[0]?.nom_conference}}</td>
+                            <td>{{dis.nom_sur_district}}</td>                        
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
 </template>
 <script>
 import axios from 'axios'
@@ -85,6 +123,10 @@ export default {
         }
     },
     methods:{
+        printPage(){
+            
+            window.print();
+        },
         searchInDb(){
             axios
             .get(this.url+'districts?conference_select=' +this.conference_select)
@@ -156,5 +198,24 @@ export default {
 }
 </script>
 <style src="../assets/css/table.css" scoped>
-    
+input{
+    height: 35px;
+    border: 1px solid var(--primary);
+    border-radius: 3px;
+    padding-left: 5px;
+    outline: none;
+    width: 250px;
+}
+select {
+    background-color: var(--transparent);
+    border-radius: 4px;
+    border: 1px solid var(--primary);
+    box-sizing: border-box;
+    color: var(--text);
+    font-size: 15px;
+    height: 100%;
+    outline: 0;
+    padding: 4px 20px 0;
+    width: 250px;
+  }
 </style>

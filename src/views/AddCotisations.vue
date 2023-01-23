@@ -12,7 +12,7 @@
                 <div class="btn1">
                     <select class="select_" @change="searchInDb" v-model="district_select"  name="" id="">
                         <option >--DISTRICT--</option>
-                        <!-- <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option> -->
+                        <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option>
                     </select>
                 </div>
                 <div class="btn1">
@@ -116,6 +116,9 @@ export default{
             dialog_cotisation:false,
             dialog_non_cotisation:false,
             membres:[],
+            conference_select:'',
+            district_select:'',
+            conferences:[],
             form:{
                 numero_bordereau:'',
                 date_paiement:'',
@@ -217,19 +220,7 @@ export default{
             this.dialog_cotisation = false
             this.dialog_non_cotisation = false
         },
-        getMembres(){
-            axios
-            .get(this.url+'membreCot')
-            .then((res)=>{
-                this.$store.state.membres_cotisation = res.data
-                this.allData = res.data
-                this.links = res.data
-            })
-            .catch((error)=>{
-                this.$toast.error(error.res.data.message)
-                console.log(error.res.data.message)
-            })
-        },
+        
         
         more_info(n){
             this.$router.push({name:'info_membre',params:{id:n.matricule_membre},query:{'prodName':n.nom_membre}})
@@ -249,12 +240,60 @@ export default{
         addNonCot(membre){
             this.dialog_non_cotisation = true
             this.$store.state.membre_cotisation = membre;
-        }
+        },
+        getConferences(){
+            axios
+            .get(this.url+'conferences')
+            .then((res)=>{
+                this.conferences = res.data
+                this.allData = res.data
+              
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        }, 
+        sortDistrict(){
+            axios
+            .get(this.url+'districts?conference_select=' +this.conference_select)
+            .then((res)=>{
+                this.$store.state.districts = res.data
+                if(this.conference_select!=0){
+                    this.allData = res.data
+                    this.districts = res.data
+                 }
+                 else{
+                    this.districts=false
+                 }
+                console.log(this.conference_select)
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
+        searchInDb(){
+            axios
+            .get(this.url+'membres?district_select=' +this.district_select)
+            .then((res)=>{
+                this.$store.state.membres_cotisation = res.data
+                this.allData = res.data
+                this.links = res.data
+                console.log(this.district_select)
+            })
+            .catch((error)=>{
+                this.$toast.error(error.response.data.message)
+                console.log(error.response.data.message)
+            })
+        },
+
         
         
     },
         mounted(){
-            this.getMembres()
+            this.getConferences()
+       
         },
         computed:{
             membres(){

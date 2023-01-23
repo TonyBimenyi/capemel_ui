@@ -18,7 +18,7 @@
                     </select>
                 </div>
                 <div class="btn1">
-                    <select v-model="trimestre"  name="" id="">
+                    <select v-model="trimestre_select"  name="" id="">
                         <option selected disabled value="">--TRIMESTRE--</option>
                         <option value="1er Trimestre">1er Trimestre</option>
                         <option value="2eme Trimestre">2eme Trimestre</option>
@@ -31,13 +31,13 @@
                     <button>Importer</button>
                 </div> -->
                 <div class="search">
-                   <input v-model="annee"  type="number" placeholder="Annee...">
+                   <input v-model="annee_select"  type="number" placeholder="Annee...">
                 </div>
                 <div class="search">
                    <input v-model="inputSearch" readonly @keydown="inputSearchMethods" type="text" placeholder="Rechercher...">
                 </div>
                 <div class="search_btn">
-                    <button>Rechercher</button>
+                    <button @click="searchInDb()">Rechercher</button>
                 </div>
             </div>
             <div class="part_right">
@@ -90,6 +90,12 @@
                     
                     <tr id="total">
                         <td >TOTAL</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td >{{money(totalPaye())}} Fbu</td>
+                        <td >{{money(totalNonPaye()-totalPaye())}} Fbu</td>
+                        <td colspan="5"></td>
                     </tr>
                 </tbody>
                 
@@ -131,6 +137,20 @@ export default {
         }
     },
     methods:{
+        totalPaye(){
+            let total =0;
+            for(let item in this.$store.state.cotisations){
+                total = total +(this.$store.state.cotisations[item].montant_paye)
+            } 
+            return total;
+        },
+        totalNonPaye(){
+            let total =0;
+            for(let item in this.$store.state.cotisations){
+                total = total +(this.$store.state.cotisations[item].montant_a_paye)
+            } 
+            return total;
+        },
         getCotisations(){
             axios
             .get(this.url+'cotisations')
@@ -165,7 +185,7 @@ export default {
         },
         searchInDb(){
             axios
-            .get(this.url+'cotisations?district_select=' +this.district_select)
+            .get(this.url+'cotisations?id_district='+this.district_select+'&trimestre_select'+this.trimestre_select)
             .then((res)=>{
                 this.$store.state.cotisations = res.data
                 this.allData = res.data
