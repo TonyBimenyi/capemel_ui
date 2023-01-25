@@ -29,7 +29,7 @@
         <div class="box">
           <div class="right-side">
             <div class="box-topic">Membres</div>
-            <div class="number">$12,876</div>
+            <div class="number">{{membre_count}}</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
               <span class="text">Nombre des Membres</span>
@@ -39,11 +39,11 @@
         </div>
         <div class="box">
           <div class="right-side">
-            <div class="box-topic">Abandons</div>
+            <div class="box-topic">Pensionnés</div>
             <div class="number">11,086</div>
             <div class="indicator">
               <i class='bx bx-down-arrow-alt down'></i>
-              <span class="text">Nombre des abandons</span>
+              <span class="text">Nombre des Pensionnés</span>
             </div>
           </div>
           <i class='bx bxs-cart-download cart four' ></i>
@@ -229,6 +229,7 @@ export default {
     return{
       district_count:'-',
       paroisse_count:'-',
+      membre_count:'-',
     }
   },
   methods:{
@@ -246,10 +247,18 @@ export default {
                 this.paroisse_count = res.data
             })
     },
+    MembreCount(){
+      axios
+            .get(this.url+'membre_count')
+            .then((res)=>{
+                this.membre_count = res.data
+            })
+    },
   },
   mounted(){
     this.DistrictCount()
     this.ParoisseCount()
+    this.MembreCount()
   }
   
 }
