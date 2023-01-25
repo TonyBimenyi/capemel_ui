@@ -6,44 +6,44 @@
       <div class="overview-boxes">
         <div class="box">
           <div class="right-side">
-            <div class="box-topic">Total Order</div>
+            <div class="box-topic">Districts</div>
             <div class="number">40,876</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
-              <span class="text">Up from yesterday</span>
+              <span class="text">Nombre des districts</span>
             </div>
           </div>
           <i class='bx bx-cart-alt cart'></i>
         </div>
         <div class="box">
           <div class="right-side">
-            <div class="box-topic">Total Sales</div>
+            <div class="box-topic">Paroisses</div>
             <div class="number">38,876</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
-              <span class="text">Up from yesterday</span>
+              <span class="text">Nombres des paroisses</span>
             </div>
           </div>
           <i class='bx bxs-cart-add cart two' ></i>
         </div>
         <div class="box">
           <div class="right-side">
-            <div class="box-topic">Total Profit</div>
+            <div class="box-topic">Membres</div>
             <div class="number">$12,876</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
-              <span class="text">Up from yesterday</span>
+              <span class="text">Nombre des Membres</span>
             </div>
           </div>
           <i class='bx bx-cart cart three' ></i>
         </div>
         <div class="box">
           <div class="right-side">
-            <div class="box-topic">Total Return</div>
+            <div class="box-topic">Abandons</div>
             <div class="number">11,086</div>
             <div class="indicator">
               <i class='bx bx-down-arrow-alt down'></i>
-              <span class="text">Down From Today</span>
+              <span class="text">Nombre des abandons</span>
             </div>
           </div>
           <i class='bx bxs-cart-download cart four' ></i>
@@ -52,22 +52,22 @@
       <div class="overview-boxes">
         <div class="box">
           <div class="right-side">
-            <div class="box-topic">Total Order</div>
+            <div class="box-topic">Cotisations</div>
             <div class="number">40,876</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
-              <span class="text">Up from yesterday</span>
+              <span class="text">Montant Total des cotisations</span>
             </div>
           </div>
           <i class='bx bx-cart-alt cart'></i>
         </div>
         <div class="box">
           <div class="right-side">
-            <div class="box-topic">Total Sales</div>
+            <div class="box-topic">Pensions Payés</div>
             <div class="number">38,876</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
-              <span class="text">Up from yesterday</span>
+              <span class="text">Montant total des pensions</span>
             </div>
           </div>
           <i class='bx bxs-cart-add cart two' ></i>
@@ -98,7 +98,7 @@
 
       <div class="sales-boxes">
         <div class="recent-sales box">
-          <div class="title">Recent Sales</div>
+          <div class="title">Cotisations Recentes</div>
           <div class="sales-details">
             <ul class="details">
               <li class="topic">Date</li>
@@ -152,7 +152,7 @@
           </div>
         </div>
         <div class="top-sales box">
-          <div class="title">Top Seling Product</div>
+          <div class="title">Top Cotisations/membres</div>
           <ul class="top-sales-details">
             <li>
             <a href="#">
@@ -215,9 +215,18 @@
       </div>
     </div>
   </section>
-
+<ChartComponent/>
     </div>
 </template>
+<script>
+import ChartComponent from '@/components/ChartComponent.vue';
+export default {
+  components:{
+    ChartComponent
+  }
+  
+}
+</script>
 <style src='../assets/css/dashboard.css' scoped>
 
 </style>
