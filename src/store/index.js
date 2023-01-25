@@ -19,6 +19,11 @@ export default createStore({
     membre_cotisation:{},
     cotisations:{},
     abandons:{},
+    dashboard:'-',
+    paroisse_count:'-',
+    membre_count:'-',
+    pension_count:'-',
+    cotisation_total:'0 Fbu',
     
   },
   getters: {

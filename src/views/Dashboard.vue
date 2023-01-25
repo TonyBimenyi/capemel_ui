@@ -7,7 +7,7 @@
         <div class="box">
           <div class="right-side">
             <div class="box-topic">Districts</div>
-            <div class="number">{{district_count}}</div>
+            <div class="number">{{this.$store.state.dashboard}}</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
               <span class="text">Nombre des districts</span>
@@ -18,7 +18,7 @@
         <div class="box">
           <div class="right-side">
             <div class="box-topic">Paroisses</div>
-            <div class="number">{{paroisse_count}}</div>
+            <div class="number">{{this.$store.state.paroisse_count}}</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
               <span class="text">Nombres des paroisses</span>
@@ -29,7 +29,7 @@
         <div class="box">
           <div class="right-side">
             <div class="box-topic">Membres</div>
-            <div class="number">{{membre_count}}</div>
+            <div class="number">{{this.$store.state.membre_count}}</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
               <span class="text">Nombre des Membres</span>
@@ -40,7 +40,7 @@
         <div class="box">
           <div class="right-side">
             <div class="box-topic">Pensionnés</div>
-            <div class="number">11,086</div>
+            <div class="number">{{this.$store.state.pension_count}}</div>
             <div class="indicator">
               <i class='bx bx-down-arrow-alt down'></i>
               <span class="text">Nombre des Pensionnés</span>
@@ -53,7 +53,7 @@
         <div class="box">
           <div class="right-side">
             <div class="box-topic">Cotisations</div>
-            <div class="number">40,876</div>
+            <div class="number">{{money(this.$store.state.cotisation_total[0]?.cotisation_total)}} F</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
               <span class="text">Montant Total des cotisations</span>
@@ -63,7 +63,7 @@
         </div>
         <div class="box">
           <div class="right-side">
-            <div class="box-topic">Pensions Payés</div>
+            <div class="box-topic">Non Payes</div>
             <div class="number">38,876</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
@@ -227,9 +227,7 @@ export default {
   },
   data(){
     return{
-      district_count:'-',
-      paroisse_count:'-',
-      membre_count:'-',
+      allData:[]
     }
   },
   methods:{
@@ -237,21 +235,40 @@ export default {
       axios
             .get(this.url+'district_count')
             .then((res)=>{
-                this.district_count = res.data
+                this.$store.state.dashboard = res.data
+                this.allData = res.data
             })
     },
     ParoisseCount(){
       axios
             .get(this.url+'paroisse_count')
             .then((res)=>{
-                this.paroisse_count = res.data
+              this.$store.state.paroisse_count = res.data
+                this.allData = res.data
             })
     },
     MembreCount(){
       axios
             .get(this.url+'membre_count')
             .then((res)=>{
-                this.membre_count = res.data
+              this.$store.state.membre_count = res.data
+                this.allData = res.data
+            })
+    },
+    PensionCount(){
+      axios
+            .get(this.url+'pension_count')
+            .then((res)=>{
+              this.$store.state.pension_count = res.data
+                this.allData = res.data
+            })
+    },
+    CotisationTotal(){
+      axios
+            .get(this.url+'cotisation_total')
+            .then((res)=>{
+              this.$store.state.cotisation_total = res.data
+                this.allData = res.data
             })
     },
   },
@@ -259,7 +276,31 @@ export default {
     this.DistrictCount()
     this.ParoisseCount()
     this.MembreCount()
-  }
+    this.PensionCount()
+    this.CotisationTotal()
+  },
+  computed:{
+        dashboard(){
+            const dashboard = this.$store.state?.dashboard
+            return dashboard
+        },
+        paroisse_count(){
+            const paroisse_count = this.$store.state?.paroisse_count
+            return paroisse_count
+        },
+        membre_count(){
+            const membre_count = this.$store.state?.membre_count
+            return membre_count
+        },
+        pension_count(){
+            const pension_count = this.$store.state?.pension_count
+            return pension_count
+        },
+        cotisation_total(){
+            const cotisation_total = this.$store.state?.cotisation_total
+            return cotisation_total
+        }
+    }
   
 }
 </script>
