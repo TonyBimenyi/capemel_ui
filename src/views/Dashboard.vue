@@ -18,7 +18,7 @@
         <div class="box">
           <div class="right-side">
             <div class="box-topic">Paroisses</div>
-            <div class="number">38,876</div>
+            <div class="number">{{paroisse_count}}</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
               <span class="text">Nombres des paroisses</span>
@@ -228,6 +228,7 @@ export default {
   data(){
     return{
       district_count:'-',
+      paroisse_count:'-',
     }
   },
   methods:{
@@ -237,10 +238,18 @@ export default {
             .then((res)=>{
                 this.district_count = res.data
             })
-    }
+    },
+    ParoisseCount(){
+      axios
+            .get(this.url+'paroisse_count')
+            .then((res)=>{
+                this.paroisse_count = res.data
+            })
+    },
   },
   mounted(){
     this.DistrictCount()
+    this.ParoisseCount()
   }
   
 }
