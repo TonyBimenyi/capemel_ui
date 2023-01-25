@@ -7,7 +7,7 @@
         <div class="box">
           <div class="right-side">
             <div class="box-topic">Districts</div>
-            <div class="number">40,876</div>
+            <div class="number">{{district_count}}</div>
             <div class="indicator">
               <i class='bx bx-up-arrow-alt'></i>
               <span class="text">Nombre des districts</span>
@@ -219,10 +219,28 @@
     </div>
 </template>
 <script>
+import axios from 'axios';
 import ChartComponent from '@/components/ChartComponent.vue';
 export default {
   components:{
     ChartComponent
+  },
+  data(){
+    return{
+      district_count:'-',
+    }
+  },
+  methods:{
+    DistrictCount(){
+      axios
+            .get(this.url+'district_count')
+            .then((res)=>{
+                this.district_count = res.data
+            })
+    }
+  },
+  mounted(){
+    this.DistrictCount()
   }
   
 }
