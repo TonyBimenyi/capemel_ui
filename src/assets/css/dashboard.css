@@ -22,6 +22,7 @@
     align-items: center;
     font-size: 24px;
     font-weight: 500;
+
   }
   nav .sidebar-button i{
     font-size: 35px;
@@ -213,7 +214,7 @@
   }
   .sales-boxes .box .button a{
     color: #fff;
-    background: #0A2558;
+    background: var(--primary);
     padding: 4px 12px;
     font-size: 15px;
     font-weight: 400;
@@ -351,3 +352,23 @@
       width: calc(100% - 60px);
     }
   }
+
+  table{
+    margin: 0 auto;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  thead tr th{
+    background-color: var(--primary);
+    padding: 5px 10px;
+    color: white;
+    font-weight: 500;
+  }
+  tbody tr td{
+    border-bottom: 1px solid black;
+    padding: 3px 10px;
+    font-size: 13px;
+  }
+
+  

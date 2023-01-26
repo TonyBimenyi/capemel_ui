@@ -10,7 +10,7 @@
                     </select>
                 </div>
                 <div class="btn1">
-                    <select class="select_" @change="searchInDb" v-model="district_select"  name="" id="">
+                    <select class="select_" @change="searchInDb" v-model="form.id_district"  name="" id="">
                         <option selected value="" >--DISTRICT--</option>
                         <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option>
                     </select>
@@ -117,9 +117,11 @@ export default{
             dialog_non_cotisation:false,
             membres:[],
             conference_select:'',
-            district_select:'',
+            
             conferences:[],
+            districts:[],
             form:{
+                id_district:'',
                 numero_bordereau:'',
                 date_paiement:'',
                 trimestre:'',
@@ -275,7 +277,7 @@ export default{
         },
         searchInDb(){
             axios
-            .get(this.url+'membres?district_select=' +this.district_select)
+            .get(this.url+'membres?district_select=' +this.form.id_district)
             .then((res)=>{
                 this.$store.state.membres_cotisation = res.data
                 this.allData = res.data
