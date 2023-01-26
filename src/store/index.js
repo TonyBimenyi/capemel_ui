@@ -23,7 +23,10 @@ export default createStore({
     paroisse_count:'-',
     membre_count:'-',
     pension_count:'-',
-    cotisation_total:'0 Fbu',
+    cotisation_total:'-',
+    cotisation_a_paye:'-',
+    recent_cot:[],
+    top_cot:[],
     
   },
   getters: {
