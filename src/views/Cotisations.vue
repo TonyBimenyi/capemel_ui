@@ -104,7 +104,7 @@
         </div>
      
         <form_modal @update="getCotisations" :edit_cotisation="modifier" @getCotisations="getCotisations"  @close="close" v-if="dialog"></form_modal> 
-        <delete_modal @getParoisses="getParoisses" @close="close" v-if="dialog_delete"></delete_modal>
+        <delete_modal @getCotisations="getCotisations" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
 </template>
 <script>
