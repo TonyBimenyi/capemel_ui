@@ -21,6 +21,11 @@
 <script>
 import axios from 'axios'
 export default {
+    data(){
+        return{
+            montant_a_paye : this.$store.state.cotisation.montant_a_paye,
+        }
+    },
 
     methods:{
         deleteCotisation(){
@@ -45,6 +50,7 @@ export default {
                     
                 })
         },
+       
         getCotisations(){
             this.$emit('getCotisations')
         },

@@ -163,6 +163,28 @@ export default {
                 console.log(error.response.data.message)
             })
         },
+        payerCotisation(item){
+            axios.put(this.url+'update_cotisation/'+this.$store.state.cotisation.id,this.form)
+                .then((response)=>{
+                // this.loading = false;
+                this.close();
+                this.getCotisations();
+                this.$toast.success(`Operation reussi`)  
+                })
+                .catch((error)=>{
+                    if (error.message == "Network Error"){
+                        this.errorMessage = "Vous n'êtes pas connecté au serveur"
+                    
+                    }else{
+                        this.errorMessage = error.response.data.message;
+                        this.loading = false;
+                        this.$toast.error(error.response.data.message,{
+                            position:"bottom-right"
+                        });
+                    }
+                    
+                })
+        },
         sortDistrict(){
             axios
             .get(this.url+'districts?conference_select=' +this.conference_select)
