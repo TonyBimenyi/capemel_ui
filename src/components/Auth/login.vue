@@ -3,7 +3,7 @@
         <div class="login_card">
             <div class="part1">
                 <div class="card_info">
-                    <p> <span style="text-align:center">Espace Personnel <br> </span> Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic optio earum quidem vero officiis possimus quis pariatur illum laborum fuga qui cum, debitis excepturi aliquid eos doloribus labore aspernatur cupiditate.</p>
+                    <p> <span style="text-align:center;font">Espace Personnel- CAPEML <br> </span> La mission de l’Église méthodiste libre est de faire connaître à toutes les personnes partout dans le monde l’appel de Dieu à la plénitude par le pardon et la sainteté en Jésus-Christ, et d’inviter à devenir membre et d’équiper pour le ministère tous ceux qui répondent par la foi.</p>
                 </div>
             </div>
             <div class="part2">

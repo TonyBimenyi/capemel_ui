@@ -1,6 +1,10 @@
 .container{
     margin:auto;
 }
+span{
+    font-weight: 700;
+    font-size: 14px;
+}
 .login_card{
     background: white;
     width: 70%;

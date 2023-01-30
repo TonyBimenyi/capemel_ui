@@ -8,7 +8,7 @@
          </div>
       <!-- <div class="subtitle">Let's create your account!</div> -->
          <div class="text_message">
-            <p style="margin-top:20px">Voulez-vous vraiment supprimer  <strong>{{ $store.state.enfant.nom_enfant + ' ' + $store.state.enfant.prenom_enfant }}</strong>?</p>
+            <p style="margin-top:20px">Voulez-vous vraiment supprimer la cotisation <strong>{{ $store.state.cotisation.membre[0]?.nom_membre + ' ' + $store.state.cotisation.membre[0]?.prenom_membre + ' '}} </strong>? </p>
          </div>
          <div class="valider">
            <button @click="deleteConjoint()">Oui, Supprimer</button>

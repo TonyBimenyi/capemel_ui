@@ -43,7 +43,7 @@
             <div class="part_right">
                 
                 <div class="add_btn">
-                    <router-link to="add-cotisations"><button @click="dialog=true,modifier=false">+</button></router-link>
+                    <router-link to="add-cotisations"><button @click="dialog=true,modifier=false">+ <span id="add_text">AJOUTER COTISATION</span> </button></router-link>
                 </div>
             </div>
         </div>
@@ -85,7 +85,7 @@
                                
                             </div>
                         </td>  
-                        <td><button @click="delete_paroisse(par);dialog=true" id="delete_btn"><i class='bx bxs-trash'></i></button></td>         
+                        <td><button @click="delete_cotisation(cot)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>         
                     </tr> 
                     
                     <tr id="total">
@@ -103,22 +103,21 @@
             
         </div>
      
-        <form_modal @update="getCotisations" :edit_cotisation="modifier" @getCotisations="getCotisations"  @close="close" v-if="dialog"></form_modal>
-    
+        <form_modal @update="getCotisations" :edit_cotisation="modifier" @getCotisations="getCotisations"  @close="close" v-if="dialog"></form_modal> 
         <delete_modal @getParoisses="getParoisses" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
 </template>
 <script>
 import axios from 'axios'
 import form_modal from '../components/cotisations/modals/form_cotisation.vue'
-import delete_modal from '../components/paroisse/modals/delete_paroisse.vue'
 import cotisation_modal from '../components/cotisations/modals/form_cotisation.vue'
+import delete_modal from '../components/cotisations/modals/delete_modal.vue'
 export default {
     components:{
         delete_modal,
         form_modal,
         cotisation_modal,
-
+        delete_modal,
     },
     data(){
         return{
@@ -213,9 +212,9 @@ export default {
                 console.log(error.response.data.message)
             })
         }, 
-        delete_paroisse(item){
+        delete_cotisation(item){
             this.dialog_delete=true,
-            this.$store.state.paroisse = item
+            this.$store.state.cotisation = item
         },
         edit_cotisation(item){
             this.dialog = true
