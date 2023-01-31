@@ -77,6 +77,9 @@
                             <div v-if="membre.statut=='deserteur'" id="deserteur">
                                 {{membre.statut}}
                             </div>
+                            <div v-if="membre.statut=='pensionne'" id="pensionne">
+                                {{membre.statut}}
+                            </div>
                         </td>
                         <td><button  id="mod_btn">Modifier</button></td>
                         <!-- <td><button @click="addCot(membre)"  id="mod_btn">Cotiser</button></td> -->

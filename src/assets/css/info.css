@@ -248,6 +248,14 @@ tbody tr td{
   color: black;
   background-color: rgb(253, 155, 155);
 }
+#pensionne{
+  color:white;
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 0px 0px;
+  background-color: rgb(255, 0, 0);
+  padding: 0 5px;
+}
 .separation{
   height: 5px;
   width: 100%;

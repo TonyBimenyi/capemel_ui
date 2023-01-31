@@ -79,7 +79,7 @@
                         <td>{{datetime(cot.date_paiement)}}</td>
                         <td>
                             <div v-if="cot.montant_paye==0">
-                                <button @click="edit_cotisation(cot)" id="mod_btn">Payer</button>
+                                <button @click="payerCotisation(cot)" id="mod_btn">Payer</button>
                             </div>
                             <div v-else>
                                
@@ -133,6 +133,9 @@ export default {
             districts:[],
             conf_text:'--CONFERENCE--',
             montant_cotisation:0,
+            form:{
+                montant_paye : '',
+            }
         }
     },
     methods:{
@@ -164,7 +167,8 @@ export default {
             })
         },
         payerCotisation(item){
-            axios.put(this.url+'update_cotisation/'+this.$store.state.cotisation.id,this.form)
+            this.form.montant_paye = item.montant_a_paye
+            axios.put(this.url+'update_cotisation/'+item.id,this.form)
                 .then((response)=>{
                 // this.loading = false;
                 this.close();

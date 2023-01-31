@@ -10,9 +10,8 @@
       <div class="inputs">
         <div class="part1">
                 <div class="input-container ic1">
-                    <input id="firstname" readonly v-model="form.montant_pension" class="input" type="number" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Frais de Pension</label>
+                    
+                    <label for="firstname" class="placeholder">Frais de Pension : {{money(membre[0]?.categorie[0].montant_pension)}} Fbu</label>
                 </div>
                 <div class="input-container ic1">
                     <input id="firstname" v-model="form.motif" class="input" type="text" required placeholder=" " />
@@ -24,7 +23,7 @@
         
             
          </div>
-      <button  class="submit" @click="saveAbandon()">{{loading?"Chargement...":btn}}</button>
+      <button  class="submit" @click="savePension()">{{loading?"Chargement...":btn}}</button>
     </div>
 </transition>
     </div>
@@ -40,7 +39,6 @@ export default {
                 motif:'Age complet, Cotisation Reguliere',
                 id_uti:'',
                 matricule_membre:'',
-
             },
             btn:'Ajouter',
             districts:[],
@@ -107,43 +105,20 @@ export default {
         image(e){
             this.photo_membre = e.target.files[0]
         },
-        saveAbandon(){
+        savePension(){
             let data = new FormData()
-            data.append('type_abandon',this.form.type_abandon)
-            data.append('motif',this.form.motif)
+   
             data.append('matricule_membre',this.membre[0].matricule_membre)
             data.append('id_uti',this.$store.state.user.user.id)
-            if(this.edit_enfant){
-                this.loading = true;
-                axios.put(this.url+'update_enfant/'+this.$store.state.enfant.id,this.form)
-                .then((response)=>{
-                this.loading = false;
-                this.close();
-                this.getEnfants();
-                this.$toast.success(`Enfant Modifier`)  
-                })
-                .catch((error)=>{
-                    if (error.message == "Network Error"){
-                        this.errorMessage = "Vous n'êtes pas connecté au serveur"
-                    
-                    }else{
-                        this.errorMessage = error.response.data.message;
-                        this.loading = false;
-                        this.$toast.error(error.response.data.message,{
-                            position:"bottom-right"
-                        });
-                    }
-                    
-                })
-            }
-            else{
+            data.append('motif_pension',this.form.motif)
+           
             this.loading = true;
-            axios.post(this.url+'store_abandon',data,this.headers)
+            axios.post(this.url+'store_pension',data,this.headers)
             .then((response)=>{
                 this.loading = false;
                 this.close();
                 // this.getUsers();
-                this.$toast.success(`Abandon est enregistré(e)`) 
+                this.$toast.success(`Pension est enregistré(e)`) 
                 this.getEnfants();
                 
             })
@@ -159,9 +134,7 @@ export default {
                 }
                 
             })
-         }
-        },
-     
+         }     
     },
     computed:{
       user(){
