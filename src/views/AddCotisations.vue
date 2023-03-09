@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div class="table_content">
+        <div v-if="membres.length>0" class="table_content">
             <table>
                 <thead>
                     <tr>
@@ -91,6 +91,9 @@
                 </tbody>
                 
             </table>         
+        </div>
+        <div v-else>
+            <h6 style="font-size:24px;margin-top:20px">Aucune donnée correspond à votre recherche,Réesayez!</h6>
         </div>
      <add_membre  @close="close" v-if="dialog"></add_membre>
      <cotisation_modal @getMembres="getMembres"  @close="close" v-if="dialog_cotisation"></cotisation_modal>
@@ -277,7 +280,7 @@ export default{
         },
         searchInDb(){
             axios
-            .get(this.url+'membres?district_select=' +this.form.id_district)
+            .get(this.url+'membres_cot?district_select=' +this.form.id_district)
             .then((res)=>{
                 this.$store.state.membres_cotisation = res.data
                 this.allData = res.data

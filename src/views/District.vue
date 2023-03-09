@@ -33,8 +33,8 @@
                         <th>Nom du District</th>
                         <th>Conference</th>
                         <th>Surintandant</th>
-                        <th>Telephone</th>
-                        <th>Email</th>
+                        <!-- <th>Telephone</th>
+                        <th>Email</th> -->
                         <th>Enregiste au</th>
                         <th colspan="3">Options</th>
                         
@@ -44,13 +44,13 @@
                     <tr class="spacer">
                         <td colspan="100"></td>
                     </tr>
-                    <tr v-for="dis in districts" :key="dis.id">
+                    <tr v-for="dis in $store.state?.districts" :key="dis.id">
                         <td>{{dis.id}}</td>
                         <td>{{dis.nom_district}}</td>
                         <td>{{dis.conference[0]?.nom_conference}}</td>
                         <td>{{dis.nom_sur_district}}</td>                        
-                        <td>{{dis.phone_sur_district}}</td>
-                        <td>{{dis.email_sur_district}}</td>
+                        <!-- <td>{{dis.phone_sur_district}}</td>
+                        <td>{{dis.email_sur_district}}</td> -->
                         <td>{{datetime(dis.created_at)}}</td>
                         <td><button @click="edit_district(dis)" id="mod_btn">Modifier</button></td>
                         <td><button @click="delete_district(dis)" id="delete_btn"><i class='bx bxs-trash'></i></button></td>                  
@@ -69,7 +69,7 @@
             <div class="header">
                 <div class="left">
                     <h2>EGLISE METHODISTE LIBRE AU BURUNDI</h2>
-                    <H2>Conference General</H2>
+                    <h2>Conference General</h2>
                     <h2>Departement des pensions</h2>
                 </div>
                 <div class="title">
@@ -88,7 +88,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="dis in districts" :key="dis.id">
+                        <tr v-for="dis in $store.state.districts" :key="dis.id">
                             <td>{{dis.nom_district}}</td>
                             <td>{{dis.conference[0]?.nom_conference}}</td>
                             <td>{{dis.nom_sur_district}}</td>                        
@@ -134,7 +134,6 @@ export default {
                 this.$store.state.districts = res.data
                 this.allData = res.data
                 this.links = res.data
-                console.log(this.conference_select)
             })
             .catch((error)=>{
                 this.$toast.error(error.response.data.message)
@@ -189,12 +188,12 @@ export default {
         this.getDistricts()
         this.getConferences()
      },
-    computed:{
-        districts(){
-            const districts = this.$store.state?.districts
-            return districts
-        }
-    }
+    // computed:{
+    //     districts(){
+    //         const districts = this.$store.state?.districts
+    //         return districts
+    //     }
+    // }
 }
 </script>
 <style src="../assets/css/table.css" scoped>

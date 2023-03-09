@@ -15,9 +15,7 @@ app.mixin({
         url(){
           return this.$store.state.url
         },   
-        errorMessage(){
-          return error.response.data.message
-        } , 
+       
         headers(){
           return {
             headers:{

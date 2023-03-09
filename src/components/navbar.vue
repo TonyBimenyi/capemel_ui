@@ -12,40 +12,43 @@
   <nav>
     <div class="navbar">
       <i class='bx bx-menu'></i>
-      <div class="logo"><a href="#">CAPEMEL</a></div>
+      <div class="logo"><a>CAPEML</a></div>
       <div class="nav-links">
         <div class="sidebar-logo">
-          <span class="logo-name">CAPEMEL</span>
+          <span class="logo-name">CAPEML</span>
           <i class='bx bx-x' ></i>
         </div>
+        
         <ul class="links">
-          <router-link style="text-decoration:none" to="/"><li><a href="">DASHBOARD</a></li></router-link>
+          <router-link style="text-decoration:none" to="/"><li><a href="">TABLEAU DE BORD</a></li></router-link>
           <li>
-            <a href="#">EGLISE</a>
+            <a>EGLISE</a>
             <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
             <ul class="htmlCss-sub-menu sub-menu">
-              <!-- <li><a href="#">Conferences</a></li> -->
-              <router-link to="districts"><li><a href="#">Districts</a></li></router-link> 
-              <router-link to="paroisses"><li><a href="#">Paroisses</a></li></router-link> 
+              <!-- <li><a>Conferences</a></li> -->
+              <router-link to="/districts"><li><a>Conferencens</a></li></router-link>
+              <router-link to="/districts"><li><a>Districts</a></li></router-link> 
+              <router-link to="/paroisses"><li><a>Paroisses</a></li></router-link> 
               <!-- <li class="more">
-                <span><a href="#">More</a>
+                <span><a>More</a>
                 <i class='bx bxs-chevron-right arrow more-arrow'></i>
               </span>
                 <ul class="more-sub-menu sub-menu">
-                  <li><a href="#">Neumorphism</a></li>
-                  <li><a href="#">Pre-loader</a></li>
-                  <li><a href="#">Glassmorphism</a></li>
+                  <li><a>Neumorphism</a></li>
+                  <li><a>Pre-loader</a></li>
+                  <li><a>Glassmorphism</a></li>
                 </ul>
               </li> -->
             </ul>
           </li>
           <li>
-            <router-link to="membres"> <a href="#">MEMBRES</a></router-link>
+            <router-link to="/membres"> <a>MEMBRES</a></router-link>
             
           </li>
-          <router-link style="text-decoration:none" to="cotisations"><li><a href="#">COTISATIONS</a></li></router-link> 
-          <router-link style="text-decoration:none" to="abandons"><li> <a href="#">ABANDONS</a></li></router-link>
-          <li><a href="#">PENSIONNES</a></li>
+          <router-link style="text-decoration:none" to="/cotisations"><li><a>COTISATIONS</a></li></router-link> 
+          <router-link style="text-decoration:none" to="/abandons"><li> <a>ABANDONS</a></li></router-link>
+          <router-link style="text-decoration:none" to="/pensions"><li> <a>PENSIONS</a></li></router-link>
+          <router-link style="text-decoration:none" to="/categories"><li> <a>CATEGORIES</a></li></router-link>
           
         </ul>
       </div>
@@ -55,11 +58,11 @@
             <ul class="s">
                 <li>
             <i id="cercle" class='bx bxs-user-circle'></i>
-            <a id="name" href="#">{{user}}</a>           
+            <a id="name">{{user}}</a>           
             <i id="dot" class='bx bxs-circle'></i> 
             <i class='bx bxs-chevron-down js-arrow arrow '></i>
             <ul class="js-sub-menu sub-menu">
-              <li><a href="#">Modifier Profil</a></li>
+              <li><a>Modifier Profil</a></li>
               <router-link to="/users"><li><a href="">Utilisateurs</a></li></router-link> 
               <li @click="logout()"><a  style="color:red" href="">Deconnexion</a></li>
 
@@ -75,7 +78,7 @@
   <!--<script src="script.js"></script>-->
   <div class="footer">
       <footer>
-         <p>CAPEMEL---Copyright {{ annee }} tous les droits reserves</p>
+         <p>CAPEMEL--- <span style="font-size:13px">&#169</span> {{ annee }} tous les droits sont reservés</p>
       </footer>
   </div>
 </body>

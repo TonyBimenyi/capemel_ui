@@ -6,15 +6,15 @@
                     <button>Imprimer</button>
                 </div>
                 <div class="btn1">
-                    <select  id="">
-                        <option selected value="">--DISTRICT--</option>
-                        <!-- <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option> -->
+                    <select @change="sortDistrict" class="select_"   v-model="conference_select" name="" id="">
+                        <option selected value="">{{ conf_text }}</option>
+                        <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
                     </select>
                 </div>
                 <div class="btn1">
-                    <select  name="" id="">
-                        <option selected value="" >--PAROISSE--</option>
-                        <!-- <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option> -->
+                    <select class="select_" @change="searchInDb" v-model="district_select"  name="" id="">
+                        <option >--DISTRICT--</option>
+                        <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option>
                     </select>
                 </div>
                 <div class="btn1">
@@ -48,9 +48,8 @@
                         <th>Paroisse</th>
                         <th>Age</th>
                         <th>Categorie</th>
-                        <th>Debut Ministere</th>
+                        <th>Date</th>
                         <th>Status</th>
-                        <th colspan="3">Options</th>
                         
                     </tr>
                 </thead>
@@ -58,39 +57,37 @@
                     <tr class="spacer">
                         <td colspan="100"></td>
                     </tr>
-                    <tr v-for="membre in membres" :key="membre.id">
-                        <td>{{ membre.matricule_membre }}</td>
-                        <td>{{membre.nom_membre}}</td>
-                        <td>{{membre.prenom_membre}}</td>
+                    <tr v-for="aba in pensions" :key="aba.id">
+                        <td>{{ aba.membre[0]?.matricule_membre }}</td>
+                        <td>{{aba.membre[0]?.nom_membre}}</td>
+                        <td>{{aba.membre[0]?.prenom_membre}}</td>
                         <td>District x</td>
-                        <td>{{ membre.paroisse[0]?.nom_paroisse }}</td>
-                        <td>{{ ageCal(membre.date_naissance_membre) }} Ans</td>
-                        <td>{{membre.categorie[0]?.nom_categorie}}</td>
-                        <td>{{datetime(membre.debut_ministere_membre)}}</td>
+                        <td>{{ aba.membre[0]?.id_paroisse }}</td>
+                        <td>{{ ageCal( aba.membre[0]?.date_naissance_membre) }} Ans</td>
+                        <td>{{ aba.membre[0]?.id_categorie}}</td>
+                        <td>{{datetime(aba.created_at)}}</td>
                         <td>
-                            <div v-if="membre.statut=='actif'" id="actif">
-                                {{membre.statut}}
+                            <div v-if="aba.membre[0]?.statut=='actif'" id="actif">
+                                {{aba.membre[0]?.statut}}
                             </div>
-                            <div v-if="membre.statut=='abandon'" id="abandon">
-                                {{membre.statut}}
+                            <div v-if="aba.membre[0]?.statut=='abandon'" id="abandon">
+                                {{aba.membre[0]?.statut}}
                             </div>
-                            <div v-if="membre.statut=='deserteur'" id="deserteur">
-                                {{membre.statut}}
+                            <div v-if="aba.membre[0]?.statut=='deserteur'" id="deserteur">
+                                {{aba.membre[0]?.statut}}
                             </div>
-                            <div v-if="membre.statut=='pensionne'" id="pensionne">
-                                {{membre.statut}}
+                            <div v-if="aba.membre[0]?.statut=='pensionne'" id="pensionne">
+                                {{aba.membre[0]?.statut}}
                             </div>
                         </td>
-                        <td><button @click="edit_membre(membre)"  id="mod_btn">Modifier</button></td>
-                        <!-- <td><button @click="addCot(membre)"  id="mod_btn">Cotiser</button></td> -->
-                        <td><button id="info_btn" @click="more_info(membre)">Voir Plus <i class='bx bx-dots-horizontal-rounded'></i></button></td>                  
+                       
                     </tr>          
                         
                 </tbody>
                 
             </table>         
         </div>
-     <add_membre @getMembres="getMembres" :edit_membre="modifier" @close="close" v-if="dialog"></add_membre>
+     <add_membre  @close="close" v-if="dialog"></add_membre>
      <cotisation_modal @getMembres="getMembres"  @close="close" v-if="dialog_cotisation"></cotisation_modal>
         
     </div>
@@ -106,10 +103,9 @@ export default{
     },
     data(){
         return{
-            modifier:false,
             dialog:false,
             dialog_cotisation:false,
-            inputSearch:''
+            membres:[],
         }
     },
     methods:{
@@ -117,11 +113,11 @@ export default{
             this.dialog=false
             this.dialog_cotisation = false
         },
-        getMembres(){
+        getPensions(){
             axios
-            .get(this.url+'membres')
+            .get(this.url+'pensions')
             .then((res)=>{
-                this.$store.state.membres = res.data
+                this.$store.state.pensions = res.data
                 this.allData = res.data
                 this.links = res.data
             })
@@ -130,14 +126,9 @@ export default{
                 console.log(error.res.data.message)
             })
         },
-        edit_membre(item){
-            this.dialog = true
-            this.modifier = true
-            this.$store.state.membre = item
-        },
         
         more_info(n){
-            this.$router.push({name:'info_membre', params:{id:n.matricule_membre}})
+            this.$router.push({name:'info_membre',params:{id:n.matricule_membre},query:{'prodName':n.nom_membre}})
         },
         ageCal(n){
                         let currentDate = new Date();
@@ -155,12 +146,12 @@ export default{
         
     },
         mounted(){
-            this.getMembres()
+            this.getPensions()
         },
         computed:{
-            membres(){
-            const membres = this.$store.state?.membres
-            return membres
+            pensions(){
+            const pensions = this.$store.state?.pensions
+            return pensions
         },
     }
 }

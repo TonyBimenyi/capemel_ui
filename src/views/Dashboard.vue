@@ -148,7 +148,7 @@
       </div>
     </div>
   </section>
-<ChartComponent/>
+<!-- <ChartComponent/> -->
     </div>
 </template>
 <script>

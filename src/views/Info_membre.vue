@@ -42,7 +42,7 @@
                     <div class="title_pers">
                         <p>Membre</p>
                     </div>
-                    <div v-bind="members" class="info_membre">
+                    <div  class="info_membre">
                         <p><span>Matricule: </span> {{membre[0]?.matricule_membre}}</p>
                         <p><span>Nom: </span> {{membre[0]?.nom_membre}}</p>
                         <p><span>Prenom: </span>{{membre[0]?.prenom_membre}}</p>
@@ -74,7 +74,7 @@
                     <div class="title_pers">
                         <p>Conjoint(e)</p>
                     </div>
-                    <div v-if="conjoint.length>0" v-bind="members" class="info_membre">
+                    <div v-if="conjoint.length>0"  class="info_membre">
                         <p><span>Nom: </span> {{conjoint[0]?.nom_conjoint}}</p>
                         <p><span>Prenom: </span>{{conjoint[0]?.prenom_conjoint}}</p>
                         <p><span>Nom du Pere: </span> {{conjoint[0]?.nom_pere_conjoint}}</p>
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-else v-bind="members" class="info_conjoint">
+                    <div v-else  class="info_conjoint">
                         <h6>Aucun(e) conjoint(e) correspond à {{ membre[0]?.nom_membre }} {{ membre[0]?.prenom_membre }}</h6>
                         <div class="add_conjoint_btn">
                             <button @click="dialog_conjoint=true;modifier=false"> <span><i class='bx bx-folder-plus'></i></span> Ajouter un(e) Conjoint(e)</button>
@@ -108,7 +108,7 @@
                     <div class="title_pers">
                         <p>Enfant(s)</p>
                     </div>
-                    <div v-bind="members" class="info_membre">
+                    <div  class="info_membre">
                        <table>
                         <thead>
                             <tr>

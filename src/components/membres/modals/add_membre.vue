@@ -125,7 +125,7 @@
 <script>
 import axios from 'axios'
 export default {
-    props:['edit_paroisse'],
+    props:['edit_membre'],
     data(){
         return{
             form:{
@@ -219,7 +219,7 @@ export default {
         },
         saveMembre(){
            
-            if(this.edit_paroisse){
+            if(this.edit_membre){
                 this.loading = true;
                 axios.put(this.url+'update_paroisse/'+this.$store.state.paroisse.id,this.form)
                 .then((response)=>{
@@ -279,11 +279,23 @@ export default {
         this.getDistricts()
         this.getMembres()
         this.getCategories()
-        if(this.edit_paroisse){
-            this.form.nom_paroisse = this.$store.state.paroisse.nom_paroisse;
+        if(this.edit_membre){
+            this.form.nom_membre = this.$store.state.membre.nom_membre;
+            this.form.prenom_membre = this.$store.state.membre.prenom_membre;
+            this.form.nom_pere_membre = this.$store.state.membre.nom_pere_membre;
+            this.form.nom_mere_membre = this.$store.state.membre.nom_mere_membre;
+            this.form.date_naissance_membre = this.$store.state.membre.date_naissance_membre;
+            this.form.province_membre = this.$store.state.membre.province_membre;
+            this.form.commune_membre = this.$store.state.membre.commune_membre;
+            this.form.colline_membre = this.$store.state.membre.colline_membre;
+            this.form.cin_membre = this.$store.state.membre.cin_membre;
+            this.form.debut_ministere_membre = this.$store.state.membre.debut_ministere_membre;
+            this.form.date_mariage = this.$store.state.membre.date_mariage;
+            this.form.telephone_membre = this.$store.state.membre.telephone_membre;
+            
             this.form.id_district = this.$store.state.paroisse.id_district;
             this.btn = 'Modifier'
-            this.modal_title = 'Modifier '+this.$store.state.paroisse.nom_paroisse; 
+            this.modal_title = 'Modifier '+this.$store.state.membre.nom_membre + ' '+ this.$store.state.membre.prenom_membre; 
         }
     }
 }

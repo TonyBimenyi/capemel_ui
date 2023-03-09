@@ -10,6 +10,7 @@ export default createStore({
     paroisses:[],
     paroisse:{},
     membres:[],
+    categories:[],
     membre:{},
     membre_info:{},
     sumCotisation:{},
@@ -28,6 +29,7 @@ export default createStore({
     cotisation_a_paye:'-',
     recent_cot:[],
     top_cot:[],
+    pensions:[],
     
   },
   getters: {

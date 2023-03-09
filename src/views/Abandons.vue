@@ -6,15 +6,15 @@
                     <button>Imprimer</button>
                 </div>
                 <div class="btn1">
-                    <select @change="sortDistrict" class="select_"   v-model="conference_select" name="" id="">
-                        <option selected value="">{{ conf_text }}</option>
-                        <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
+                    <select name="" id="">
+                        <option selected value="">--DISTRICT--</option>
+                        <!-- <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option> -->
                     </select>
                 </div>
                 <div class="btn1">
-                    <select class="select_" @change="searchInDb" v-model="district_select"  name="" id="">
-                        <option >--DISTRICT--</option>
-                        <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option>
+                    <select class="select_"   name="" id="">
+                        <option >--PAROISSE--</option>
+                        <!-- <option v-for="dis in districts" :key="dis.id" :value="dis.id">{{dis.nom_district}}</option> -->
                     </select>
                 </div>
                 <div class="btn1">
@@ -62,10 +62,10 @@
                         <td>{{ aba.membre[0]?.matricule_membre }}</td>
                         <td>{{aba.membre[0]?.nom_membre}}</td>
                         <td>{{aba.membre[0]?.prenom_membre}}</td>
-                        <td>District x</td>
-                        <td>{{ aba.membre[0]?.id_paroisse }}</td>
+                        <td>Ntahangwa Est</td>
+                        <td>Nyakabondo</td>
                         <td>{{ ageCal( aba.membre[0]?.date_naissance_membre) }} Ans</td>
-                        <td>{{ aba.membre[0]?.id_categorie}}</td>
+                        <td>Pasteur</td>
                         <td>{{datetime(aba.created_at)}}</td>
                         <td>
                             <div v-if="aba.membre[0]?.statut=='actif'" id="actif">
