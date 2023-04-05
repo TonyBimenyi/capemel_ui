@@ -152,6 +152,11 @@ export default{
                         position:"bottom-right"
                     });
             }
+            else if(this.form.trimestre==''){
+                this.$toast.error("Veuillez selectionner le trimestre",{
+                        position:"bottom-right"
+                    });
+            }
             
             else{
            

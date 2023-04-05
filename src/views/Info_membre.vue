@@ -2,9 +2,9 @@
     <div class="container">
         <div class="top_part">
             <div class="part_left">
-                <div class="btn1">
+                <!-- <div  class="btn1">
                     <button>Imprimer</button>
-                </div>
+                </div> -->
     
                 <div class="btn1">
                     <button  @click="add_abandon(membre);dialog_abandon=true">Ajouter aux abandons</button>
@@ -15,20 +15,27 @@
             </div>
             <div class="part_right">
                 
-                <div class="add_btn">
+                <!-- <div class="add_btn">
                     <button @click="dialog=true,modifier=false">+</button>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="body_part">
             <div class="header_info">
                 <div class="photos">
-                    <div class="photo">
-                        <p>Homme</p>
+                    <div @click="dialog_photo_homme=true" class="photo lion">
+
+                        <!-- <img :src="membre[0]?.photo_membre" class="image" /> -->
+                        <!-- <button @click="dialog_photo_homme=true">+</button> -->
                     </div>
-                    <div class="photo">
-                        <p>Femme</p>
+                    
+                    
+                    <div  @click="dialog_photo_femme=true" class="photo conjoint">
+                        <!-- <p> Photo Femme</p> -->
+                        <!-- <img :src="conjoint[0]?.photo_conjoint" class="image" />  -->
+                        <!-- <button>+</button> -->
                     </div>
+                    
                 </div>
                 <div class="title">
                     <h1>Fiche d'identification personnel</h1>
@@ -149,8 +156,10 @@
      <delete_modal @getConjoint="getConjoint" @close="close" v-if="dialog_delete"></delete_modal>
      <delete_enfant_modal @getEnfants="getEnfants" @close="close" v-if="dialog_delete_enfant"></delete_enfant_modal>
      <enfant_modal @getEnfants="getEnfants" :edit_enfant="modifier" @close="close" v-if="dialog_enfant"></enfant_modal>
-     <abandon_modal :edit_enfant="modifier" @close="close" v-if="dialog_abandon"></abandon_modal>
+     <abandon_modal @getMembres="getMembres" :edit_enfant="modifier" @close="close" v-if="dialog_abandon"></abandon_modal>
      <pension_modal :edit_enfant="modifier" @close="close" v-if="dialog_pension"></pension_modal>
+     <photo_homme @close="close" v-if="dialog_photo_homme"></photo_homme>
+     <photo_femme @close="close" v-if="dialog_photo_femme"></photo_femme>
     </div>
 </template>
 <script>
@@ -161,6 +170,8 @@ import delete_enfant_modal from '../components/enfants/modals/delete_enfant.vue'
 import enfant_modal from '../components/enfants/modals/enfant_form.vue'
 import abandon_modal from '../components/abandons/modals/abandon_form.vue'
 import pension_modal from '../components/pensions/modals/form_pension.vue'
+import photo_homme from '../components/membres/modals/photo_homme.vue'
+import photo_femme from '../components/membres/modals/photo_femme.vue'
 
 export default {
     components:{
@@ -170,12 +181,14 @@ export default {
         delete_enfant_modal,
         abandon_modal,
         pension_modal,
+        photo_homme,
+        photo_femme,
     },
     data(){
         return{
                  info:false,
                 membre:{},
-                sumCotisation:{},
+                sumCotisation:[],
                 conjoint:{},
                 enfants:[],
                 dialog_conjoint:false,
@@ -186,6 +199,8 @@ export default {
                 modifier:false,
                 dialog_abandon:false,
                 dialog_pension:false,
+                dialog_photo_homme:false,
+                dialog_photo_femme:false,
         };
     },
     methods:{
@@ -233,6 +248,8 @@ export default {
             this.dialog_enfant = false;
             this.dialog_abandon = false;
             this.dialog_pension = false
+            this.dialog_photo_homme = false
+            this.dialog_photo_femme = false
         },
         getMembres(){
             let pk = this.$route.params.id
@@ -242,6 +259,11 @@ export default {
                 this.$store.state.membre = res.data
                 this.membre = res.data
                 this.links = res.data
+                const el = document.querySelector('.lion');
+                   
+                el.style.background= 'url("'+  this.membre[0]?.photo_membre +'")'
+                el.style.backgroundSize = 'cover';
+                el.style.backgroundPosition = 'center';           
             })
             .catch((error)=>{
                 this.$toast.error(error.response.data.message)
@@ -270,6 +292,11 @@ export default {
                 this.$store.state.membre = res.data
                 this.conjoint = res.data
                 this.links = res.data
+
+                const el = document.querySelector('.conjoint');
+                el.style.background= 'url("'+  this.conjoint[0]?.photo_conjoint +'")'
+                el.style.backgroundSize = 'cover'
+                el.style.backgroundPosition = 'center'
             })
             .catch((error)=>{
                 this.$toast.error(error.response.data.message)
@@ -284,6 +311,8 @@ export default {
                 this.$store.state.enfants = res.data
                 this.enfants = res.data
                 this.links = res.data
+
+                
             })
             .catch((error)=>{
                 this.$toast.error(error.response.data.message)
@@ -300,6 +329,8 @@ export default {
     // },
     
     mounted(){
+
+       
         this.getSumCotisation()
         this.getMembres()
         this.getConjoint()

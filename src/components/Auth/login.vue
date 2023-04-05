@@ -13,7 +13,7 @@
                 <div class="form">
                     <form @submit.prevent="submit">
                         <div class="input">
-                            <input type="text" v-model="form.email" placeholder="Entrez l'Email...">
+                            <input type="text" v-model="form.email" placeholder="Entrez le nom d'utilisateur...">
                         </div>
                         <div class="input">
                             <input type="password" v-model="form.password" placeholder="Mot de passe">
@@ -35,8 +35,8 @@ export default {
     data(){
         return{
             form:{
-                email:'admin@gmail.com',
-                password:'12345678',
+                email:'',
+                password:'',
             },
             errorMessage:"",
             loading:false,

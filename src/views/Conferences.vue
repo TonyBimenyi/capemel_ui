@@ -2,7 +2,7 @@
     <div class="container">
         <div class="top_part">
             <div class="part_left">
-                <div class="btn1">
+                <!-- <div class="btn1">
                     <button @click="printPage">Imprimer</button>
                 </div>
                 <div class="btn1">
@@ -10,13 +10,13 @@
                         <option value="">--CONFERENCE--</option>
                         <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
                     </select>
-                </div>
+                </div> -->
                 <!-- <div class="btn1">
                     <button>Importer</button>
                 </div> -->
-                <div  class="search">
+                <!-- <div  class="search">
                    <input style="width:250px" v-model="inputSearch" type="text" placeholder="Rechercher...">
-                </div>
+                </div> -->
             </div>
             <div class="part_right">
                 
@@ -30,13 +30,12 @@
                 <thead>
                     <tr>
                         <th>#ID</th>
-                        <th>Nom du District</th>
-                        <th>Conference</th>
-                        <th>Surintandant</th>
+                        <th>Nom de la conference</th>
+                        
                         <!-- <th>Telephone</th>
                         <th>Email</th> -->
                         <th>Enregiste au</th>
-                        <th colspan="3">Options</th>
+                        <th colspan="2">Options</th>
                         
                     </tr>
                 </thead>
@@ -44,11 +43,10 @@
                     <tr class="spacer">
                         <td colspan="100"></td>
                     </tr>
-                    <tr v-for="dis in districts" :key="dis.id">
+                    <tr v-for="dis in conferences" :key="dis.id">
                         <td>{{dis.id}}</td>
-                        <td>{{dis.nom_district}}</td>
-                        <td v-for="item in dis.conference" :key="item.id">{{item.nom_conference}}</td>
-                        <td>{{dis.nom_sur_district}}</td>                        
+                        <td>{{dis.nom_conference}}</td>
+                        <!-- <td>{{dis.nom_sur_district}}</td>                         -->
                         <!-- <td>{{dis.phone_sur_district}}</td>
                         <td>{{dis.email_sur_district}}</td> -->
                         <td>{{datetime(dis.created_at)}}</td>
@@ -60,52 +58,15 @@
             </table>         
         </div>
      
-        <form_modal @update="getDistricts" :edit_district="modifier" @getDistricts="getDistricts"  @close="close" v-if="dialog"></form_modal>
-        <delete_modal @getDistricts="getDistricts" @close="close" v-if="dialog_delete"></delete_modal>
+        <form_modal @update="getConferences" :edit_district="modifier" @getConferences="getConferences"  @close="close" v-if="dialog"></form_modal>
+        <delete_modal @getConferences="getConferences" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
-    <div class="printCode">
-    <div class="container">
-        <div class="paper">
-            <div class="header">
-                <div class="left">
-                    <h2>EGLISE METHODISTE LIBRE AU BURUNDI</h2>
-                    <h2>Conference General</h2>
-                    <h2>Departement des pensions</h2>
-                </div>
-                <div class="title">
-                    <h2>LISTE DES DISTRICTS</h2>
-                </div>
-            </div>
-            <div class="body">
-                <div class="table">
-                    <table>
-                    <thead>
-                        <tr>
-                            <th>NOM DU DISTRICT</th>
-                            <th>CONFERENCE</th>
-                            <th>SURINTENDANT</th>
-                    
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="dis in $store.state.districts" :key="dis.id">
-                            <td>{{dis.nom_district}}</td>
-                            <td>{{dis.conference[0]?.nom_conference}}</td>
-                            <td>{{dis.nom_sur_district}}</td>                        
-                        </tr>
-                    </tbody>
-                </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    </div>
+   
 </template>
 <script>
 import axios from 'axios'
-import form_modal from '../components/district/modals/form_modal.vue'
-import delete_modal from '../components/district/modals/delete_district_modal.vue'
+import form_modal from '../components/conferences/modals/form_modal.vue'
+import delete_modal from '../components/conferences/modals/delete_conference.vue'
 export default {
     components:{
         delete_modal,
@@ -117,9 +78,10 @@ export default {
             dialog:false,
             allData:[],
             dialog_delete:false,
-            conferences:[],
+            // conferences:[],
             conference_select:'',
-            inputSearch:''
+            inputSearch:'',
+            
         }
     },
     methods:{
@@ -147,7 +109,7 @@ export default {
             axios
             .get(this.url+'conferences')
             .then((res)=>{
-                this.conferences = res.data
+                this.$store.state.conferences = res.data
                 this.allData = res.data
               
             })
@@ -158,12 +120,12 @@ export default {
         }, 
         delete_district(item){
             this.dialog_delete=true,
-            this.$store.state.district = item
+            this.$store.state.conference = item
         },
         edit_district(item){
             this.dialog = true
             this.modifier = true
-            this.$store.state.district = item
+            this.$store.state.conference = item
         },
         close(){
             this.dialog = false
@@ -189,14 +151,10 @@ export default {
         this.getConferences()
      },
     computed:{
-        districts(){
-            return this.$store.state.districts.filter(item => {
-                return(
-                    item.nom_district.toLowerCase().indexOf(this.inputSearch.toLowerCase()) > -1 ||
-                    item.conference[0].nom_conference.toLowerCase().indexOf(this.inputSearch.toLowerCase()) > -1 ||
-                    item.nom_sur_district.toLowerCase().indexOf(this.inputSearch.toLowerCase()) > -1
-                )
-            })
+        conferences(){
+            const conferences = this.$store.state?.conferences
+            return conferences
+           
             
         }
     }

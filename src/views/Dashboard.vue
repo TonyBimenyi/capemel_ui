@@ -50,7 +50,7 @@
         </div>
       </div>
       <div class="overview-boxes">
-        <div class="box">
+        <div class="box" style="width:47%">
           <div class="right-side">
             <div class="box-topic">Cotisations</div>
             <div class="number">{{money(this.$store.state.cotisation_total[0]?.cotisation_total)}} F</div>
@@ -61,7 +61,7 @@
           </div>
           <i class='bx bx-cart-alt cart'></i>
         </div>
-        <div class="box">
+        <div class="box" style="width:47%">
           <div class="right-side">
             <div class="box-topic">Non Payes</div>
             <div class="number">{{money(this.$store.state.cotisation_a_paye[0]?.cotisation_total-this.$store.state.cotisation_total[0]?.cotisation_total)}} F</div>
@@ -72,7 +72,7 @@
           </div>
           <i class='bx bxs-cart-add cart two' ></i>
         </div>
-        <div class="box">
+        <!-- <div class="box">
           <div class="right-side">
             <div class="box-topic">Total Profit</div>
             <div class="number">$12,876</div>
@@ -93,7 +93,7 @@
             </div>
           </div>
           <i class='bx bxs-cart-download cart four' ></i>
-        </div>
+        </div> -->
       </div>
 
       <div class="sales-boxes">
@@ -117,7 +117,7 @@
                     <td>{{cot.membre[0]?.matricule_membre}}</td>
                     <td>{{cot.membre[0]?.nom_membre}}</td>
                     <td>{{cot.membre[0]?.prenom_membre}}</td>
-                    <td>{{cot.membre[0]?.id_categorie}}</td>
+                    <td>{{cot.membre[0]?.categorie[0]?.nom_categorie}}</td>
                     <td>{{money(cot.montant_paye)}}Fbu</td>
                     <td>{{cot.date_paiement}}</td>
                   </tr>
@@ -129,7 +129,7 @@
           </div>
         </div>
         <div class="top-sales box">
-          <div class="title">Top Cotisations/Paroisses</div>
+          <div class="title">Top Cotisations/District</div>
           <table>
             <thead>
               <tr>

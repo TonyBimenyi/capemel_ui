@@ -3,7 +3,7 @@
 <transition name="fade" appear>
     <div class="form" >
         <div class="top">
-             <div class="title">Ajouter un utilisateur</div>
+             <div class="title">{{modal_title}}</div>
              <div class="close"><button @click="close">X</button></div>
          </div>
       <!-- <div class="subtitle">Let's create your account!</div> -->
@@ -15,9 +15,9 @@
                     <label for="firstname" class="placeholder">Nom et Prenom</label>
                 </div>
                 <div class="input-container ic2">
-                    <input id="lastname" v-model="form.email" class="input" required type="email" placeholder=" " />
+                    <input id="lastname" v-model="form.email" class="input" required type="text" placeholder=" " />
                     <div class="cut"></div>
-                    <label for="lastname" class="placeholder">Email</label>
+                    <label for="lastname" class="placeholder">Nom d'utilisateur</label>
                 </div>
                 <div class="input-container ic2">
                     <input id="email" v-model="form.telephone" class="input" required type="number" min="0" placeholder=" " />
@@ -29,8 +29,8 @@
                 <div class="input-container ic1">
                     <select class="input" v-model="form.role" name="" id="">
                         <option value="">--Selectionner le Role--</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Super Admin">Super Admin</option>
+                        <option value="Coordinateur">Coordinateur</option>
+                        <option value="Secretaire">Secretaire</option>
                     </select>
                     <div class="cut"></div>
                     <label for="firstname" class="placeholder">Role</label>
@@ -55,6 +55,7 @@
 <script>
 import axios from 'axios'
 export default {
+    props:['edit_user'],
     data(){
         return{
             form:{
@@ -67,9 +68,11 @@ export default {
             },
             errorMessage:"",
             loading:false,
+            modal_title:'Ajouter Utilisateur'
         }
     },
     methods:{
+       
         getUsers(){
             this.$emit('getUsers')
         },
@@ -77,6 +80,30 @@ export default {
             this.$emit('close')
         },
         saveUser(){
+            if(this.edit_user){
+                this.loading = true;
+                axios.put(this.url+'update_user/'+this.$store.state.user_store.id,this.form)
+                .then((response)=>{
+                this.loading = false;
+                this.close();
+                this.getUsers();
+                this.$toast.success(`Categorie modifié`)  
+                })
+                .catch((error)=>{
+                    if (error.message == "Network Error"){
+                        this.errorMessage = "Vous n'êtes pas connecté au serveur"
+                    
+                    }else{
+                        this.errorMessage = error.response.data.message;
+                        this.loading = false;
+                        this.$toast.error(error.response.data.message,{
+                            position:"bottom-right"
+                        });
+                    }
+                    
+                })
+            }
+            else{
             this.loading = true;
             axios.post(this.url+'register',this.form)
             .then((response)=>{
@@ -84,7 +111,7 @@ export default {
                 this.close();
                 // this.getUsers();
                 this.getUsers()
-                this.$toast.success(`Utilisateur enregistre`)  
+                this.$toast.success(`Utilisateur enregistré`)  
             })
             .catch((error)=>{
                 if (error.message == "Network Error"){
@@ -100,7 +127,21 @@ export default {
                 
             })
         }
+        }
     },
+    mounted(){
+   this.getUsers()
+        if(this.edit_user){
+            this.form.name =   this.$store.state.user_store.name;
+            this.form.email = this.$store.state.user_store.email;
+            this.form.telephone =  this.$store.state.user_store.telephone;
+            this.form.role =  this.$store.state.user_store.role;
+            
+
+            this.btn = 'Modifier'
+            this.modal_title = 'Modifier un utilisateur'; 
+        }
+    }
 }
 </script>
 <style src='../../assets/css/modal.css' scoped>

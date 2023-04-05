@@ -10,6 +10,7 @@ import AddCotisations from '../views/AddCotisations.vue'
 import Abandons from '../views/Abandons.vue'
 import Pensions from '../views/Pensions.vue'
 import Categories from '../views/Categories.vue'
+import Conferences from '../views/Conferences.vue'
 
 const routes = [
   {path: '/',name:'dashboard',component: Dashboard},
@@ -23,6 +24,7 @@ const routes = [
   {path: '/abandons',name:'Abadons',component: Abandons},
   {path: '/pensions',name:'Pensions',component: Pensions},
   {path: '/categories',name:'Categories',component: Categories},
+  {path: '/conferences',name:'Conferences',component: Conferences},
 ]
 
 const router = createRouter({

@@ -20,15 +20,15 @@
         </div>
         
         <ul class="links">
-          <router-link style="text-decoration:none" to="/"><li><a href="">TABLEAU DE BORD</a></li></router-link>
-          <li>
+          <li> <router-link active-class="active" exact style="text-decoration:none" to="/">TABLEAU DE BORD</router-link></li>
+          <li active-class="active" exact v-if="this.$store.state.user.user.role=='Coordinateur'">
             <a>EGLISE</a>
             <i class='bx bxs-chevron-down htmlcss-arrow arrow  '></i>
             <ul class="htmlCss-sub-menu sub-menu">
               <!-- <li><a>Conferences</a></li> -->
-              <router-link to="/districts"><li><a>Conferencens</a></li></router-link>
-              <router-link to="/districts"><li><a>Districts</a></li></router-link> 
-              <router-link to="/paroisses"><li><a>Paroisses</a></li></router-link> 
+              <router-link  to="/conferences"><li><a>Conferencens</a></li></router-link>
+              <router-link active-class="active" exact to="/districts"><li><a>Districts</a></li></router-link> 
+              <router-link active-class="active" exact to="/paroisses"><li><a>Paroisses</a></li></router-link> 
               <!-- <li class="more">
                 <span><a>More</a>
                 <i class='bx bxs-chevron-right arrow more-arrow'></i>
@@ -42,13 +42,13 @@
             </ul>
           </li>
           <li>
-            <router-link to="/membres"> <a>MEMBRES</a></router-link>
+            <router-link active-class="active" exact to="/membres"> MEMBRES</router-link>
             
           </li>
-          <router-link style="text-decoration:none" to="/cotisations"><li><a>COTISATIONS</a></li></router-link> 
-          <router-link style="text-decoration:none" to="/abandons"><li> <a>ABANDONS</a></li></router-link>
-          <router-link style="text-decoration:none" to="/pensions"><li> <a>PENSIONS</a></li></router-link>
-          <router-link style="text-decoration:none" to="/categories"><li> <a>CATEGORIES</a></li></router-link>
+          <li> <router-link active-class="active" exact style="text-decoration:none" to="/cotisations">COTISATIONS</router-link> </li>
+          <li><router-link active-class="active" exact style="text-decoration:none" to="/abandons">ABANDONS</router-link></li>
+          <li><router-link active-class="active" exact style="text-decoration:none" to="/pensions">PENSIONS</router-link></li>
+          <li v-if="this.$store.state.user.user.role=='Coordinateur'"><router-link  active-class="active" exact style="text-decoration:none" to="/categories">CATEGORIES</router-link></li>
           
         </ul>
       </div>
@@ -58,11 +58,13 @@
             <ul class="s">
                 <li>
             <i id="cercle" class='bx bxs-user-circle'></i>
-            <a id="name">{{user}}</a>           
+            <a id="name">{{user}}</a><br>
+                  
             <i id="dot" class='bx bxs-circle'></i> 
             <i class='bx bxs-chevron-down js-arrow arrow '></i>
+            <small style="font-size:12px;font-weight:400">{{this.$store.state.user.user.role}}</small>     
             <ul class="js-sub-menu sub-menu">
-              <li><a>Modifier Profil</a></li>
+              <!-- <li><a>Modifier Profil</a></li> -->
               <router-link to="/users"><li><a href="">Utilisateurs</a></li></router-link> 
               <li @click="logout()"><a  style="color:red" href="">Deconnexion</a></li>
 
@@ -99,7 +101,7 @@ export default {
     },
     computed:{
       user(){
-        return this.$store.state.user.name
+        return this.$store.state.user.user.email
       }
     },  
 
@@ -125,9 +127,9 @@ export default {
 
         // sidebar submenu open close js code
         let htmlcssArrow = document.querySelector(".htmlcss-arrow");
-        htmlcssArrow.onclick = function() {
-        navLinks.classList.toggle("show1");
-        }
+        // htmlcssArrow.onclick = function() {
+        // navLinks.classList.toggle("show1");
+        // }
         let moreArrow = document.querySelector(".more-arrow");
         // moreArrow.onclick = function() {
         // navLinks.classList.toggle("show2");

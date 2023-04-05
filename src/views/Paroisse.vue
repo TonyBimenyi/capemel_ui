@@ -3,7 +3,7 @@
         <div class="top_part">
             <div class="part_left">
                 <div class="btn1">
-                    <button>Imprimer</button>
+                    <button @click="printPage">Imprimer</button>
                 </div>
                 <div class="btn1">
                     <select @change="sortDistrict"   v-model="conference_select" name="" id="">
@@ -64,6 +64,45 @@
         <form_modal @update="getParoisses" :edit_paroisse="modifier" @getParoisses="getParoisses"  @close="close" v-if="dialog"></form_modal>
         <delete_modal @getParoisses="getParoisses" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
+    <div class="printCode">
+        <div class="container">
+            <div class="paper">
+                <div class="header">
+                    <div class="left">
+                        <h2>EGLISE METHODISTE LIBRE AU BURUNDI</h2>
+                        <h2>Conference General</h2>
+                        <h2>Departement des pensions</h2>
+                    </div>
+                    <div class="title">
+                        <h2>LISTE DES PAROISSES</h2>
+                        
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="table">
+                        <table>
+                        <thead>
+                            <tr>
+                                <th>NOM DE LA PAROISSE</th>
+                                <th>CONFERENCE</th>
+                                
+                        
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="dis in paroisses" :key="dis.id">
+                                <td>{{dis.nom_paroisse}}</td>
+                                <td>{{dis.district[0]?.nom_district}}</td>
+                                                   
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        </div>
 </template>
 <script>
 import axios from 'axios'
@@ -89,6 +128,10 @@ export default {
         }
     },
     methods:{
+        printPage(){
+            
+            window.print();
+        },
         sortDistrict(){
             axios
             .get(this.url+'districts?conference_select=' +this.conference_select)
@@ -122,9 +165,12 @@ export default {
                 console.log(error.response.data.message)
             })
         },
-        inputSearchMethods(){
-            this.$store.state.paroisses = this.allData.filter(e => JSON.stringify(e).toLowerCase().includes(this.inputSearch.toLowerCase()))          
-        },
+        // filteredParoisses(){
+        //     return this.$store.state?.paroisses.filter(par => par.name_paroisse.toLowerCase().includes(this.inputSearch.toLowerCase()))
+        // },
+        // inputSearchMethods(){
+        //     this.$store.state.paroisses = this.allData.filter(e => JSON.stringify(e).toLowerCase().includes(this.inputSearch.toLowerCase()))          
+        // },
         getConferences(){
             axios
             .get(this.url+'conferences')
@@ -157,7 +203,7 @@ export default {
             .then((res)=>{
                 this.$store.state.paroisses = res.data
                 this.allData = res.data
-                this.links = res.data
+                // this.links = res.data
             })
             .catch((error)=>{
                 this.$toast.error(error.response.data.message)
@@ -172,8 +218,15 @@ export default {
      },
     computed:{
         paroisses(){
-            const paroisses = this.$store.state?.paroisses
-            return paroisses
+            // const paroisses = this.$store.state?.paroisses
+            // return paroisses
+            return this.$store.state.paroisses.filter(item => {
+                return(
+                    item.nom_paroisse.toLowerCase().indexOf(this.inputSearch.toLowerCase()) > -1 ||
+                    item.district[0].nom_district.toLowerCase().indexOf(this.inputSearch.toLowerCase()) > -1
+                    // item.nom_sur_district.toLowerCase().indexOf(this.inputSearch.toLowerCase()) > -1
+                )
+            })
         }
     }
 }

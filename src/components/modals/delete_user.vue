@@ -1,50 +1,19 @@
 <template>
     <div class="container">
 <transition name="fade" appear>
-    <div class="form" >
+    <div style="margin-top:-130px" class="form" >
         <div class="top">
-             <div class="title">Ajouter une federation</div>
+             <div class="title">Attention!</div>
              <div class="close"><button @click="close">X</button></div>
          </div>
       <!-- <div class="subtitle">Let's create your account!</div> -->
-      <div class="inputs">
-        <div class="part1">
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.nom_district" class="input" type="text" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom District*</label>
-                </div>
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.nom_sur_district" class="input" type="text" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom et Prenom Surintandant</label>
-                </div>
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.email_sur_district" class="input" type="email" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Email Surintandant</label>
-                </div>
-                
-        </div>
-        <div class="part1">
-                <div class="input-container ic2">
-                    <select class="input" v-model="form.id_conference" name="" id="">
-                        <option value="">--Selectionner la conference--</option>
-                        <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
-                    </select>
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Conference</label>
-                </div>
-               
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.phone_sur_district" class="input" type="number" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Telephone Surintandant</label>
-                </div>
-        </div>
-            
+         <div class="text_message">
+            <p style="margin-top:20px">Voulez-vous vraiment supprimer  <strong>{{ $store.state.user_store.name }}</strong>{{  }}?</p>
          </div>
-      <button  class="submit" @click="saveDistrict()">{{loading?"Chargement...":btn}}</button>
+         <div class="valider">
+           <button @click="deleteDistrict()">Oui, Supprimer</button>
+         </div>
+      <button  class="delete_btn" @click="close()">Annuler</button>
     </div>
 </transition>
     </div>
@@ -69,8 +38,30 @@ export default {
         }
     },
     methods:{
-        getDistricts(){
-            this.$emit('getDistricts')
+        deleteDistrict(){
+            axios.post(this.url+'delete_user/'+this.$store.state.user_store.id,this.form)
+                .then((response)=>{
+                // this.loading = false;
+                this.close();
+                this.getUsers();
+                this.$toast.success(`District Supprimer`)  
+                })
+                .catch((error)=>{
+                    if (error.message == "Network Error"){
+                        this.errorMessage = "Vous n'êtes pas connecté au serveur"
+                    
+                    }else{
+                        this.errorMessage = error.response.data.message;
+                        this.loading = false;
+                        this.$toast.error(error.response.data.message,{
+                            position:"bottom-right"
+                        });
+                    }
+                    
+                })
+        },
+        getUsers(){
+            this.$emit('getUsers')
         },
         getConferences(){
             axios
@@ -140,7 +131,7 @@ export default {
     },
     mounted(){
         this.getConferences()
-        this.getDistricts()
+       this.getUsers()
         if(this.edit_district){
             this.form.nom_district = this.$store.state.district.nom_district;
             this.form.nom_sur_district = this.$store.state.district.nom_sur_district;
@@ -152,7 +143,7 @@ export default {
     }
 }
 </script>
-<style src='../../../assets/css/modal.css' scoped>
+<style src='../../assets/css/modal.css' scoped>
 .fade-enter-active, .fade-leave-active {
     transition: opacity .5s
 }

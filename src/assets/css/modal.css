@@ -12,6 +12,17 @@ body {
   .close{
    
  }
+ input::file-selector-button{
+  background-color: var(--primary);
+  border: none;
+  color: white;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 5px;
+ }
+ #photo{
+  padding-top: 12px;
+ }
  .close button{
     border: none;
     background-color: transparent;

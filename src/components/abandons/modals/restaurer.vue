@@ -1,50 +1,19 @@
 <template>
     <div class="container">
 <transition name="fade" appear>
-    <div class="form" >
+    <div style="margin-top:-130px" class="form" >
         <div class="top">
-             <div class="title">Ajouter une federation</div>
+             <div class="title">Attention!</div>
              <div class="close"><button @click="close">X</button></div>
          </div>
       <!-- <div class="subtitle">Let's create your account!</div> -->
-      <div class="inputs">
-        <div class="part1">
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.nom_district" class="input" type="text" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom District*</label>
-                </div>
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.nom_sur_district" class="input" type="text" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom et Prenom Surintandant</label>
-                </div>
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.email_sur_district" class="input" type="email" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Email Surintandant</label>
-                </div>
-                
-        </div>
-        <div class="part1">
-                <div class="input-container ic2">
-                    <select class="input" v-model="form.id_conference" name="" id="">
-                        <option value="">--Selectionner la conference--</option>
-                        <option v-for="conf in conferences" :key="conf.id" :value="conf.id">{{conf.nom_conference}}</option>
-                    </select>
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Conference</label>
-                </div>
-               
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.phone_sur_district" class="input" type="number" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Telephone Surintandant</label>
-                </div>
-        </div>
-            
+         <div class="text_message">
+            <p style="margin-top:20px">Voulez-vous vraiment restaurer <strong>{{ $store.state.abandon.membre[0]?.nom_membre }} {{ $store.state.abandon.membre[0]?.prenom_membre }}</strong>?</p>
          </div>
-      <button  class="submit" @click="saveDistrict()">{{loading?"Chargement...":btn}}</button>
+         <div class="valider">
+           <button @click="deleteDistrict()">Oui, Restaurer</button>
+         </div>
+      <button  class="delete_btn" @click="close()">Annuler</button>
     </div>
 </transition>
     </div>
@@ -61,6 +30,7 @@ export default {
                 nom_sur_conference:'',
                 email_sur_district:'',
                 nom_sur_district:'',
+                matricule_membre:this.$store.state.abandon.matricule_membre
             },
             btn:'Enregister',
             conferences:[],
@@ -69,29 +39,42 @@ export default {
         }
     },
     methods:{
-        getDistricts(){
-            this.$emit('getDistricts')
+        deleteDistrict(){
+            axios.post(this.url+'restaurer/'+this.$store.state.abandon.id,this.form)
+                .then((response)=>{
+                // this.loading = false;
+                this.close();
+                this.getCat();
+                this.$toast.success(`Membre Restaure`)  
+                })
+                .catch((error)=>{
+                    if (error.message == "Network Error"){
+                        this.errorMessage = "Vous n'êtes pas connecté au serveur"
+                    
+                    }else{
+                        this.errorMessage = error.response.data.message;
+                        this.loading = false;
+                        this.$toast.error(error.response.data.message,{
+                            position:"bottom-right"
+                        });
+                    }
+                    
+                })
         },
         getConferences(){
-            axios
-            .get(this.url+'conferences')
-            .then((res)=>{
-                this.conferences = res.data
-                this.allData = res.data
-              
-            })
-            .catch((error)=>{
-                this.$toast.error(error.response.data.message)
-                console.log(error.response.data.message)
-            })
-        }, 
+            this.$emit('getConferences')
+        },
+        
         close(){
             this.$emit('close')
+        },
+        getCat(){
+            this.$emit('getAbandons')
         },
         saveDistrict(){
             if(this.edit_district){
                 this.loading = true;
-                axios.put(this.url+'update_district/'+this.$store.state.district.id,this.form)
+                axios.put(this.url+'restaurer/'+this.$store.state.abandon.id,this.form)
                 .then((response)=>{
                 this.loading = false;
                 this.close();
@@ -140,7 +123,8 @@ export default {
     },
     mounted(){
         this.getConferences()
-        this.getDistricts()
+        this.getCat()
+        
         if(this.edit_district){
             this.form.nom_district = this.$store.state.district.nom_district;
             this.form.nom_sur_district = this.$store.state.district.nom_sur_district;

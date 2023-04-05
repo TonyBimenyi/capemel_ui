@@ -221,12 +221,12 @@ export default {
            
             if(this.edit_membre){
                 this.loading = true;
-                axios.put(this.url+'update_paroisse/'+this.$store.state.paroisse.id,this.form)
+                axios.put(this.url+'update_membre/'+this.$store.state.membre.matricule_membre,this.form)
                 .then((response)=>{
                 this.loading = false;
                 this.close();
-                this.getParoisses();
-                this.$toast.success(`Paroisse Modifier`)  
+                this.$toast.success(`Membre modifié avec succes`) 
+                this.getMembres();
                 })
                 .catch((error)=>{
                     if (error.message == "Network Error"){
@@ -292,8 +292,9 @@ export default {
             this.form.debut_ministere_membre = this.$store.state.membre.debut_ministere_membre;
             this.form.date_mariage = this.$store.state.membre.date_mariage;
             this.form.telephone_membre = this.$store.state.membre.telephone_membre;
-            
-            this.form.id_district = this.$store.state.paroisse.id_district;
+            this.form.id_categorie = this.$store.state.membre.id_categorie;
+            this.form.id_paroisse = this.$store.state.membre[0]?.paroisse.id_paroisse;
+            this.district_select = this.$store.state.membre.id_district;
             this.btn = 'Modifier'
             this.modal_title = 'Modifier '+this.$store.state.membre.nom_membre + ' '+ this.$store.state.membre.prenom_membre; 
         }

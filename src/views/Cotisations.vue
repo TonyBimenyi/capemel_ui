@@ -3,7 +3,7 @@
         <div class="top_part">
             <div class="part_left">
                 <div class="btn1">
-                    <button>Imprimer</button>
+                    <button @click="printPage">Imprimer</button>
                 </div>
                 <div class="btn1">
                     <select @change="sortDistrict"   v-model="conference_select" name="" id="">
@@ -19,10 +19,10 @@
                 </div>
                 <div class="btn1">
                     <select v-model="trimestre_select"  name="" id="">
-                        <option selected disabled value="">--TRIMESTRE--</option>
+                        <option selected  value="">--TRIMESTRE--</option>
                         <option value="1er Trimestre">1er Trimestre</option>
                         <option value="2eme Trimestre">2eme Trimestre</option>
-                        <option value="3eme Trimestre">4eme Trimestre</option>
+                        <option value="3eme Trimestre">3eme Trimestre</option>
                         <option value="4eme Trimestre">4eme Trimestre</option>
                     </select>
                 </div>
@@ -33,12 +33,13 @@
                 <div class="search">
                    <input v-model="annee_select"  type="number" placeholder="Annee...">
                 </div>
-                <div class="search">
-                   <input v-model="inputSearch" readonly @keydown="inputSearchMethods" type="text" placeholder="Rechercher...">
-                </div>
                 <div class="search_btn">
-                    <button @click="searchInDb()">Rechercher</button>
+                    <button @click="searchInDb()">Valider</button>
                 </div>
+                <div class="search">
+                   <input v-model="inputSearch"   type="text" placeholder="Rechercher...">
+                </div>
+               
             </div>
             <div class="part_right">
                 
@@ -55,6 +56,7 @@
                         <th>Matricule</th>
                         <th>Nom</th>
                         <th>Prenom</th>
+                        <th>District</th>
                         <th>Montant Payé</th>
                         <th>Montant non Payé</th>
                         <th>Periode</th>
@@ -72,6 +74,7 @@
                         <td>{{cot.matricule_membre}}</td>
                         <td>{{cot.membre[0]?.nom_membre}}</td>
                         <td>{{cot.membre[0]?.prenom_membre}}</td>
+                        <td>{{cot.membre[0]?.paroisse[0]?.district[0]?.nom_district}}</td>
                         <td>{{money(cot.montant_paye)}} Fbu</td>
                         <td>{{money(cot.montant_a_paye-cot.montant_paye)}} Fbu</td>
                         <td>{{cot.trimestre}} {{cot.annee}}</td>    
@@ -93,9 +96,10 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                         <td >{{money(totalPaye())}} Fbu</td>
                         <td >{{money(totalNonPaye()-totalPaye())}} Fbu</td>
-                        <td colspan="5"></td>
+                        <td colspan="6"></td>
                     </tr>
                 </tbody>
                 
@@ -106,6 +110,56 @@
         <form_modal @update="getCotisations" :edit_cotisation="modifier" @getCotisations="getCotisations"  @close="close" v-if="dialog"></form_modal> 
         <delete_modal @getCotisations="getCotisations" @close="close" v-if="dialog_delete"></delete_modal>
     </div>
+    <div class="printCode">
+        <div class="container">
+            <div class="paper">
+                <div class="header">
+                    <div class="left">
+                        <h2>EGLISE METHODISTE LIBRE AU BURUNDI</h2>
+                        <h2>Conference General</h2>
+                        <h2>Departement des pensions</h2>
+                    </div>
+                    <div class="title">
+                        <h2>RAPPORT DES COTISATIONS</h2>
+                        
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="table">
+                        <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>MATRICULE</th>
+                                <th><Noframes></Noframes></th>
+                                <th>PRENOM</th>
+                                <th>DISTRICT</th>
+                                <th>MONTANT</th>
+                                <th>PERIODE</th>
+                        
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="cot in cotisations" :key="cot.id">
+                                <td>{{cot.id}}</td>
+                                <td>{{cot.matricule_membre}}</td>
+                                <td>{{cot.membre[0]?.nom_membre}}</td>
+                                <td>{{cot.membre[0]?.prenom_membre}}</td>
+                                <td>{{cot.membre[0]?.paroisse[0]?.district[0]?.nom_district}}</td>
+                                <td>{{money(cot.montant_paye)}} Fbu</td>
+                              
+                                <td>{{cot.trimestre}} {{cot.annee}}</td>    
+                              
+                                        
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        </div>
 </template>
 <script>
 import axios from 'axios'
@@ -133,12 +187,18 @@ export default {
             districts:[],
             conf_text:'--CONFERENCE--',
             montant_cotisation:0,
+            trimestre_select:'',
+            annee_select:'',
             form:{
                 montant_paye : '',
             }
         }
     },
     methods:{
+        printPage(){
+            
+            window.print();
+        },
         totalPaye(){
             let total =0;
             for(let item in this.$store.state.cotisations){
@@ -210,7 +270,7 @@ export default {
         },
         searchInDb(){
             axios
-            .get(this.url+'cotisations?id_district='+this.district_select+'&trimestre_select'+this.trimestre_select)
+            .get(this.url+'cotisations?id_district='+this.district_select+'&trimestre_select='+this.trimestre_select + '&annee_select=' + this.annee_select)
             .then((res)=>{
                 this.$store.state.cotisations = res.data
                 this.allData = res.data
@@ -222,9 +282,9 @@ export default {
                 console.log(error.response.data.message)
             })
         },
-        inputSearchMethods(){
-            this.$store.state.paroisses = this.allData.filter(e => JSON.stringify(e).toLowerCase().includes(this.inputSearch.toLowerCase()))          
-        },
+        // inputSearchMethods(){
+        //     this.$store.state.cotisations = this.allData.filter(e => JSON.stringify(e).toLowerCase().includes(this.inputSearch.toLowerCase()))          
+        // },
         getConferences(){
             axios
             .get(this.url+'conferences')
@@ -266,9 +326,17 @@ export default {
      },
     computed:{
         cotisations(){
-            const cotisations = this.$store.state?.cotisations
-            return cotisations
-        }
+            return this.$store.state.cotisations.filter(item => {
+                    return(
+                        item.membre[0]?.nom_membre.toLowerCase().indexOf(this.inputSearch.toLowerCase()) > -1 ||
+                        item.membre[0]?.prenom_membre.toLowerCase().indexOf(this.inputSearch.toLowerCase()) > -1 ||
+                        item.numero_bordereau.toLowerCase().indexOf(this.inputSearch.toLowerCase()) > -1 
+                    
+                    )
+            })
+        },
+        
+  
     }
 }
 </script>

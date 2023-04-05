@@ -3,35 +3,25 @@
 <transition name="fade" appear>
     <div class="form" >
         <div class="top">
-             <div class="title"><h5>{{ modal_title }}</h5></div>
+             <div class="title">{{modal_title}}</div>
              <div class="close"><button @click="close">X</button></div>
          </div>
       <!-- <div class="subtitle">Let's create your account!</div> -->
       <div class="inputs">
         <div class="part1">
                 <div class="input-container ic1">
-                    <input id="firstname" v-model="form.nom_categorie" class="input" type="text" required placeholder=" " />
+                    <input id="firstname" v-model="form.nom_conference" class="input" type="text" required placeholder=" " />
                     <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Nom</label>
+                    <label for="firstname" class="placeholder">Nom Conference*</label>
                 </div>
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.montant_a_paye" class="input" type="number" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Montant </label>
-                </div>
-                <div class="input-container ic1">
-                    <input id="firstname" v-model="form.montant_pension" class="input" type="number" required placeholder=" " />
-                    <div class="cut"></div>
-                    <label for="firstname" class="placeholder">Montant de pension</label>
-                </div>
-               
+     
+   
+                
         </div>
-       
-
-       
+      
             
          </div>
-      <button  class="submit" @click="saveCategorie()">{{loading?"Chargement...":btn}}</button>
+      <button  class="submit" @click="saveConference()">{{loading?"Chargement...":btn}}</button>
     </div>
 </transition>
     </div>
@@ -39,39 +29,40 @@
 <script>
 import axios from 'axios'
 export default {
-    props:['edit_categorie'],
+    props:['edit_district'],
     data(){
         return{
             form:{
-                nom_categorie:'',
-                montant_a_paye:'',
-                montant_pension:'',
-                id_uti:this.$store.state.user.user.id,
+                nom_conference:'',
+                id_conference:'',
+                nom_sur_conference:'',
+                email_sur_district:'',
+                nom_sur_district:'',
             },
             btn:'Enregister',
+            conferences:[],
+            errorMessage:"",
             loading:false,
-            modal_title:'Ajouter categorie',
-            
+            modal_title:'Ajouter une conference'
         }
     },
     methods:{
-     
+        getConferences(){
+            this.$emit('getConferences')
+        },
+       
         close(){
             this.$emit('close')
         },
-        image(e){
-            this.photo_membre = e.target.files[0]
-        },
-        saveCategorie(){
-           
-            if(this.edit_categorie){
+        saveConference(){
+            if(this.edit_district){
                 this.loading = true;
-                axios.put(this.url+'update_categorie/'+this.$store.state.categorie.id,this.form)
+                axios.put(this.url+'update_conference/'+this.$store.state.conference.id,this.form)
                 .then((response)=>{
                 this.loading = false;
                 this.close();
-                this.getCat();
-                this.$toast.success(`Categorie modifié`)  
+                this.getConferences();
+                this.$toast.success(`conference Modifiée`)  
                 })
                 .catch((error)=>{
                     if (error.message == "Network Error"){
@@ -88,16 +79,14 @@ export default {
                 })
             }
             else{
-         
             this.loading = true;
-            axios.post(this.url+'store_categorie',this.form)
+            axios.post(this.url+'store_conference',this.form)
             .then((response)=>{
                 this.loading = false;
                 this.close();
                 // this.getUsers();
-                this.$toast.success(`Categorie enregistre avec succes`) 
-                this.getCat()
-                
+                this.getConferences();
+                this.$toast.success(`Conference enregistré`)  
             })
             .catch((error)=>{
                 if (error.message == "Network Error"){
@@ -114,30 +103,23 @@ export default {
             })
          }
         },
-        getCat(){
-            this.$emit('getPensions')
-        }
     },
-    computed:{
-      user(){
-        return this.$store.state.user.user.id
-      }
-    },  
     mounted(){
-   this.getCat()
-        if(this.edit_categorie){
-            this.form.nom_categorie =   this.$store.state.categorie.nom_categorie;
-            this.form.montant_a_paye = this.$store.state.categorie.montant_a_paye;
-            this.form.montant_pension =  this.$store.state.categorie.montant_pension;
-
+        this.getConferences()
+     
+        if(this.edit_district){
+            this.form.nom_conference = this.$store.state.conference.nom_conference;
+            this.form.nom_sur_district = this.$store.state.district.nom_sur_district;
+            this.form.email_sur_district = this.$store.state.district.email_sur_district;
+            this.form.phone_sur_district = this.$store.state.district.phone_sur_district;
+            this.form.id_conference = this.$store.state.district.id_conference;
             this.btn = 'Modifier'
-            this.modal_title = 'Modifier '+this.$store.state.categorie.nom_categorie; 
+            this.modal_title = 'Modifier '+this.$store.state.conference.nom_conference; 
         }
     }
 }
-
 </script>
-<style src='../../assets/css/modal.css' scoped>
+<style src='../../../assets/css/modal.css' scoped>
 .fade-enter-active, .fade-leave-active {
     transition: opacity .5s
 }

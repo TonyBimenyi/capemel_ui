@@ -11,8 +11,8 @@
         <div class="part1">
             <div class="input-container ic2">
                 <select class="input" v-model="form.type_abandon" name="" id="">
-                    <option  selected disabled >--------</option>
-                    <option value="deserteur">Desertation</option>
+                    <option  selected value="" disabled >--------</option>
+                    <option value="deserteur">Deserteur</option>
                     <option value="abandon">Abandon</option>
                 </select>
                 <div class="cut"></div>

@@ -68,6 +68,9 @@ nav .navbar .links li a{
   font-size: 15px;
   font-weight: 500;
 }
+.active a{
+  color: var(--primary);
+}
 .links li:hover .htmlcss-arrow,
 .links li:hover .js-arrow{
   transform: rotate(180deg);
@@ -144,7 +147,7 @@ nav .navbar .links{
     font-size: 15px;
     font-weight: 500;
   }
-  nav .navbar .links li a:hover {
+  nav .navbar .links li a:hover, nav .navbar .links li .active, nav .navbar .links .active {
     color: var(--primary);
     transition: .3s;       
   }
