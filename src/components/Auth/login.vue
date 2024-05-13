@@ -45,7 +45,7 @@ export default {
     methods:{
         submit(){
             this.loading = true;
-            axios.post(this.$store.state.url+'login/',this.form)
+            axios.post(this.$store.state.url+'login',this.form)
             .then((response)=>{
                 this.loading = false;
                 if(response.data.success){
@@ -53,7 +53,6 @@ export default {
                     alert('good')
                 }
                 this.$toast.error(`Bienvenue`)
- 
                
             })
             .catch((error)=>{
